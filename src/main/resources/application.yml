@@ -1,0 +1,13 @@
+server:
+  port: 8090
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/publiclibrary
+    username: user
+    password: secret
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      
