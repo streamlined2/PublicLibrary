@@ -1,15 +1,21 @@
 package com.streamlined.library;
 
-import java.util.Arrays;
-import java.util.Date;
-
-import javax.sql.DataSource;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Sort;
+
+import com.streamlined.library.dao.BookRepository;
+import com.streamlined.library.dao.CountryRepository;
+import com.streamlined.library.dao.LanguageRepository;
+import com.streamlined.library.model.Book;
+import com.streamlined.library.model.Country;
+import com.streamlined.library.model.Language;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,10 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 public class LibraryApplication implements CommandLineRunner {
 
 	@Autowired
-	private ApplicationContext context;
-
+	private CountryRepository countryRepository;
 	@Autowired
-	private DataSource dataSource;
+	private LanguageRepository languageRepository;
+	@Autowired
+	private BookRepository bookRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryApplication.class, args);
@@ -29,24 +36,13 @@ public class LibraryApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Arrays.asList(context.getBeanDefinitionNames()).forEach(log::info);
-		log.info("Total number of bean definitions {}", context.getBeanDefinitionCount());
-		log.info("Logger implementation class {}", log.getClass().getName());
-		log.info("Application startup date/time {}", new Date(context.getStartupDate()));
-		log.info("DataSource class name {}", dataSource.getClass().getName());
-		try (var connection = dataSource.getConnection()) {
-			final var metaData = connection.getMetaData();
-			log.info("Database product name {}, version {} ({}.{})", metaData.getDatabaseProductName(),
-					metaData.getDatabaseProductVersion(), metaData.getDatabaseMajorVersion(),
-					metaData.getDatabaseMinorVersion());
-			log.info("Data source driver name {} and version {}.{}", metaData.getDriverName(),
-					metaData.getDriverMajorVersion(), metaData.getDriverMinorVersion());
-			log.info("Datasource URL {}, user name '{}' (max length {})", metaData.getURL(), metaData.getUserName(),
-					metaData.getMaxUserNameLength());
-			for (var schemas = metaData.getSchemas(); schemas.next();) {
-				log.info("schema name {}", schemas.getObject(1));
-			}
-		}
+		log.info("\nlist of countries:\n{}", StreamSupport.stream(countryRepository.findAll().spliterator(), false)
+				.map(Country::toString).collect(Collectors.joining("\n")));
+		log.info("\nlist of languages:\n{}", StreamSupport.stream(languageRepository.findAll().spliterator(), false)
+				.map(Language::toString).collect(Collectors.joining("\n")));
+		log.info("\nlist of books:\n{}",
+				StreamSupport.stream(bookRepository.findAll(Sort.unsorted()).spliterator(), false).map(Book::toString)
+						.collect(Collectors.joining("\n")));
 	}
 
 }

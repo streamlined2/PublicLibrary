@@ -10,4 +10,7 @@ spring:
       connection-timeout: 30000
       idle-timeout: 600000
       max-lifetime: 1800000
-      
+  liquibase:
+    change-log: db/changelog.xml
+  jpa:
+    show-sql: true
