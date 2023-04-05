@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	<changeSet author="streamlined" id="006. fill up book table">
+		<insert tableName="book">
+			<column name="author" value="Colleen Hoover" />
+			<column name="title" value="It Ends with Us: A Novel" />
+			<column name="ISBN" value="9781501110368" />
+			<column name="publishDate" value="February 29, 2016" />
+			<column name="genre" value="FICTIONAL" />
+			<column name="country" value="1" />
+			<column name="language" value="1" />
+			<column name="pageCount" value="384" />
+			<column name="size" value="QUARTO" />
+			<column name="coverType" value="SOFT" />
+			<column name="coverSurface" value="UNCOATED" />
+		</insert>
+		<insert tableName="book">
+			<column name="author" value="Ursula Poznanski" />
+			<column name="title" value="Erebos" />
+			<column name="ISBN" value="9781742379531" />
+			<column name="publishDate" value="February 1, 2012" />
+			<column name="genre" value="SCIENTIFICAL" />
+			<column name="country" value="3" />
+			<column name="language" value="2" />
+			<column name="pageCount" value="440" />
+			<column name="size" value="OCTAVO" />
+			<column name="coverType" value="SOFT" />
+			<column name="coverSurface" value="SILK" />
+		</insert>
+		<insert tableName="book">
+			<column name="author" value="Jacques Katio, Dona Cattiaux" />
+			<column name="title" value="La treizieme Arcade" />
+			<column name="ISBN" value="9782956603955" />
+			<column name="publishDate" value="December 8, 2018" />
+			<column name="genre" value="HISTORICAL" />
+			<column name="country" value="4" />
+			<column name="language" value="3" />
+			<column name="pageCount" value="312" />
+			<column name="size" value="FOLIO" />
+			<column name="coverType" value="HARD" />
+			<column name="coverSurface" value="GLOSS" />
+		</insert>
+		<insert tableName="book">
+			<column name="author" value="Diane Purkiss" />
+			<column name="title" value="The Witch in History: Early Modern and Twentieth-century Representations" />
+			<column name="ISBN" value="9780415087629" />
+			<column name="publishDate" value="October 31, 1996" />
+			<column name="genre" value="HISTORICAL" />
+			<column name="country" value="2" />
+			<column name="language" value="1" />
+			<column name="pageCount" value="308" />
+			<column name="size" value="FOLIO" />
+			<column name="coverType" value="HARD" />
+			<column name="coverSurface" value="GLOSS" />
+		</insert>
+		<insert tableName="book">
+			<column name="author" value="Reyna Grande, Sonia Guiñansaca" />
+			<column name="title" value="Donde somos humanos" />
+			<column name="ISBN" value="9780063095830" />
+			<column name="publishDate" value="January 24, 2023" />
+			<column name="genre" value="BIOGRAPHICAL" />
+			<column name="country" value="5" />
+			<column name="language" value="4" />
+			<column name="pageCount" value="368" />
+			<column name="size" value="DUODECIMO" />
+			<column name="coverType" value="SOFT" />
+			<column name="coverSurface" value="UNCOATED" />
+		</insert>
+		<insert tableName="book">
+			<column name="author" value="Michael Meade" />
+			<column name="title" value="Fate and Destiny: The Two Agreements of the Soul" />
+			<column name="ISBN" value="9780982939147" />
+			<column name="publishDate" value="September 29, 2010" />
+			<column name="genre" value="PHILOSOPHICAL" />
+			<column name="country" value="2" />
+			<column name="language" value="1" />
+			<column name="pageCount" value="331" />
+			<column name="size" value="OCTAVO" />
+			<column name="coverType" value="SOFT" />
+			<column name="coverSurface" value="UNCOATED" />
+		</insert>
+		<insert tableName="book">
+			<column name="author" value="Rejane De Oliveira Slade" />
+			<column name="title" value="Portugues Basico Para Estrangeiros" />
+			<column name="ISBN" value="9780963879042" />
+			<column name="publishDate" value="January 1, 1994" />
+			<column name="genre" value="EDUCATIONAL" />
+			<column name="country" value="6" />
+			<column name="language" value="5" />
+			<column name="pageCount" value="400" />
+			<column name="size" value="QUARTO" />
+			<column name="coverType" value="HARD" />
+			<column name="coverSurface" value="GLOSS" />
+		</insert>
+		<insert tableName="book">
+			<column name="author" value="Anja Fonck" />
+			<column name="title" value="Grammatica Goed Geregeld Grammatica Vanuit Communicatief Perspectief Nederlands Voor Anderstaligen" />
+			<column name="ISBN" value="9789053561935" />
+			<column name="publishDate" value="January 23, 2002" />
+			<column name="genre" value="EDUCATIONAL" />
+			<column name="country" value="7" />
+			<column name="language" value="6" />
+			<column name="pageCount" value="121" />
+			<column name="size" value="FOLIO" />
+			<column name="coverType" value="HARD" />
+			<column name="coverSurface" value="SILK" />
+		</insert>
+		<insert tableName="book">
+			<column name="author" value="Jane Yolen" />
+			<column name="title" value="Briar Rose" />
+			<column name="ISBN" value="9780312851354" />
+			<column name="publishDate" value="January 1, 1992" />
+			<column name="genre" value="FICTIONAL" />
+			<column name="country" value="1" />
+			<column name="language" value="1" />
+			<column name="pageCount" value="224" />
+			<column name="size" value="DUODECIMO" />
+			<column name="coverType" value="HARD" />
+			<column name="coverSurface" value="UNCOATED" />
+		</insert>
+		<insert tableName="book">
+			<column name="author" value="Wladyslaw Wrobel" />
+			<column name="title" value="Polska Po Polsku" />
+			<column name="ISBN" value="9788320485233" />
+			<column name="publishDate" value="January 1, 1986" />
+			<column name="genre" value="EDUCATIONAL" />
+			<column name="country" value="8" />
+			<column name="language" value="7" />
+			<column name="pageCount" value="133" />
+			<column name="size" value="DUODECIMO" />
+			<column name="coverType" value="SOFT" />
+			<column name="coverSurface" value="UNCOATED" />
+		</insert>
+	</changeSet>
+</databaseChangeLog>

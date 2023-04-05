@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	<changeSet author="streamlined" id="004. fill up language table">
+		<insert tableName="language">
+			<column name="name" value="ENGLISH"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="GERMAN"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="FRENCH"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="SPANISH"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="PORTUGUESE"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="DUTCH"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="POLISH"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="ROMANIAN"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="BULGARIAN"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="CZECH"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="SLOVAKIAN"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="HUNGARIAN"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="GREEK"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="ITALIAN"/>
+		</insert>
+		<insert tableName="language">
+			<column name="name" value="UKRAINIAN"/>
+		</insert>
+	</changeSet>
+</databaseChangeLog>

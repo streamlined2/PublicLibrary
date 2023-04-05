@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	<changeSet author="streamlined" id="002. fill up country table">
+		<insert tableName="country">
+			<column name="name" value="USA"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="UK"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="GERMANY"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="FRANCE"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="SPAIN"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="PORTUGAL"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="BELGIUM"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="POLAND"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="ROMANIA"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="BULGARIA"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="CZECH REPUBLIC"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="SLOVAKIA"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="HUNGARY"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="GREECE"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="ITALY"/>
+		</insert>
+		<insert tableName="country">
+			<column name="name" value="UKRAINE"/>
+		</insert>
+	</changeSet>
+</databaseChangeLog>
