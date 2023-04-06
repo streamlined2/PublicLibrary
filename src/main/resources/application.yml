@@ -14,3 +14,11 @@ spring:
     change-log: db/changelog.xml
   jpa:
     show-sql: true
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+    mode: HTML5
+    encoding: UTF-8
+    servlet:
+      content-type: text/html; charset=utf-8

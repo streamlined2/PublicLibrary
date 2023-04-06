@@ -4,9 +4,11 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Embeddable
 @Data
+@NoArgsConstructor
 public class Cover {
 
 	public enum Type {
@@ -22,5 +24,10 @@ public class Cover {
 
 	@Enumerated(EnumType.STRING)
 	private Surface surface;
+
+	public Cover(String coverType, String coverSurface) {
+		type = Type.valueOf(coverType);
+		surface = Surface.valueOf(coverSurface);
+	}
 
 }
