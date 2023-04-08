@@ -16,11 +16,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional(readOnly = true)
 public class BookService {
-	
+
 	private final BookRepository bookRepository;
 
-	public Stream<BookDto> getAll(){
+	public Stream<BookDto> getAll() {
 		return StreamSupport.stream(bookRepository.findAll(Sort.unsorted()).spliterator(), false).map(BookDto::new);
 	}
-	
+
 }
