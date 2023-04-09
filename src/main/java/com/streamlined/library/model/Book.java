@@ -1,6 +1,7 @@
 package com.streamlined.library.model;
 
 import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -72,11 +73,11 @@ public class Book {
 	@Column(name = "genre", nullable = false, unique = false)
 	private @NonNull Genre genre;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "country", nullable = false, unique = false)
 	private @NonNull Country country;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.PERSIST })
 	@JoinColumn(name = "language", nullable = false, unique = false)
 	private @NonNull Language language;
 

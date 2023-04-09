@@ -2,8 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <body>
-	Delete book
-	<p th:text="${bookId}"/>
+	<form>
+		<table>
+			<thead>
+				<tr>
+					<th><label for="msg">Do you really want to delete this book?</label></th>
+					<th>
+						<button type="submit" th:formaction="@{/book/delete/{id}(id=${book.getId()})}"
+							formmethod="post">Delete</button>
+					</th>
+				</tr>
+				<tr>
+					<th><input id="msg" type="text" th:value="${book.getTitle()}" size="100%" readonly /></th>
+					<th>
+						<button type="submit" th:formaction="@{/book/browse}" formmethod="get"
+							formnovalidate>Decline</button>
+					</th>
+				</tr>
+			</thead>
+		</table>
+	</form>
 </body>
 
 </html>

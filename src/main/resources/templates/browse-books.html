@@ -19,14 +19,14 @@
 			</thead>
 			<tbody>
 				<tr th:each="book: ${bookList}">
-					<td><button type="submit" th:formaction="@{/book/edit/{id}(id=${book.id()})}" >✔️</button>
-					<td><button type="submit" th:formaction="@{/book/delete/{id}(id=${book.id()})}">❌</button>
-					<td th:text="${book.author()}" />
-					<td th:text="${book.isbn()}" />
-					<td th:text="${book.publishDate()}" />
-					<td th:text="${book.title()}" />
-					<td th:text="${book.country().name()}" />
-					<td th:text="${book.language().name()}" />
+					<td><button type="submit" th:formaction="@{/book/edit/{id}(id=${book.getId()})}" >✔️</button>
+					<td><button type="submit" th:formaction="@{/book/delete/{id}(id=${book.getId()})}">❌</button>
+					<td th:text="${book.getAuthor()}" />
+					<td th:text="${book.getIsbn()}" />
+					<td th:text="${book.getPublishDate()}" />
+					<td th:text="${book.getTitle()}" />
+					<td th:text="${book.getCountry().getName()}" />
+					<td th:text="${book.getLanguage().getName()}" />
 				</tr>
 			</tbody>
 		</table>
