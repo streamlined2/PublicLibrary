@@ -53,7 +53,7 @@ public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Setter(AccessLevel.PRIVATE)
-	private @NonNull Long id;
+	private Long id;
 
 	@NotBlank(message = "empty author is not valid")
 	private @NonNull String author;
@@ -73,11 +73,11 @@ public class Book {
 	@Column(name = "genre", nullable = false, unique = false)
 	private @NonNull Genre genre;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST })
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "country", nullable = false, unique = false)
 	private @NonNull Country country;
 
-	@ManyToOne(cascade = { CascadeType.PERSIST })
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "language", nullable = false, unique = false)
 	private @NonNull Language language;
 

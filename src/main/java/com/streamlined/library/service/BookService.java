@@ -15,6 +15,9 @@ import com.streamlined.library.model.Cover;
 import com.streamlined.library.model.dto.BookDto;
 import com.streamlined.library.model.dto.CountryDto;
 import com.streamlined.library.model.dto.LanguageDto;
+import com.streamlined.library.model.mapper.BookMapper;
+import com.streamlined.library.model.mapper.CountryMapper;
+import com.streamlined.library.model.mapper.LanguageMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,13 +29,20 @@ public class BookService {
 	private final BookRepository bookRepository;
 	private final CountryRepository countryRepository;
 	private final LanguageRepository languageRepository;
+	private final BookMapper bookMapper;
+	private final CountryMapper countryMapper;
+	private final LanguageMapper languageMapper;
 
 	public Stream<BookDto> getAll() {
-		return toStream(bookRepository.findAll(Sort.unsorted())).map(BookDto::create);
+		return toStream(bookRepository.findAll(Sort.unsorted())).map(bookMapper::toDto);
 	}
 
 	public Optional<BookDto> findById(Long id) {
-		return bookRepository.findById(id).map(BookDto::create);
+		return bookRepository.findById(id).map(bookMapper::toDto);
+	}
+
+	public BookDto create() {
+		return new BookDto();
 	}
 
 	@Transactional
@@ -42,15 +52,15 @@ public class BookService {
 
 	@Transactional
 	public void save(BookDto book) {
-		bookRepository.save(book.getEntity());
+		bookRepository.save(bookMapper.toEntity(book));
 	}
 
 	public Stream<CountryDto> getAllCountries() {
-		return toStream(countryRepository.findAll()).map(CountryDto::create);
+		return toStream(countryRepository.findAll()).map(countryMapper::toDto);
 	}
 
 	public Stream<LanguageDto> getAllLanguages() {
-		return toStream(languageRepository.findAll()).map(LanguageDto::create);
+		return toStream(languageRepository.findAll()).map(languageMapper::toDto);
 	}
 
 	public Stream<String> getAllGenres() {

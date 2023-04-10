@@ -68,6 +68,18 @@ public class BookController {
 		return "browse-books";
 	}
 
+	@GetMapping("/add")
+	public String addBook(Model model) {
+		model.addAttribute("book", bookService.create());
+		return "add-book";
+	}
+	
+	@PostMapping("/new")
+	public String createBook(BookDto book) {
+		bookService.save(book);
+		return "redirect:/book/browse";
+	}
+	
 	@GetMapping("/edit/{id}")
 	public String editBook(@PathVariable Long id, Model model) {
 		var book = bookService.findById(id);
@@ -98,11 +110,6 @@ public class BookController {
 	public String removeBook(@PathVariable Long id) {
 		bookService.removeById(id);
 		return "redirect:/book/browse";
-	}
-
-	@GetMapping("/add")
-	public String addBook() {
-		return "add-book";
 	}
 
 }
