@@ -1,9 +1,12 @@
 package com.streamlined.library;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.springframework.web.context.request.WebRequest;
 
 import lombok.experimental.UtilityClass;
 
@@ -28,16 +31,26 @@ public class Utilities {
 					"right parenthesis should follow left parenthesis in source value %s".formatted(dtoValue));
 		}
 		Map<String, String> parameterValues = new HashMap<>();
-		String[] parameterValuePairs = dtoValue.substring(leftParenthesisIndex + 1, rightParenthesisIndex).split(",\\s*");
+		String[] parameterValuePairs = dtoValue.substring(leftParenthesisIndex + 1, rightParenthesisIndex)
+				.split(",\\s*");
 		for (String parameterValueString : parameterValuePairs) {
-			String[] parameterValue = parameterValueString.split("=");
-			if (parameterValue.length != 2) {
-				throw new ParseException(
-						"string %s should consist of parameter and value divided by =".formatted(parameterValueString));
-			}
+			String[] parameterValue = getParameterValue(parameterValueString);
 			parameterValues.put(parameterValue[0], parameterValue[1]);
 		}
 		return parameterValues;
+	}
+
+	public String[] getParameterValue(String parameterValueString) {
+		String[] parameterValue = parameterValueString.split("=");
+		if (parameterValue.length != 2) {
+			throw new ParseException(
+					"string %s should consist of parameter and value divided by =".formatted(parameterValueString));
+		}
+		return parameterValue;
+	}
+
+	public URI getSourceURI(WebRequest request) {
+		return URI.create(getParameterValue(request.getDescription(false))[1]);
 	}
 
 }

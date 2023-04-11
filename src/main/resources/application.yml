@@ -1,5 +1,13 @@
 server:
+  servlet:
+    context-path: /library
   port: 8090
+  error:
+    whitelabel:
+      enabled: false
+    include-stacktrace: never
+    include-message: never
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver

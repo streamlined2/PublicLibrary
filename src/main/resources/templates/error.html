@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<body>
+		<p><h2>There is an error</h2></p>
+		<p><h3 th:text="${message}"/></p>
+		<p>You may try to <a th:href="${uri}">fix it and continue</a></p>
+		<p>or <a th:href="${context}">restart your work</a></p>
+	</body>
+</html>

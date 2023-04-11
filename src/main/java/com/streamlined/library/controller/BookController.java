@@ -73,21 +73,21 @@ public class BookController {
 		model.addAttribute("book", bookService.create());
 		return "add-book";
 	}
-	
+
 	@PostMapping("/new")
 	public String createBook(BookDto book) {
 		bookService.save(book);
 		return "redirect:/book/browse";
 	}
-	
+
 	@GetMapping("/edit/{id}")
 	public String editBook(@PathVariable Long id, Model model) {
 		var book = bookService.findById(id);
-		if (book.isPresent()) {
-			model.addAttribute("book", book.get());
-			return "edit-book";
+		if (book.isEmpty()) {
+			throw new NoBookFoundException("no book found for id %d".formatted(id));
 		}
-		return "browse";
+		model.addAttribute("book", book.get());
+		return "edit-book";
 	}
 
 	@PostMapping("/edit/{id}")
@@ -99,11 +99,11 @@ public class BookController {
 	@GetMapping("/delete/{id}")
 	public String deleteBook(@PathVariable Long id, Model model) {
 		var book = bookService.findById(id);
-		if (book.isPresent()) {
-			model.addAttribute("book", book.get());
-			return "delete-book";
+		if (book.isEmpty()) {
+			throw new NoBookFoundException("no book found for id %d".formatted(id));
 		}
-		return "browse";
+		model.addAttribute("book", book.get());
+		return "delete-book";
 	}
 
 	@PostMapping("/delete/{id}")
