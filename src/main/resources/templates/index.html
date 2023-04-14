@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<body>
 		<p><h1>Welcome to our library!</h1></p>
-		<p><h3>Please start by browsing <a th:href="@{/book/browse}">available books</a></h3></p>
+		<h3>
+		<p>Please start by</p>
+		<p>browsing to order some of <a th:href="@{/book/select}">available books</a></p>
+		<p>or editing <a th:href="@{/book/browse}">existing books</a></p>
+		</h3>
 	</body>
 </html>

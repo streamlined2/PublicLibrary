@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+	<changeSet author="streamlined" id="012. fill up customer and contact table">
+		<insert tableName="customer">
+			<column name="login" value="john_smith@gmail.com" />
+			<column name="password_hash" value="" />
+			<column name="first_name" value="John" />
+			<column name="last_name" value="Smith" />
+			<column name="birth_date" value="January 1, 1990" />
+			<column name="sex" value="MALE" />
+		</insert>
+		<insert tableName="contact">
+			<column name="person" value="1" />
+			<column name="contact" value="+380(097)123-45-67" />
+		</insert>
+		<insert tableName="contact">
+			<column name="person" value="1" />
+			<column name="contact" value="john_smith@gmail.com" />
+		</insert>
+	</changeSet>
+</databaseChangeLog>

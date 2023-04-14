@@ -37,6 +37,10 @@ public class BookService {
 		return toStream(bookRepository.findAll(Sort.unsorted())).map(bookMapper::toDto);
 	}
 
+	public Stream<BookDto> getAvailableBooks() {//TODO should be elaborated later to skip already requested books 
+		return toStream(bookRepository.findAll(Sort.unsorted())).map(bookMapper::toDto);
+	}
+
 	public Optional<BookDto> findById(Long id) {
 		return bookRepository.findById(id).map(bookMapper::toDto);
 	}

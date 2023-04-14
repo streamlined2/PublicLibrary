@@ -23,11 +23,6 @@ public class BookController {
 
 	private final BookService bookService;
 
-	@ModelAttribute(name = "bookList")
-	public List<BookDto> bookList() {
-		return bookService.getAll().toList();
-	}
-
 	@ModelAttribute(name = "genreList")
 	public List<String> genreList() {
 		return bookService.getAllGenres().toList();
@@ -59,12 +54,14 @@ public class BookController {
 	}
 
 	@GetMapping("/select")
-	public String selectBooks() {
+	public String selectBooks(Model model) {
+		model.addAttribute("availableBooks", bookService.getAvailableBooks().toList());
 		return "select-books";
 	}
 
 	@GetMapping("/browse")
-	public String browseBooks() {
+	public String browseBooks(Model model) {
+		model.addAttribute("bookList", bookService.getAll().toList());
 		return "browse-books";
 	}
 

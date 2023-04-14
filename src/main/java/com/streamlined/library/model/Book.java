@@ -35,11 +35,11 @@ import lombok.ToString;
 @Table(name = "book")
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode(of = "id")
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@ToString
+@EqualsAndHashCode(of = "id")
 public class Book {
 
 	public enum Genre {

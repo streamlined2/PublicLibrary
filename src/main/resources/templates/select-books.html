@@ -2,26 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <body>
-	<table>
-		<caption><h2>Book list</h2></caption>
-		<thead>
-			<th>Author</th>
-			<th>ISBN</th>
-			<th style="min-width:100px">Published</th>
-			<th>Title</th>
-			<th>Country</th>
-			<th>Language</th>
-		</thead>
-		<tr th:each="book: ${bookList}">
-			<td th:text="${book.author()}" />
-			<td th:text="${book.isbn()}" />
-			<td th:text="${book.publishDate()}" />
-			<td th:text="${book.title()}" />
-			<td th:text="${book.country().name()}" />
-			<td th:text="${book.language().name()}" />
-		</tr>
-	</table>
-
+	<form>
+		<table style="width:100%">
+			<thead>
+				<caption>
+					<h2>Available books</h2>
+				</caption>
+				<th>✔️</th>
+				<th>Author</th>
+				<th>ISBN</th>
+				<th style="min-width:100px">Published</th>
+				<th>Title</th>
+				<th>Country</th>
+				<th>Language</th>
+			</thead>
+			<tbody>
+				<tr th:each="book: ${availableBooks}">
+					<td>
+						<input type="checkbox" th:id="${book.getId()}" th:name="${book.getId()}" th:value="${book.getId()}"></input>
+					</td>
+					<td th:text="${book.getAuthor()}" />
+					<td th:text="${book.getIsbn()}" />
+					<td th:text="${book.getPublishDate()}" />
+					<td th:text="${book.getTitle()}" />
+					<td th:text="${book.getCountry().getName()}" />
+					<td th:text="${book.getLanguage().getName()}" />
+				</tr>
+			</tbody>
+		</table>
+		<p style="vertical-align:bottom">
+			<button style="text-align:center" type="submit" th:formaction="@{/request/add}" formmethod="post">Submit</button>
+			<button style="text-align:center" type="submit" th:formaction="@{/}" formmethod="get" formnovalidate>Cancel</button>
+		</p>
+	</form>
 </body>
 
 </html>
