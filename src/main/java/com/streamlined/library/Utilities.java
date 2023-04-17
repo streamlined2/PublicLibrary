@@ -2,6 +2,7 @@ package com.streamlined.library;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -51,6 +52,10 @@ public class Utilities {
 
 	public URI getSourceURI(WebRequest request) {
 		return URI.create(getParameterValue(request.getDescription(false))[1]);
+	}
+
+	public List<Long> getBookIdList(Map<String, String> bookIds) {
+		return bookIds.values().stream().map(Long::valueOf).toList();
 	}
 
 }

@@ -9,7 +9,6 @@ import com.streamlined.library.model.dto.ApprovalDto;
 import lombok.RequiredArgsConstructor;
 
 @Component
-
 @RequiredArgsConstructor
 public class ApprovalMapper implements Mapper<ApprovalDto, Approval> {
 

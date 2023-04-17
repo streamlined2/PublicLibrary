@@ -30,7 +30,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "approval")
+@Table(name = "transfer")
 @Getter
 @Setter
 @Builder
@@ -38,7 +38,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
-public class Approval {
+public class Transfer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +46,8 @@ public class Approval {
 	private Long id;
 
 	@OneToOne
-	@JoinColumn(name = "request", unique = true, nullable = false)
-	private @NonNull Request request;
+	@JoinColumn(name = "approval", unique = true, nullable = false)
+	private @NonNull Approval approval;
 
 	@ManyToOne
 	@JoinColumn(name = "librarian", unique = false, nullable = false)
@@ -59,7 +59,7 @@ public class Approval {
 	private LocalDateTime createdTime;
 
 	@OneToMany
-	@JoinTable(name = "approval_book", joinColumns = { @JoinColumn(name = "approval") }, inverseJoinColumns = {
+	@JoinTable(name = "transfer_book", joinColumns = { @JoinColumn(name = "transfer") }, inverseJoinColumns = {
 			@JoinColumn(name = "book") })
 	private final Set<Book> books = new HashSet<>();
 

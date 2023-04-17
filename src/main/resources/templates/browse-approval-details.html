@@ -2,20 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <body>
-	<form th:object="${request}">
+	<form th:object="${approval}">
 		<caption>
-			<h2>Requested books</h2>
+			<h2>Approved request</h2>
 		</caption>
 		
 		<fieldset>
 			<legend>Request details</legend>
 
 			<label for="created">Created:</label>
-			<span id="created" th:text="*{#temporals.format(createdTime(),'dd.MM.yyyy HH:mm:ss')}" />
+			<span id="created" th:text="*{#temporals.format(request().createdTime(),'dd.MM.yyyy HH:mm:ss')}" />
 			<br>
 
 			<label for="customer">Customer:</label>
-			<span id="customer" th:text="*{customer}" size="120" />
+			<span id="customer" th:text="*{request().customer}" size="120" />
+			<br>
+
+			<label for="librarian">Approved by:</label>
+			<span id="librarian" th:text="*{librarian}" size="120" />
+			<br>
+
+			<label for="approve-time">Approved on:</label>
+			<span id="approve-time" th:text="*{#temporals.format(createdTime(),'dd.MM.yyyy HH:mm:ss')}" />
 			<br>
 
 			<hr />
@@ -48,9 +56,9 @@
 		</fieldset>
 
 		<p style="vertical-align:bottom">
-			<button style="text-align:center" type="submit" th:formaction="@{/approval/save/{id}(id=${request.id()})}"
+			<button style="text-align:center" type="submit" th:formaction="@{/transfer/save/{id}(id=${approval.id()})}"
 				formmethod="post">Approve</button>
-			<button style="text-align:center" type="submit" th:formaction="@{/request/browse}" formmethod="get"
+			<button style="text-align:center" type="submit" th:formaction="@{/approval/browse}" formmethod="get"
 				formnovalidate>Back</button>
 		</p>
 	</form>

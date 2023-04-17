@@ -31,4 +31,8 @@ public abstract class PersonDto {
 				contacts.stream().collect(Collectors.joining(",", "[", "]")));
 	}
 
+	public String getName() {
+		return firstName + " " + lastName;
+	}
+
 }
