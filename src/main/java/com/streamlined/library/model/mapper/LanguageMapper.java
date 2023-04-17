@@ -6,10 +6,10 @@ import com.streamlined.library.model.Language;
 import com.streamlined.library.model.dto.LanguageDto;
 
 @Component
-public class LanguageMapper {
+public class LanguageMapper implements Mapper<LanguageDto, Language> {
 
-	public LanguageDto toDto(Language language) {
-		return LanguageDto.builder().id(language.getId()).name(language.getName()).build();
+	public LanguageDto toDto(Language entity) {
+		return LanguageDto.builder().id(entity.getId()).name(entity.getName()).build();
 	}
 
 	public Language toEntity(LanguageDto dto) {

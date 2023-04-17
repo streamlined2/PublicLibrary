@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form th:object="${request}">
+		<caption>
+			<h2>Requested books</h2>
+		</caption>
+		
+		<fieldset>
+			<legend>Request details</legend>
+
+			<label for="created">Created:</label>
+			<span id="created" th:text="*{#temporals.format(createdTime(),'dd.MM.yyyy HH:mm:ss')}" />
+			<br>
+
+			<label for="customer">Customer:</label>
+			<span id="customer" th:text="*{customer}" size="120" />
+			<br>
+
+			<hr />
+
+			<table style="width:100%">
+				<thead>
+					<th>✔️</th>
+					<th>Author</th>
+					<th>ISBN</th>
+					<th style="min-width:100px">Published</th>
+					<th>Title</th>
+					<th>Country</th>
+					<th>Language</th>
+				</thead>
+				<tbody>
+					<tr th:each="book: *{books}">
+						<td>
+							<input type="checkbox" th:id="${book.getId()}" th:name="${book.getId()}"
+								th:value="${book.getId()}"></input>
+						</td>
+						<td th:text="${book.getAuthor()}" />
+						<td th:text="${book.getIsbn()}" />
+						<td th:text="${book.getPublishDate()}" />
+						<td th:text="${book.getTitle()}" />
+						<td th:text="${book.getCountry().getName()}" />
+						<td th:text="${book.getLanguage().getName()}" />
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+
+		<p style="vertical-align:bottom">
+			<button style="text-align:center" type="submit" th:formaction="@{/request/approve/{id}(id=${request.id()})}"
+				formmethod="post">Approve</button>
+			<button style="text-align:center" type="submit" th:formaction="@{/request/browse}" formmethod="get"
+				formnovalidate>Back</button>
+		</p>
+	</form>
+</body>
+
+</html>

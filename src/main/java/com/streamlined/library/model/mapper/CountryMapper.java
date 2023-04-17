@@ -6,10 +6,10 @@ import com.streamlined.library.model.Country;
 import com.streamlined.library.model.dto.CountryDto;
 
 @Component
-public class CountryMapper {
+public class CountryMapper implements Mapper<CountryDto, Country> {
 
-	public CountryDto toDto(Country country) {
-		return CountryDto.builder().id(country.getId()).name(country.getName()).build();
+	public CountryDto toDto(Country entity) {
+		return CountryDto.builder().id(entity.getId()).name(entity.getName()).build();
 	}
 
 	public Country toEntity(CountryDto dto) {

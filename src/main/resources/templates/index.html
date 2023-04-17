@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<body>
-		<p><h1>Welcome to our library!</h1></p>
-		<h3>
-		<p>Please start by</p>
-		<p>browsing to order some of <a th:href="@{/book/select}">available books</a></p>
-		<p>or editing <a th:href="@{/book/browse}">existing books</a></p>
-		</h3>
-	</body>
+
+<body>
+	<p>
+	<h1>Welcome to our library!</h1>
+	</p>
+	<h3>
+		<fieldset>
+			<legend>Please start by selecting action according to your role</legend>
+			<label for="customer">Customer</label>
+			<ul id="customer">
+				<li><a th:href="@{/book/select}">browse available books to order</a></li>
+			</ul>
+			<label for="customer">Librarian</label>
+			<ul id="customer">
+				<li><a th:href="@{/book/browse}">edit existing books</a></li>
+				<li><a th:href="@{/request/browse}">check active requests</a></li>
+			</ul>
+		</fieldset>
+	</h3>
+</body>
+
 </html>

@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "librarian")
 @SuperBuilder
 @NoArgsConstructor
-public class Customer extends Person {
+public class Librarian extends Person {
 
 }

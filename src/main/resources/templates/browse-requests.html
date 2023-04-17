@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form method="get">
+		<table style="width:100%">
+			<thead>
+				<caption>
+					<h2>List of active requests</h2>
+				</caption>
+				<th>Select</th>
+				<th>Created</th>
+				<th>Customer</th>
+			</thead>
+			<tbody>
+				<tr th:each="request: ${requestList}">
+					<td><button type="submit" th:formaction="@{/request/details/{id}(id=${request.id()})}" >✔️</button></td>
+					<td th:text="${#temporals.format(request.createdTime(),'dd.MM.yyyy HH:mm:ss')}" />
+					<td th:text="${request.customer()}" />
+				</tr>
+			</tbody>
+		</table>
+		<p style="vertical-align:bottom">
+			<button style="text-align:center" type="submit" th:formaction="@{/}" formnovalidate>Cancel</button>
+		</p>
+	</form>
+</body>
+
+</html>

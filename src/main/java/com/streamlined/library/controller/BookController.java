@@ -79,11 +79,8 @@ public class BookController {
 
 	@GetMapping("/edit/{id}")
 	public String editBook(@PathVariable Long id, Model model) {
-		var book = bookService.findById(id);
-		if (book.isEmpty()) {
-			throw new NoBookFoundException("no book found for id %d".formatted(id));
-		}
-		model.addAttribute("book", book.get());
+		model.addAttribute("book", bookService.findById(id)
+				.orElseThrow(() -> new NoEntityFoundException("no book found for id %d".formatted(id))));
 		return "edit-book";
 	}
 
@@ -95,11 +92,8 @@ public class BookController {
 
 	@GetMapping("/delete/{id}")
 	public String deleteBook(@PathVariable Long id, Model model) {
-		var book = bookService.findById(id);
-		if (book.isEmpty()) {
-			throw new NoBookFoundException("no book found for id %d".formatted(id));
-		}
-		model.addAttribute("book", book.get());
+		model.addAttribute("book", bookService.findById(id)
+				.orElseThrow(() -> new NoEntityFoundException("no book found for id %d".formatted(id))));
 		return "delete-book";
 	}
 
