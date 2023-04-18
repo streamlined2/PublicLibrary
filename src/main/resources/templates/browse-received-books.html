@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <body>
-	<form>
+	<form method="get">
 		<table style="width:100%">
 			<thead>
 				<caption>
-					<h2>Available books</h2>
+					<h2>Book list</h2>
 				</caption>
-				<th>✔️</th>
+				<th>Review</th>
 				<th>Author</th>
 				<th>ISBN</th>
 				<th style="min-width:100px">Published</th>
@@ -17,10 +17,8 @@
 				<th>Language</th>
 			</thead>
 			<tbody>
-				<tr th:each="book: ${availableBooks}">
-					<td>
-						<input type="checkbox" th:id="${book.getId()}" th:name="${book.getId()}" th:value="${book.getId()}"></input>
-					</td>
+				<tr th:each="book: ${receivedBooks}">
+					<td><button type="submit" th:formaction="@{/review/browse/{id}(id=${book.getId()})}" >✔️</button></td>
 					<td th:text="${book.getAuthor()}" />
 					<td th:text="${book.getIsbn()}" />
 					<td th:text="${book.getPublishDate()}" />
@@ -31,8 +29,7 @@
 			</tbody>
 		</table>
 		<p style="vertical-align:bottom">
-			<button style="text-align:center" type="submit" th:formaction="@{/request/add}" formmethod="post">Order</button>
-			<button style="text-align:center" type="submit" th:formaction="@{/}" formmethod="get" formnovalidate>Back</button>
+			<button style="text-align:center" type="submit" th:formaction="@{/}" formnovalidate>Back</button>
 		</p>
 	</form>
 </body>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form th:object="${review}">
+		<caption>
+			<h2>Review on book</h2>
+			<h3><span th:text="*{book.getTitle()}" /> 
+			<br>
+			by <span th:text="*{customer.getName()}"/> </h3>
+		</caption>
+
+		<fieldset>
+			<legend>Review details</legend>
+
+			<label for="created">Created:</label>
+			<span id="created" th:text="*{#temporals.format(createdTime(),'dd.MM.yyyy HH:mm:ss')}" />
+			<br>
+
+			<label for="updated">Updated:</label>
+			<span id="updated" th:text="*{#temporals.format(updatedTime(),'dd.MM.yyyy HH:mm:ss')}" />
+			<br>
+			<hr>
+
+			<label for="rating">Rating:</label>
+			<span id="rating" th:text="*{rating.name()}" size="120" />
+			<br>
+
+			<label for="text">Text:</label>
+			<span id="text" th:text="*{text}" size="360" />
+			<br>
+
+		</fieldset>
+
+		<p style="vertical-align:bottom">
+			<button style="text-align:center" type="submit"
+				th:formaction="@{/review/browse/{bookId}(bookId=${review.book().getId()})}" formmethod="get"
+				formnovalidate>Back</button>
+		</p>
+	</form>
+</body>
+
+</html>
