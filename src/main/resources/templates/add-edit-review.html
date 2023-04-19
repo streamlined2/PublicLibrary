@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form th:object="${review}">
+		<fieldset>
+			<legend>Review details</legend>
+
+			<label>Book:</label>
+			<span th:text="*{book.getTitle()}" /><br>
+
+			<label>Customer:</label>
+			<span th:text="*{customer.getName()}" /><br>
+			<hr>
+
+			<label for="rating">Rating</label>
+			<select id="rating" th:field="*{rating}">
+				<option th:each="rating: ${ratingList}" th:value="${rating}" th:text="${rating}" />
+			</select>
+			<br>
+
+			<label for="text">Review</label>
+			<input id="text" type="text" th:field="*{text}" size="160" maxlength="255" />
+			<br>
+
+			<input id="id" type="hidden" th:field="*{id}" />
+
+			<button type="submit" formmethod="post" th:formaction="@{/review/addedit/{id}(id=${review.book().getId()})}">Save</button>
+			<button type="submit" formmethod="get" th:formaction="@{/review/submit}" formnovalidate>Cancel</button>
+
+		</fieldset>
+	</form>
+</body>
+
+</html>

@@ -1,8 +1,10 @@
 package com.streamlined.library.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static com.streamlined.library.Utilities.toStream;
@@ -33,11 +35,12 @@ public class BookService {
 	private final CountryMapper countryMapper;
 	private final LanguageMapper languageMapper;
 
-	public Stream<BookDto> getAll() {
-		return toStream(bookRepository.findAll(Sort.unsorted())).map(bookMapper::toDto);
+	public Stream<BookDto> getAllBooks() {
+		return toStream(bookRepository.findAll(Sort.by(List.of(Order.asc("author"), Order.asc("title")))))
+				.map(bookMapper::toDto);
 	}
 
-	public Stream<BookDto> getAvailableBooks() {//TODO should be elaborated later to skip already requested books 
+	public Stream<BookDto> getAvailableBooks() {// TODO should be elaborated later to skip already requested books
 		return toStream(bookRepository.findAll(Sort.unsorted())).map(bookMapper::toDto);
 	}
 

@@ -6,7 +6,7 @@
 		<table style="width:100%">
 			<thead>
 				<caption>
-					<h2>Select book to submit review</h2>
+					<h2>Select book to view its reviews</h2>
 				</caption>
 				<th>Review</th>
 				<th>Author</th>
@@ -17,8 +17,8 @@
 				<th>Language</th>
 			</thead>
 			<tbody>
-				<tr th:each="book: ${receivedBooks}">
-					<td><button type="submit" th:formaction="@{/review/addedit/{id}(id=${book.getId()})}" >✔️</button></td>
+				<tr th:each="book: ${bookList}">
+					<td><button type="submit" th:formaction="@{/review/browse/{id}(id=${book.getId()})}" >✔️</button></td>
 					<td th:text="${book.getAuthor()}" />
 					<td th:text="${book.getIsbn()}" />
 					<td th:text="${book.getPublishDate()}" />

@@ -71,7 +71,7 @@ public class Review {
 	@Column(name = "rating", nullable = false, unique = false)
 	private @NotNull Rating rating;
 
-	@Size(min = 20)
+	@Size(min = 10)
 	@NotBlank(message = "review should not be empty")
 	@Column(name = "text", nullable = false, unique = false)
 	private @NotNull String text;

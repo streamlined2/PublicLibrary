@@ -61,7 +61,7 @@ public class BookController {
 
 	@GetMapping("/browse")
 	public String browseBooks(Model model) {
-		model.addAttribute("bookList", bookService.getAll().toList());
+		model.addAttribute("bookList", bookService.getAllBooks().toList());
 		return "browse-books";
 	}
 
