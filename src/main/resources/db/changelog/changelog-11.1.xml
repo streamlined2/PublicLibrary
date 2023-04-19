@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+						http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+	<changeSet author="streamlined"
+		id="028. create return/book association table">
+		<createTable tableName="return_book">
+			<column name="return" type="bigint">
+				<constraints nullable="false" unique="false" />
+			</column>
+			<column name="book" type="bigint">
+				<constraints nullable="false" unique="false" />
+			</column>
+		</createTable>
+		<addUniqueConstraint tableName="return_book"
+			columnNames="return,book" />
+	</changeSet>
+</databaseChangeLog>

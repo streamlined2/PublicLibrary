@@ -1,7 +1,6 @@
 package com.streamlined.library.model;
 
 import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
@@ -32,7 +32,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "book")
+@Table(name = "book", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "author", "title", "publish_date", "country", "language" }) })
 @Getter
 @Setter
 @Builder
@@ -56,12 +57,15 @@ public class Book {
 	private Long id;
 
 	@NotBlank(message = "empty author is not valid")
+	@Column(name = "author", nullable = false, unique = false)
 	private @NonNull String author;
 
 	@NotBlank(message = "empty title is not valid")
+	@Column(name = "title", nullable = false, unique = false)
 	private @NonNull String title;
 
 	@ISBN
+	@Column(name = "isbn", nullable = false, unique = true)
 	private @NonNull String isbn;
 
 	@Past
@@ -73,11 +77,11 @@ public class Book {
 	@Column(name = "genre", nullable = false, unique = false)
 	private @NonNull Genre genre;
 
-	@ManyToOne(cascade = { CascadeType.MERGE })
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "country", nullable = false, unique = false)
 	private @NonNull Country country;
 
-	@ManyToOne(cascade = { CascadeType.MERGE })
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "language", nullable = false, unique = false)
 	private @NonNull Language language;
 

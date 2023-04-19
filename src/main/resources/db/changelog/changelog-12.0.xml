@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+						http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+	<changeSet author="streamlined" id="029. create claim table">
+		<createTable tableName="claim">
+			<column name="id" type="bigint" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true" unique="true" />
+			</column>
+			<column name="customer" type="bigint">
+				<constraints nullable="false" unique="false" />
+			</column>
+			<column name="librarian" type="bigint">
+				<constraints nullable="false" unique="false" />
+			</column>
+			<column name="book" type="bigint">
+				<constraints nullable="false" unique="false" />
+			</column>
+			<column name="created_time" type="timestamp">
+				<constraints nullable="false" unique="false" />
+			</column>
+			<column name="damage_description" type="varchar(255)">
+				<constraints nullable="false" unique="false" />
+			</column>
+			<column name="compensation" type="decimal(15,2)">
+				<constraints nullable="true" unique="false" />
+			</column>
+		</createTable>
+		<addUniqueConstraint tableName="claim"
+			columnNames="customer,librarian,book,created_time" />
+	</changeSet>
+</databaseChangeLog>

@@ -17,6 +17,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -30,7 +31,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "review")
+@Table(name = "review", uniqueConstraints = @UniqueConstraint(columnNames = { "book", "customer" }))
 @Getter
 @Setter
 @Builder

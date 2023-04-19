@@ -30,33 +30,39 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "request", uniqueConstraints = @UniqueConstraint(columnNames = { "created_time", "customer" }))
+@Table(name = "return", uniqueConstraints = @UniqueConstraint(columnNames = { "customer", "librarian",
+		"created_time" }))
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode(of = "id")
-@Builder
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor
-public class Request {
+public class Return {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Setter(AccessLevel.PRIVATE)
 	private Long id;
 
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "customer", nullable = false, unique = false)
+	private @NonNull Customer customer;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "librarian", nullable = false, unique = false)
+	private @NonNull Librarian librarian;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	@Column(name = "created_time", nullable = false, unique = false)
 	private LocalDateTime createdTime;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "customer")
-	private @NonNull Customer customer;
-
 	@OneToMany
-	@JoinTable(name = "request_book", joinColumns = { @JoinColumn(name = "request") }, inverseJoinColumns = {
-			@JoinColumn(name = "book") })
+	@JoinTable(name = "return_book", joinColumns = {
+			@JoinColumn(name = "return", nullable = false, unique = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "book", nullable = false, unique = false) })
 	private final Set<Book> books = new HashSet<>();
 
 }
