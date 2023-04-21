@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form th:object="${return}">
+		<fieldset>
+			<legend>Return details</legend>
+
+			<label>Customer:</label>
+			<span th:text="*{customer.getName()}" /><br>
+
+			<label>Librarian:</label>
+			<span th:text="*{librarian.getName()}" /><br>
+
+			<label>Created:</label>
+			<span th:text="*{#temporals.format(createdTime(),'dd.MM.yyyy HH:mm:ss')}" /><br>
+			<hr>
+
+			<table style="width:100%">
+				<thead>
+					<caption>
+						<h2>Book list</h2>
+					</caption>
+					<th>Claim</th>
+					<th>Author</th>
+					<th>ISBN</th>
+					<th style="min-width:100px">Published</th>
+					<th>Title</th>
+				</thead>
+				<tbody>
+					<tr th:each="book: ${return.books()}">
+						<td><button type="submit" formmethod="get"
+								th:formaction="@{/claim/return/{returnId}/book/{bookId}(returnId=${return.id()},bookId=${book.getId()})}">✔️</button>
+						</td>
+						<td th:text="${book.getAuthor()}" />
+						<td th:text="${book.getIsbn()}" />
+						<td th:text="${book.getPublishDate()}" />
+						<td th:text="${book.getTitle()}" />
+					</tr>
+				</tbody>
+			</table>
+
+			<button type="submit" formmethod="get"
+				th:formaction="@{/return/customer-returns/{id}(id=${return.customer().getId()})}"
+				formnovalidate>Back</button>
+
+		</fieldset>
+	</form>
+</body>
+
+</html>

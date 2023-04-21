@@ -1,12 +1,13 @@
 package com.streamlined.library.model.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import javax.money.MonetaryAmount;
 
 import lombok.Builder;
 
 @Builder
-public record ClaimDto(Long id, CustomerDto customer, LibrarianDto librarian, BookDto book, LocalDateTime createdTime,
-		String damageDescription, BigDecimal compensation) {
+public record ClaimDto(Long id, ReturnDto bookReturn, BookDto book, LocalDateTime createdTime,
+		String damageDescription, MonetaryAmount compensation) {
 
 }

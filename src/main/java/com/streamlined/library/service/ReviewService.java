@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.ReviewRepository;
-import com.streamlined.library.model.Book;
 import com.streamlined.library.model.Customer;
 import com.streamlined.library.model.Review;
 import com.streamlined.library.model.Review.Rating;

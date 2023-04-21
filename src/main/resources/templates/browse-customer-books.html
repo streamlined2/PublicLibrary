@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form method="get">
+		<table style="width:100%">
+			<thead>
+				<caption>
+					<h2>Mark books to be returned</h2>
+				</caption>
+				<th>To be returned</th>
+				<th>Author</th>
+				<th>ISBN</th>
+				<th style="min-width:100px">Published</th>
+				<th>Title</th>
+				<th>Country</th>
+				<th>Language</th>
+			</thead>
+			<tbody>
+				<tr th:each="book: ${customerBooks}">
+					<td>
+						<input type="checkbox" th:id="${book.getId()}" th:name="${book.getId()}"
+							th:value="${book.getId()}"></input>
+					</td>
+					<td th:text="${book.getAuthor()}" />
+					<td th:text="${book.getIsbn()}" />
+					<td th:text="${book.getPublishDate()}" />
+					<td th:text="${book.getTitle()}" />
+					<td th:text="${book.getCountry().getName()}" />
+					<td th:text="${book.getLanguage().getName()}" />
+				</tr>
+			</tbody>
+		</table>
+		<p style="vertical-align:bottom">
+			<button style="text-align:center" type="submit"
+				th:formaction="@{/return/customer-books/{id}(id=${customerId})}" formmethod="post">Return</button>
+			<button style="text-align:center" type="submit" th:formaction="@{/return/select-customer}"
+				formnovalidate>Back</button>
+		</p>
+	</form>
+</body>
+
+</html>

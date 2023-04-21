@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form th:object="${claim}">
+		<fieldset>
+			<legend>Claim details</legend>
+
+			<label>Customer:</label>
+			<span th:text="*{bookReturn.customer.getName()}" /><br>
+
+			<label>Librarian:</label>
+			<span th:text="*{bookReturn.librarian.getName()}" /><br>
+
+			<label>Book:</label>
+			<span th:text="*{book.getTitle()}" /><br>
+			<hr>
+
+			<label for="desc">Damage description</label>
+			<input id="desc" type="text" th:field="*{damageDescription}" size="160" maxlength="255" />
+			<br>
+
+			<label for="sum">Compensation</label>
+			<input id="sum" type="text" th:field="*{compensation}" size="30" min="0" pattern="^[A-Z]{3}\s+\d*(\.\d{0,2})?$"/>
+			<br>
+			<br>
+
+			<input id="id" type="hidden" th:field="*{id}" />
+
+			<button type="submit" formmethod="post"
+				th:formaction="@{/claim/return/{returnId}/book/{bookId}(returnId=${claim.bookReturn.id},bookId=${claim.book.id})}">Save</button>
+			<button type="submit" formmethod="get"
+				th:formaction="@{/return/submit-claim/{returnId}(returnId=${claim.bookReturn.id})}"
+				formnovalidate>Cancel</button>
+
+		</fieldset>
+	</form>
+</body>
+
+</html>

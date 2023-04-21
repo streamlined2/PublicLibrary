@@ -1,3 +1,5 @@
+currency: USD
+
 server:
   servlet:
     context-path: /library

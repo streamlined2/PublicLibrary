@@ -1,12 +1,16 @@
 package com.streamlined.library.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.money.MonetaryAmount;
+
+import org.hibernate.annotations.CompositeType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Currency;
 import org.hibernate.validator.constraints.Length;
 
+import io.hypersistence.utils.hibernate.type.money.MonetaryAmountType;
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,8 +35,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "claim", uniqueConstraints = @UniqueConstraint(columnNames = { "customer", "librarian", "book",
-		"created_time" }))
+@Table(name = "claim", uniqueConstraints = @UniqueConstraint(columnNames = { "return", "book", "created_time" }))
 @Getter
 @Setter
 @Builder
@@ -48,12 +51,8 @@ public class Claim {
 	private Long id;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "customer", nullable = false, unique = false)
-	private @NonNull Customer customer;
-
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "librarian", nullable = false, unique = false)
-	private @NonNull Librarian librarian;
+	@JoinColumn(name = "return", nullable = false, unique = false)
+	private @NonNull Return bookReturn;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "book", nullable = false, unique = false)
@@ -61,7 +60,7 @@ public class Claim {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
-	@Column(name = "created_time", nullable = false, unique = false)
+	@Column(name = "created_time", nullable = false, unique = false, updatable = false)
 	private LocalDateTime createdTime;
 
 	@NotBlank(message = "damage description should not be blank")
@@ -71,7 +70,9 @@ public class Claim {
 
 	@Currency(value = { "USD" }, message = "damage compensation sum")
 	@Positive
-	@Column(name = "compensation", nullable = true, unique = false)
-	private BigDecimal compensation;
+	@AttributeOverride(name = "amount", column = @Column(name = "compensation_amount", nullable = false, unique = false))
+	@AttributeOverride(name = "currency", column = @Column(name = "compensation_currency", nullable = false, unique = false))
+	@CompositeType(MonetaryAmountType.class)
+	private MonetaryAmount compensation;
 
 }

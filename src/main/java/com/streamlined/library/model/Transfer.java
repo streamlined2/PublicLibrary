@@ -55,7 +55,7 @@ public class Transfer {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
-	@Column(name = "created_time", nullable = false, unique = false)
+	@Column(name = "created_time", nullable = false, unique = false, updatable = false)
 	private LocalDateTime createdTime;
 
 	@OneToMany

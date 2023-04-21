@@ -59,7 +59,7 @@ public class Review {
 	private @NotNull Customer customer;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "created_time", nullable = false, unique = false)
+	@Column(name = "created_time", nullable = false, unique = false, updatable = false)
 	@CreationTimestamp
 	private LocalDateTime createdTime;
 

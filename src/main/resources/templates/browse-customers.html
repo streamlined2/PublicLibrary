@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form method="get">
+		<table style="width:100%">
+			<thead>
+				<caption>
+					<h2>
+						List of customers<br></h2>
+				</caption>
+				<th>Submit return</th>
+				<th>Submit claim</th>
+				<th>Name</th>
+				<th>Contacts</th>
+				<th>Login</th>
+			</thead>
+			<tbody>
+				<tr th:each="customer: ${customerList}">
+					<td><button type="submit" th:formaction="@{/return/customer-books/{id}(id=${customer.getId()})}">✔️</button>
+					</td>
+					<td><button type="submit" th:formaction="@{/return/customer-returns/{id}(id=${customer.getId()})}">✔️</button>
+					</td>
+					<td style="text-align:center" th:text="${customer.getName()}" />
+					<td style="text-align:center" th:text="${customer.getContactList()}" />
+					<td style="text-align:center" th:text="${customer.getLogin()}" />
+				</tr>
+			</tbody>
+		</table>
+		<p style="vertical-align:bottom">
+			<button style="text-align:center" type="submit" th:formaction="@{/}" formnovalidate>Back</button>
+		</p>
+	</form>
+</body>
+
+</html>

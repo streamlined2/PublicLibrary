@@ -2,6 +2,7 @@ package com.streamlined.library.model.dto;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public abstract class PersonDto {
 	private String lastName;
 	private LocalDate birthDate;
 	private String sex;
-	private List<String> contacts;
+	private List<String> contacts = new ArrayList<>();
 
 	@Override
 	public String toString() {
@@ -33,6 +34,10 @@ public abstract class PersonDto {
 
 	public String getName() {
 		return firstName + " " + lastName;
+	}
+
+	public String getContactList() {
+		return contacts.stream().collect(Collectors.joining(", "));
 	}
 
 }

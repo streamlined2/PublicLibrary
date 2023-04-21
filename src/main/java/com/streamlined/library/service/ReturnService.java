@@ -1,0 +1,64 @@
+package com.streamlined.library.service;
+
+import static com.streamlined.library.Utilities.toStream;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.streamlined.library.controller.NoEntityFoundException;
+import com.streamlined.library.dao.BookRepository;
+import com.streamlined.library.dao.CustomerRepository;
+import com.streamlined.library.dao.ReturnRepository;
+import com.streamlined.library.dao.TransferRepository;
+import com.streamlined.library.model.Librarian;
+import com.streamlined.library.model.Return;
+import com.streamlined.library.model.dto.BookDto;
+import com.streamlined.library.model.dto.ReturnDto;
+import com.streamlined.library.model.mapper.BookMapper;
+import com.streamlined.library.model.mapper.ReturnMapper;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class ReturnService {
+
+	private final BookRepository bookRepository;
+	private final TransferRepository transferRepository;
+	private final ReturnRepository returnRepository;
+	private final CustomerRepository customerRepository;
+	private final BookMapper bookMapper;
+	private final ReturnMapper returnMapper;
+	private final Librarian librarian;// TODO should be replaced with authenticated user from security context
+
+	public Stream<BookDto> getCustomerBooks(Long customerId) {
+		return toStream(transferRepository.getCustomerBooks(customerId)).map(bookMapper::toDto);
+	}
+
+	public Stream<ReturnDto> getReturns() {
+		return toStream(returnRepository.findAll()).map(returnMapper::toDto);
+	}
+
+	public Stream<ReturnDto> getBookReturns(Long customerId) {
+		return toStream(returnRepository.getReturns(customerId)).map(returnMapper::toDto);
+	}
+
+	public Optional<ReturnDto> getBookReturn(Long returnId) {
+		return returnRepository.findById(returnId).map(returnMapper::toDto);
+	}
+
+	@Transactional
+	public void saveReturn(Long customerId, List<Long> bookIds) {
+		var customer = customerRepository.findById(customerId)
+				.orElseThrow(() -> new NoEntityFoundException("no customer found with id %d".formatted(customerId)));
+		var returnEntity = Return.builder().customer(customer).librarian(librarian).build();
+		bookRepository.findAllById(bookIds).forEach(returnEntity.getBooks()::add);
+		returnRepository.save(returnEntity);
+	}
+
+}
