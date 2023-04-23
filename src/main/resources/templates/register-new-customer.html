@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form th:object="${user}">
+		<fieldset>
+			<legend>New customer details</legend>
+			<table>
+				<tr>
+					<td>
+						<label for="firstname">First name</label>
+					</td>
+					<td>
+						<input id="firstname" type="text" th:field="*{firstName}" size="80" minlength="3"
+							maxlength="255" pattern="^[A-Z][a-zA-Z-]{2,254}$" placeholder="Please enter first name" autofocus
+							required />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="lastname">Last name</label>
+					</td>
+					<td>
+						<input id="lastname" type="text" th:field="*{lastName}" size="80" minlength="3" maxlength="255"
+							pattern="^[A-Z][a-zA-Z-]{2,254}$" placeholder="Please enter last name" required />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="birthdate">Birth date</label>
+					</td>
+					<td>
+						<input id="birthdate" type="date" th:field="*{birthDate}" placeholder="Please enter birth date"
+							required />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="sex">Sex</label>
+					</td>
+					<td>
+						<select id="sex" th:field="*{sex}">
+							<option th:each="sex: ${sexList}" th:value="${sex}" th:text="${sex}" />
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="login">Temporary login</label>
+					</td>
+					<td>
+						<input id="login" type="text" th:field="*{login}" size="80" minlength="8" maxlength="255"
+							pattern="^[a-zA-Z_-@\.]{8,255}$" placeholder="Please enter user login" required 
+							autocomplete="off" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="password">Temporary password</label>
+					</td>
+					<td>
+						<input id="password" type="password" th:field="*{password}" size="80" minlength="8"
+							maxlength="255" pattern="^[a-zA-Z_-]{8,255}$" placeholder="Please enter password" required
+							autocomplete="off" />
+					</td>
+				</tr>
+				
+				<input id="id" type="hidden" th:field="*{id}" />
+			</table>
+		</fieldset>
+		<hr>
+		<button type="submit" formmethod="post" th:formaction="@{/customer/edit-data}">Save</button>
+		<button type="submit" formmethod="get" th:formaction="@{/}" formnovalidate>Cancel</button>
+
+	</form>
+</body>
+
+</html>

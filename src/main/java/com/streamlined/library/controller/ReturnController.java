@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.streamlined.library.service.ReturnService;
-import com.streamlined.library.service.UserService;
+import com.streamlined.library.service.CustomerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/return")
 public class ReturnController {
 
-	private final UserService userService;
+	private final CustomerService userService;
 	private final ReturnService returnService;
 
 	@GetMapping("/select-customer")

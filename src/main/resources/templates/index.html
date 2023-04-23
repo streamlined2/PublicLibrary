@@ -13,6 +13,7 @@
 				<li><a th:href="@{/book/select}">browse available books to order</a></li>
 				<li><a th:href="@{/review/view}">find book and view reviews</a></li>
 				<li><a th:href="@{/review/submit}">fill in and submit book review</a></li>
+				<li><a th:href="@{/customer/edit-data}">fill in personal data</a></li>
 			</ul>
 			<label for="librarian">Librarian</label>
 			<ul id="librarian">
@@ -20,6 +21,12 @@
 				<li><a th:href="@{/request/browse}">check active requests</a></li>
 				<li><a th:href="@{/approval/browse}">transfer ordered books</a></li>
 				<li><a th:href="@{/return/select-customer}">accept books returned by customer and submit damage claims</a></li>
+				<li><a th:href="@{/librarian/edit-data}">fill in personal data</a></li>
+				<li><a th:href="@{/customer/register-new}">register new customer</a></li>
+			</ul>
+			<label for="manager">Manager</label>
+			<ul id="manager">
+				<li><a th:href="@{/librarian/register-new}">register new librarian</a></li>
 			</ul>
 		</fieldset>
 	</h3>
