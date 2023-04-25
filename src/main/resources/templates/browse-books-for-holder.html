@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form method="get">
+		<table style="width:100%">
+			<thead>
+				<caption>
+					<h2>Select book to find who holds it at present time</h2>
+				</caption>
+				<th>Select</th>
+				<th>Author</th>
+				<th>ISBN</th>
+				<th style="min-width:100px">Published</th>
+				<th>Title</th>
+				<th>Country</th>
+				<th>Language</th>
+			</thead>
+			<tbody>
+				<tr th:each="book: ${bookList}">
+					<td><button type="submit" th:formaction="@{/customer/display-holder/{id}(id=${book.getId()})}" >✔️</button></td>
+					<td th:text="${book.getAuthor()}" />
+					<td th:text="${book.getIsbn()}" />
+					<td th:text="${book.getPublishDate()}" />
+					<td th:text="${book.getTitle()}" />
+					<td th:text="${book.getCountry().getName()}" />
+					<td th:text="${book.getLanguage().getName()}" />
+				</tr>
+			</tbody>
+		</table>
+		<p style="vertical-align:bottom">
+			<button style="text-align:center" type="submit" th:formaction="@{/}" formnovalidate>Back</button>
+		</p>
+	</form>
+</body>
+
+</html>

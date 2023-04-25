@@ -103,4 +103,16 @@ public class BookController {
 		return "redirect:/book/browse";
 	}
 
+	@GetMapping("/find-holder")
+	public String findBookHolder(Model model) {
+		model.addAttribute("bookList", bookService.getAllBooks().toList());
+		return "browse-books-for-holder";
+	}
+
+	@GetMapping("/customer-books/{customerId}")
+	public String showCustomerBooks(@PathVariable Long customerId, Model model) {
+		model.addAttribute("customerBooks", bookService.getCustomerBooks(customerId));
+		return "view-customer-books";
+	}
+
 }

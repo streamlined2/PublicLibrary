@@ -4,19 +4,12 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
 import org.springframework.web.context.request.WebRequest;
 
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Utilities {
-
-	public <T> Stream<T> toStream(Iterable<T> iterable) {
-		return StreamSupport.stream(iterable.spliterator(), false);
-	}
 
 	public Map<String, String> parseDtoParameterValues(String dtoValue) {
 		int leftParenthesisIndex = dtoValue.indexOf('(');

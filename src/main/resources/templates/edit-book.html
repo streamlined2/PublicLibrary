@@ -63,6 +63,8 @@
 			<br>
 
 			<input type="hidden" th:field="*{id}" />
+			
+			<hr>
 
 			<button type="submit" formmethod="post" th:formaction="@{/book/edit/{id}(id=${book.getId()})}">Save</button>
 			<button type="submit" formmethod="get" th:formaction="@{/book/browse}" formnovalidate>Cancel</button>

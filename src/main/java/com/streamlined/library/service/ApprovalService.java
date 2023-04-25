@@ -16,8 +16,6 @@ import com.streamlined.library.model.Librarian;
 import com.streamlined.library.model.dto.ApprovalDto;
 import com.streamlined.library.model.mapper.ApprovalMapper;
 
-import static com.streamlined.library.Utilities.toStream;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -32,7 +30,7 @@ public class ApprovalService {
 	private final Librarian librarian;// TODO replace with current authenticated user from security context
 
 	public Stream<ApprovalDto> getApprovedRequests() {
-		return toStream(approvalRepository.getApprovedRequests()).map(approvalMapper::toDto);
+		return approvalRepository.getApprovedRequests().map(approvalMapper::toDto).stream();
 	}
 
 	public Optional<ApprovalDto> getApprovalById(Long id) {

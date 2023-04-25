@@ -3,6 +3,7 @@ package com.streamlined.library.service;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,8 +11,6 @@ import com.streamlined.library.dao.LibrarianRepository;
 import com.streamlined.library.model.Person;
 import com.streamlined.library.model.dto.LibrarianDto;
 import com.streamlined.library.model.mapper.LibrarianMapper;
-
-import static com.streamlined.library.Utilities.toStream;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +27,7 @@ public class LibrarianService {
 	}
 
 	public Stream<LibrarianDto> getAllLibrarians() {
-		return toStream(librarianRepository.findAll()).map(librarianMapper::toDto);
+		return Streamable.of(librarianRepository.findAll()).map(librarianMapper::toDto).stream();
 	}
 
 	public Optional<LibrarianDto> getLibrarianById(Long id) {

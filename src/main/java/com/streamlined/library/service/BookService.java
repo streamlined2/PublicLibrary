@@ -5,10 +5,9 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import static com.streamlined.library.Utilities.toStream;
-
 import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.CountryRepository;
 import com.streamlined.library.dao.LanguageRepository;
@@ -36,12 +35,12 @@ public class BookService {
 	private final LanguageMapper languageMapper;
 
 	public Stream<BookDto> getAllBooks() {
-		return toStream(bookRepository.findAll(Sort.by(List.of(Order.asc("author"), Order.asc("title")))))
-				.map(bookMapper::toDto);
+		return Streamable.of(bookRepository.findAll(Sort.by(List.of(Order.asc("author"), Order.asc("title")))))
+				.map(bookMapper::toDto).stream();
 	}
 
 	public Stream<BookDto> getAvailableBooks() {// TODO should be elaborated later to skip already requested books
-		return toStream(bookRepository.findAll(Sort.unsorted())).map(bookMapper::toDto);
+		return Streamable.of(bookRepository.findAll(Sort.unsorted())).map(bookMapper::toDto).stream();
 	}
 
 	public Optional<BookDto> findById(Long id) {
@@ -63,11 +62,11 @@ public class BookService {
 	}
 
 	public Stream<CountryDto> getAllCountries() {
-		return toStream(countryRepository.findAll()).map(countryMapper::toDto);
+		return Streamable.of(countryRepository.findAll()).map(countryMapper::toDto).stream();
 	}
 
 	public Stream<LanguageDto> getAllLanguages() {
-		return toStream(languageRepository.findAll()).map(languageMapper::toDto);
+		return Streamable.of(languageRepository.findAll()).map(languageMapper::toDto).stream();
 	}
 
 	public Stream<String> getAllGenres() {
@@ -84,6 +83,14 @@ public class BookService {
 
 	public Stream<String> getAllCoverSurfaces() {
 		return Stream.of(Cover.Surface.values()).map(Cover.Surface::name);
+	}
+
+	public Stream<BookDto> getCustomerBooks(Long customerId) {
+		var firstCustomerTransferIterator = bookRepository.getCustomerTransfers(customerId).iterator();
+		if (firstCustomerTransferIterator.hasNext()) {
+			return firstCustomerTransferIterator.next().getBooks().stream().map(bookMapper::toDto);
+		}
+		return Stream.empty();
 	}
 
 }

@@ -3,15 +3,16 @@ package com.streamlined.library.service;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.streamlined.library.controller.NoEntityFoundException;
+import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.CustomerRepository;
 import com.streamlined.library.model.Person;
 import com.streamlined.library.model.dto.CustomerDto;
 import com.streamlined.library.model.mapper.CustomerMapper;
-
-import static com.streamlined.library.Utilities.toStream;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,13 +23,14 @@ public class CustomerService {
 
 	private final CustomerRepository customerRepository;
 	private final CustomerMapper customerMapper;
+	private final BookRepository bookRepository;
 
 	public Stream<String> getAllSexes() {
 		return Person.Sex.getAllSexes();
 	}
 
 	public Stream<CustomerDto> getAllCustomers() {
-		return toStream(customerRepository.findAll()).map(customerMapper::toDto);
+		return Streamable.of(customerRepository.findAll()).map(customerMapper::toDto).stream();
 	}
 
 	public Optional<CustomerDto> getCustomerById(Long id) {
@@ -44,6 +46,12 @@ public class CustomerService {
 
 	public CustomerDto createNewCustomer() {
 		return new CustomerDto();
+	}
+
+	public Optional<CustomerDto> getBookHolder(Long bookId) {
+		var book = bookRepository.findById(bookId)
+				.orElseThrow(() -> new NoEntityFoundException("no book found with id %d".formatted(bookId)));
+		return customerRepository.getBookHolders(book).stream().findFirst().map(customerMapper::toDto);
 	}
 
 }

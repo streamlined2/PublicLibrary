@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form>
+		<caption>
+			<h2><span th:text="${searchResult}?'Customer found':'Book is available'" /></h2>
+			<br>
+		</caption>
+
+		<fieldset th:if="${searchResult}">
+			<legend>Customer details</legend>
+
+			<label for="name">Name:</label>
+			<span id="name" th:text="${name}" />
+			<br>
+
+			<label for="contacts">Contact list:</label>
+			<span id="contacts" th:text="${contactList}" />
+			<br>
+		</fieldset>
+
+		<p style="vertical-align:bottom">
+			<button style="text-align:center" type="submit" th:formaction="@{/}" formmethod="get"
+				formnovalidate>Back</button>
+		</p>
+	</form>
+</body>
+
+</html>

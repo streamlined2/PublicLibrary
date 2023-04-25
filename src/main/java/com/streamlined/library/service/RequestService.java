@@ -13,8 +13,6 @@ import com.streamlined.library.model.Customer;
 import com.streamlined.library.model.Request;
 import com.streamlined.library.model.dto.RequestDto;
 import com.streamlined.library.model.mapper.RequestMapper;
-import static com.streamlined.library.Utilities.toStream;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,7 +26,7 @@ public class RequestService {
 	private final Customer customer;// TODO must be replaced with authenticated user from security context
 
 	public Stream<RequestDto> getActiveRequests() {
-		return toStream(requestRepository.findActiveRequests()).map(requestMapper::toDto);
+		return requestRepository.findActiveRequests().map(requestMapper::toDto).stream();
 	}
 
 	public Optional<RequestDto> getRequestById(Long id) {

@@ -2,6 +2,7 @@ package com.streamlined.library.dao;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Repository;
 
 import com.streamlined.library.model.Approval;
@@ -10,6 +11,6 @@ import com.streamlined.library.model.Approval;
 public interface ApprovalRepository extends CrudRepository<Approval, Long> {
 	
 	@Query("select a from Approval a join a.request r")
-	Iterable<Approval> getApprovedRequests();//TODO elaborate and fix
+	Streamable<Approval> getApprovedRequests();//TODO elaborate and fix
 
 }

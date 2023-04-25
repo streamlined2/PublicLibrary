@@ -18,8 +18,6 @@ import com.streamlined.library.model.mapper.BookMapper;
 import com.streamlined.library.model.mapper.CustomerMapper;
 import com.streamlined.library.model.mapper.ReviewMapper;
 
-import static com.streamlined.library.Utilities.toStream;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -35,11 +33,11 @@ public class ReviewService {
 	private final Customer customer;// TODO should be replaced with authenticated user from security context
 
 	public Stream<BookDto> getReceivedBooks() {
-		return toStream(reviewRepository.getReceivedBooks(customer)).map(bookMapper::toDto);
+		return reviewRepository.getReceivedBooks(customer).map(bookMapper::toDto).stream();
 	}
 
 	public Stream<ReviewDto> getBookReviews(Long bookId) {
-		return toStream(reviewRepository.getBookReviews(bookId)).map(reviewMapper::toDto);
+		return reviewRepository.getBookReviews(bookId).map(reviewMapper::toDto).stream();
 	}
 
 	public Optional<ReviewDto> getBookReview(Long bookId) {

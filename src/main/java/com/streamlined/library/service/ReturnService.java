@@ -1,11 +1,10 @@
 package com.streamlined.library.service;
 
-import static com.streamlined.library.Utilities.toStream;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,15 +36,15 @@ public class ReturnService {
 	private final Librarian librarian;// TODO should be replaced with authenticated user from security context
 
 	public Stream<BookDto> getCustomerBooks(Long customerId) {
-		return toStream(transferRepository.getCustomerBooks(customerId)).map(bookMapper::toDto);
+		return transferRepository.getCustomerBooks(customerId).map(bookMapper::toDto).stream();
 	}
 
 	public Stream<ReturnDto> getReturns() {
-		return toStream(returnRepository.findAll()).map(returnMapper::toDto);
+		return Streamable.of(returnRepository.findAll()).map(returnMapper::toDto).stream();
 	}
 
 	public Stream<ReturnDto> getBookReturns(Long customerId) {
-		return toStream(returnRepository.getReturns(customerId)).map(returnMapper::toDto);
+		return returnRepository.getReturns(customerId).map(returnMapper::toDto).stream();
 	}
 
 	public Optional<ReturnDto> getBookReturn(Long returnId) {

@@ -21,12 +21,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/return")
 public class ReturnController {
 
-	private final CustomerService userService;
+	private final CustomerService customerService;
 	private final ReturnService returnService;
 
 	@GetMapping("/select-customer")
 	public String selectCustomer(Model model) {
-		model.addAttribute("customerList", userService.getAllCustomers());
+		model.addAttribute("customerList", customerService.getAllCustomers());
 		return "browse-customers";
 	}
 

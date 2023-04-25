@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,6 +47,21 @@ public class CustomerController {
 	public String registerNewCustomer(Model model) {
 		model.addAttribute("user", customerService.createNewCustomer());
 		return "register-new-customer";
+	}
+
+	@GetMapping("/display-holder/{bookId}")
+	public String displayBookHolder(@PathVariable Long bookId, Model model) {
+		var holder = customerService.getBookHolder(bookId);
+		model.addAttribute("searchResult", holder.isPresent());
+		model.addAttribute("name", holder.map(CustomerDto::getName).orElse(""));
+		model.addAttribute("contactList", holder.map(CustomerDto::getContactList).orElse(""));
+		return "view-book-holder";
+	}
+	
+	@GetMapping("/get-book-list")
+	public String showTakenBooks(Model model) {
+		model.addAttribute("customerList", customerService.getAllCustomers());
+		return "browse-customers-for-booklist";
 	}
 
 }

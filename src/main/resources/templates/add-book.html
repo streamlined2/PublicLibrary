@@ -3,81 +3,69 @@
 
 <body>
 	<form th:object="${book}">
-		<table>
-			<tr>
-				<td><label for="author">Author</label></td>
-				<td><input id="author" type="text" th:field="*{author}" /></td>
-			</tr>
-			<tr>
-				<td><label for="title">Title</label></td>
-				<td><input id="title" type="text" th:field="*{title}" /></td>
-			</tr>
-			<tr>
-				<td><label for="isbn">ISBN</label></td>
-				<td><input id="isbn" type="text" th:field="*{isbn}" /></td>
-			</tr>
-			<tr>
-				<td><label for="published">Published</label></td>
-				<td><input id="published" type="date" th:field="*{publishDate}" /></td>
-			</tr>
-			<tr>
-				<td><label for="genre">Genre</label></td>
-				<td>
-					<select id="genre" th:field="*{genre}">
-						<option th:each="genre: ${genreList}" th:value="${genre}" th:text="${genre}" />
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td><label for="country">Country</label></td>
-				<td>
-					<select id="country" th:field="*{country}">
-						<option th:each="country: ${countryList}" th:value="${country}" th:text="${country.name}" />
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td><label for="language">Language</label></td>
-				<td>
-					<select id="language" th:field="*{language}">
-						<option th:each="language: ${languageList}" th:value="${language}" th:text="${language.name}" />
-					</select>
-				</td>
-			<tr>
-				<td><label for="pageCount">Page count</label></td>
-				<td><input id="pageCount" type="number" th:field="*{pageCount}" /></td>
-			</tr>
-			<tr>
-				<td><label for="size" />Size</label></td>
-				<td>
-					<select id="size" th:field="*{size}">
-						<option th:each="size: ${sizeList}" th:value="${size}" th:text="${size}" />
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td><label for="type">Cover type</label></td>
-				<td>
-					<select id="type" th:field="*{coverType}">
-						<option th:each="type: ${coverTypeList}" th:value="${type}" th:text="${type}" />
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td><label for="surface">Cover surface</label></td>
-				<td>
-					<select id="surface" th:field="*{coverSurface}">
-						<option th:each="surface: ${coverSurfaceList}" th:value="${surface}" th:text="${surface}" />
-					</select>
-				</td>
-			</tr>
+		<fieldset>
+			<legend>Book details</legend>
 
-			<tr>
-				<td><button type="submit" formmethod="post"
-						th:formaction="@{/book/new}">Add</button></td>
-				<td><button type="submit" formmethod="get" th:formaction="@{/book/browse}"
-						formnovalidate>Cancel</button></td>
-			</tr>
+			<label for="author">Author</label>
+			<input id="author" type="text" th:field="*{author}" />
+			<br>
+
+			<label for="title">Title</label>
+			<input id="title" type="text" th:field="*{title}" />
+			<br>
+
+			<label for="isbn">ISBN</label>
+			<input id="isbn" type="text" th:field="*{isbn}" />
+			<br>
+
+			<label for="published">Published</label>
+			<input id="published" type="date" th:field="*{publishDate}" />
+			<br>
+
+			<label for="genre">Genre</label>
+			<select id="genre" th:field="*{genre}">
+				<option th:each="genre: ${genreList}" th:value="${genre}" th:text="${genre}" />
+			</select>
+			<br>
+
+			<label for="country">Country</label>
+			<select id="country" th:field="*{country}">
+				<option th:each="country: ${countryList}" th:value="${country}" th:text="${country.name}" />
+			</select>
+			<br>
+
+			<label for="language">Language</label>
+			<select id="language" th:field="*{language}">
+				<option th:each="language: ${languageList}" th:value="${language}" th:text="${language.name}" />
+			</select>
+			<br>
+
+			<label for="pageCount">Page count</label>
+			<input id="pageCount" type="number" th:field="*{pageCount}" />
+			<br>
+
+			<label for="size" />Size</label>
+			<select id="size" th:field="*{size}">
+				<option th:each="size: ${sizeList}" th:value="${size}" th:text="${size}" />
+			</select>
+			<br>
+
+			<label for="type">Cover type</label>
+			<select id="type" th:field="*{coverType}">
+				<option th:each="type: ${coverTypeList}" th:value="${type}" th:text="${type}" />
+			</select>
+			<br>
+
+			<label for="surface">Cover surface</label>
+			<select id="surface" th:field="*{coverSurface}">
+				<option th:each="surface: ${coverSurfaceList}" th:value="${surface}" th:text="${surface}" />
+			</select>
+			<br>
+
+			<hr>
+			<button type="submit" formmethod="post" th:formaction="@{/book/new}">Add</button>
+			<button type="submit" formmethod="get" th:formaction="@{/book/browse}" formnovalidate>Cancel</button>
+		</fieldset>
 
 		</table>
 	</form>
