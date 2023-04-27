@@ -12,8 +12,7 @@ import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.RequestRepository;
 import com.streamlined.library.model.Customer;
 import com.streamlined.library.model.Request;
-import com.streamlined.library.model.dto.CategoryDataDto;
-import com.streamlined.library.model.dto.CategoryDto;
+import com.streamlined.library.model.dto.CategoryRequestDataDto;
 import com.streamlined.library.model.dto.RequestDto;
 import com.streamlined.library.model.mapper.RequestMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class RequestService {
+public class RequestService extends BaseService {
 
 	private final BookRepository bookRepository;
 	private final RequestRepository requestRepository;
@@ -43,15 +42,8 @@ public class RequestService {
 		requestRepository.save(request);
 	}
 
-	public Stream<CategoryDto> getCategories() {
-		return Stream.of(new CategoryDto("genre", "Genre"), new CategoryDto("country", "Country"),
-				new CategoryDto("language", "Language"), new CategoryDto("publish-year", "Publish year"),
-				new CategoryDto("size", "Size"), new CategoryDto("cover-type", "Cover type"),
-				new CategoryDto("cover-surface", "Cover surface"));
-	}
-
-	public Stream<CategoryDataDto> getCategoryData(Optional<String> category) {
-		if (category.isEmpty()) {
+	public Stream<CategoryRequestDataDto> getCategoryData(Optional<String> category) {
+		if (category.isEmpty() || category.stream().allMatch(String::isBlank)) {
 			return Stream.empty();
 		}
 		return switch (category.get()) {
