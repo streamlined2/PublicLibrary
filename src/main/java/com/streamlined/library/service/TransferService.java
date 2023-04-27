@@ -1,7 +1,6 @@
 package com.streamlined.library.service;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +10,6 @@ import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.TransferRepository;
 import com.streamlined.library.model.Librarian;
 import com.streamlined.library.model.Transfer;
-
 import lombok.RequiredArgsConstructor;
 
 @Service

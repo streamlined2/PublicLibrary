@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form method="get">
+		<caption>
+			<label for="category">Please select category</label>
+			<select id="category" name="category" th:value="${categoryName}" onchange="this.form.submit()">
+				<option />
+				<span th:each="category: ${categoryList}">
+					<option th:if="${category.label==categoryName}" th:value="${category.label}"
+						th:text="${category.title}" selected />
+					<option th:unless="${category.label==categoryName}" th:value="${category.label}"
+						th:text="${category.title}" />
+				</span>
+			</select>
+		</caption>
+		<br>
+		<br>
+
+		<table style="width:100%">
+			<thead>
+				<th>Category</th>
+				<th>Number of requests</th>
+			</thead>
+			<tbody>
+				<tr th:each="data: ${categoryData}">
+					<td style="text-align:center" th:text="${data.value}" />
+					<td style="text-align:center" th:text="${data.requests}" />
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		<p style="vertical-align:bottom">
+			<button style="text-align:center" type="submit" th:formaction="@{/}" formnovalidate>Back</button>
+		</p>
+	</form>
+</body>
+
+</html>
