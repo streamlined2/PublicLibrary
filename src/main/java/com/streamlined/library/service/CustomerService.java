@@ -11,6 +11,7 @@ import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.CustomerRepository;
 import com.streamlined.library.model.Person;
+import com.streamlined.library.model.dto.CustomerDataDto;
 import com.streamlined.library.model.dto.CustomerDto;
 import com.streamlined.library.model.mapper.CustomerMapper;
 
@@ -19,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class CustomerService {
+public class CustomerService extends BaseService {
 
 	private final CustomerRepository customerRepository;
 	private final CustomerMapper customerMapper;
@@ -52,6 +53,12 @@ public class CustomerService {
 		var book = bookRepository.findById(bookId)
 				.orElseThrow(() -> new NoEntityFoundException("no book found with id %d".formatted(bookId)));
 		return customerRepository.getBookHolders(book).stream().findFirst().map(customerMapper::toDto);
+	}
+
+	public Stream<CustomerDataDto> getCustomerData() {
+		var boundary = getDateBoundary();
+		return customerRepository.getCustomerData(boundary.get(0), boundary.get(1), boundary.get(2), boundary.get(3))
+				.stream();
 	}
 
 }

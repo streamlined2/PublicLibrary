@@ -57,11 +57,18 @@ public class CustomerController {
 		model.addAttribute("contactList", holder.map(CustomerDto::getContactList).orElse(""));
 		return "view-book-holder";
 	}
-	
+
 	@GetMapping("/get-book-list")
 	public String showTakenBooks(Model model) {
 		model.addAttribute("customerList", customerService.getAllCustomers());
 		return "browse-customers-for-booklist";
+	}
+
+	@GetMapping("/display-data")
+	public String displayData(Model model) {
+		model.addAttribute("age", customerService.getDateBoundaryRepresentation());
+		model.addAttribute("data", customerService.getCustomerData());
+		return "display-customer-data";
 	}
 
 }
