@@ -67,8 +67,32 @@ public class CustomerController {
 	@GetMapping("/display-data")
 	public String displayData(Model model) {
 		model.addAttribute("age", customerService.getDateBoundaryRepresentation());
-		model.addAttribute("data", customerService.getCustomerData());
+		model.addAttribute("data", customerService.getSummaryCustomerData());
 		return "display-customer-data";
+	}
+
+	@GetMapping("/view-customer-data")
+	public String viewData(Model model) {
+		model.addAttribute("customerList", customerService.getAllCustomers());
+		return "select-customer";
+	}
+
+	@GetMapping("/display-customer-request-data/{customerId}")
+	public String displayCustomerRequestData(@PathVariable Long customerId, Model model) {
+		model.addAttribute("preferences", customerService.getCustomerRequestData(customerId));
+		return "view-customer-request-data";
+	}
+
+	@GetMapping("/display-customer-time-data/{customerId}")
+	public String displayCustomerTimeData(@PathVariable Long customerId, Model model) {
+		model.addAttribute("preferences", customerService.getCustomerTimeData(customerId));
+		return "view-customer-time-data";
+	}
+	
+	@GetMapping("/display-customer-review-data/{customerId}")
+	public String displayCustomerReviewData(@PathVariable Long customerId, Model model) {
+		model.addAttribute("preferences", customerService.getCustomerReviewData(customerId));
+		return "view-customer-review-data";
 	}
 
 }

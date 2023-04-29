@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form method="get">
+		<table style="width:100%">
+			<thead>
+				<caption>
+					<h2>
+						Customer review data
+					</h2>
+					<br>
+				</caption>
+				<th>Genre</th>
+				<th>Language</th>
+				<th>Country</th>
+				<th>Average rating</th>
+			</thead>
+			<tbody>
+				<tr th:each="item: ${preferences}">
+					<td style="text-align:center" th:text="${item.genre()}" />
+					<td style="text-align:center" th:text="${item.language()}" />
+					<td style="text-align:center" th:text="${item.country()}" />
+					<td style="text-align:center" th:text="${item.averageRating()}" />
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		<p style="vertical-align:bottom">
+			<button style="text-align:center" type="submit" th:formaction="@{/}" formnovalidate>Back</button>
+		</p>
+	</form>
+</body>
+
+</html>

@@ -42,7 +42,17 @@ import lombok.ToString;
 public class Review {
 
 	public enum Rating {
-		POOR, FAIR, FINE, GOOD, EXCELLENT
+		POOR(1), FAIR(2), FINE(3), GOOD(4), EXCELLENT(5);
+
+		private Double grade;
+
+		Rating(int grade) {
+			this.grade = Double.valueOf(grade);
+		}
+
+		public Double grade() {
+			return grade;
+		}
 	}
 
 	@Id

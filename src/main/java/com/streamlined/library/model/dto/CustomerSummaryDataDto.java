@@ -4,7 +4,7 @@ import com.streamlined.library.model.Person.Sex;
 import lombok.Builder;
 
 @Builder
-public record CustomerDataDto(Sex sex, String value, long count) {
+public record CustomerSummaryDataDto(Sex sex, String value, long count) {
 
 	public String getSex() {
 		return switch (sex) {

@@ -11,8 +11,11 @@ import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.CustomerRepository;
 import com.streamlined.library.model.Person;
-import com.streamlined.library.model.dto.CustomerDataDto;
+import com.streamlined.library.model.dto.CustomerRequestDataDto;
+import com.streamlined.library.model.dto.CustomerReviewDataDto;
 import com.streamlined.library.model.dto.CustomerDto;
+import com.streamlined.library.model.dto.CustomerSummaryDataDto;
+import com.streamlined.library.model.dto.CustomerTimeDataDto;
 import com.streamlined.library.model.mapper.CustomerMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -55,10 +58,22 @@ public class CustomerService extends BaseService {
 		return customerRepository.getBookHolders(book).stream().findFirst().map(customerMapper::toDto);
 	}
 
-	public Stream<CustomerDataDto> getCustomerData() {
+	public Stream<CustomerSummaryDataDto> getSummaryCustomerData() {
 		var boundary = getDateBoundary();
-		return customerRepository.getCustomerData(boundary.get(0), boundary.get(1), boundary.get(2), boundary.get(3))
-				.stream();
+		return customerRepository
+				.getSummaryCustomerData(boundary.get(0), boundary.get(1), boundary.get(2), boundary.get(3)).stream();
+	}
+
+	public Stream<CustomerRequestDataDto> getCustomerRequestData(Long customerId) {
+		return customerRepository.getCustomerRequestData(customerId).stream();
+	}
+
+	public Stream<CustomerTimeDataDto> getCustomerTimeData(Long customerId) {
+		return customerRepository.getCustomerTimeData(customerId).stream();
+	}
+
+	public Stream<CustomerReviewDataDto> getCustomerReviewData(Long customerId) {
+		return customerRepository.getCustomerReviewData(customerId).stream();
 	}
 
 }

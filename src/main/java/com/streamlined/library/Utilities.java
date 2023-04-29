@@ -1,6 +1,9 @@
 package com.streamlined.library;
 
+import java.math.BigDecimal;
 import java.net.URI;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +13,11 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Utilities {
+
+	public static String convertNanosecondsToDaysHoursString(BigDecimal durationNanoseconds) {
+		var duration = Duration.of(durationNanoseconds.longValue(), ChronoUnit.NANOS);
+		return "%2d day(s), %2d hour(s)".formatted(duration.toDays(), duration.toHoursPart());
+	}
 
 	public Map<String, String> parseDtoParameterValues(String dtoValue) {
 		int leftParenthesisIndex = dtoValue.indexOf('(');
