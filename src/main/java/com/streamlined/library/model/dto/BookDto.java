@@ -28,5 +28,9 @@ public class BookDto {
 	private String size;
 	private String coverType;
 	private String coverSurface;
+	
+	public String getShortDescription() {
+		return "%s, %s".formatted(author, title);
+	}
 
 }

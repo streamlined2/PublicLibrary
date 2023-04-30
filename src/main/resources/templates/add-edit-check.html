@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<form th:object="${validation}">
+		<fieldset>
+			<legend>Claim details</legend>
+
+			<label>Customer:</label>
+			<span th:text="*{claim.bookReturn.customer.getName()}" /><br>
+
+			<label>Librarian:</label>
+			<span th:text="*{claim.librarian.getName()}" /><br>
+
+			<label>Book:</label>
+			<span th:text="*{claim.book.getTitle()}" /><br>
+			<hr>
+
+			<label for="desc">Damage description:</label>
+			<br>
+			<span th:text="*{claim.damageDescription()}" /><br>
+			<br>
+
+			<label for="sum">Compensation</label>
+			<input id="sum" type="text" th:field="*{compensation}" size="30" min="0"
+				pattern="^[A-Z]{3}\s+\d*(\.\d{0,2})?$" />
+			<br>
+			<br>
+
+			<input id="id" type="hidden" th:field="*{id}" />
+
+			<button type="submit" formmethod="post"
+				th:formaction="@{/validation/add-edit/{claimId}(claimId=${validation.claim.id()})}">Validate</button>
+			<button type="submit" formmethod="get" th:formaction="@{/}" formnovalidate>Cancel</button>
+
+		</fieldset>
+	</form>
+</body>
+
+</html>

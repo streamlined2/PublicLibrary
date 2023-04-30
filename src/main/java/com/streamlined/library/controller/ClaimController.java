@@ -30,4 +30,10 @@ public class ClaimController {
 		return "redirect:/return/submit-claim/" + returnId;
 	}
 
+	@GetMapping("/review")
+	public String reviewClaims(Model model) {
+		model.addAttribute("claims", claimService.getAllClaims());
+		return "browse-claims";
+	}
+
 }
