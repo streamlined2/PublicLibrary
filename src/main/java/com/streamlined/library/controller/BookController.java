@@ -1,6 +1,8 @@
 package com.streamlined.library.controller;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.streamlined.library.model.dto.BookDto;
 import com.streamlined.library.model.dto.CountryDto;
 import com.streamlined.library.model.dto.LanguageDto;
+import com.streamlined.library.model.dto.PageNavigationDto;
 import com.streamlined.library.service.BookService;
 
 import lombok.RequiredArgsConstructor;
@@ -59,9 +62,11 @@ public class BookController {
 		return "select-books";
 	}
 
-	@GetMapping("/browse")
-	public String browseBooks(Model model) {
-		model.addAttribute("bookList", bookService.getAllBooks().toList());
+	@GetMapping("/browse/{page}")
+	public String browseBooks(@PathVariable(required = false) Optional<Integer> page, Model model) {
+		var books = bookService.getAllBooks(page);
+		model.addAttribute("navigation", new PageNavigationDto(books, page));
+		model.addAttribute("bookList", books.toList());
 		return "browse-books";
 	}
 
@@ -103,9 +108,11 @@ public class BookController {
 		return "redirect:/book/browse";
 	}
 
-	@GetMapping("/find-holder")
-	public String findBookHolder(Model model) {
-		model.addAttribute("bookList", bookService.getAllBooks().toList());
+	@GetMapping("/find-holder/{page}")
+	public String findBookHolder(@PathVariable(required = false) Optional<Integer> page, Model model) {
+		var books = bookService.getAllBooks(page);
+		model.addAttribute("navigation", new PageNavigationDto(books, page));
+		model.addAttribute("bookList", books.toList());
 		return "browse-books-for-holder";
 	}
 

@@ -19,7 +19,7 @@
 			</thead>
 			<tbody>
 				<tr th:each="book: ${bookList}">
-					<td><button type="submit" th:formaction="@{/book/edit/{id}(id=${book.getId()})}" >✔️</button></td>
+					<td><button type="submit" th:formaction="@{/book/edit/{id}(id=${book.getId()})}">✔️</button></td>
 					<td><button type="submit" th:formaction="@{/book/delete/{id}(id=${book.getId()})}">❌</button></td>
 					<td th:text="${book.getAuthor()}" />
 					<td th:text="${book.getIsbn()}" />
@@ -31,8 +31,12 @@
 			</tbody>
 		</table>
 		<p style="vertical-align:bottom">
-			<button style="text-align:center" type="submit" th:formaction="@{/book/add}">Add book</button>
-			<button style="text-align:center" type="submit" th:formaction="@{/}" formnovalidate>Back</button>
+			<button type="submit" th:formaction="@{/book/add}">Add book</button>
+			<button type="submit" th:formaction="@{/}" formnovalidate>Back</button>
+			<button type="submit" th:formaction="@{/book/browse/{link}(link=${navigation.first})}">◀</button>
+			<button type="submit" th:formaction="@{/book/browse/{link}(link=${navigation.previous})}">⎗</button>
+			<button type="submit" th:formaction="@{/book/browse/{link}(link=${navigation.next})}">⎘</button>
+			<button type="submit" th:formaction="@{/book/browse/{link}(link=${navigation.last})}">▶</button>
 		</p>
 	</form>
 </body>

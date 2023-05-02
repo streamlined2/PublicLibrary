@@ -1,6 +1,7 @@
 package com.streamlined.library.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.streamlined.library.model.dto.PageNavigationDto;
 import com.streamlined.library.model.dto.ReviewDto;
 import com.streamlined.library.service.BookService;
 import com.streamlined.library.service.ReviewService;
@@ -29,9 +31,11 @@ public class ReviewController {
 		return reviewService.getRatingList().toList();
 	}
 
-	@GetMapping("/view")
-	public String selectBookToViewReview(Model model) {
-		model.addAttribute("bookList", bookService.getAllBooks());
+	@GetMapping("/view/{page}")
+	public String selectBookToViewReview(@PathVariable Optional<Integer> page, Model model) {
+		var books = bookService.getAllBooks(page);
+		model.addAttribute("navigation", new PageNavigationDto(books, page));
+		model.addAttribute("bookList", books.toList());
 		return "browse-books-for-review";
 	}
 

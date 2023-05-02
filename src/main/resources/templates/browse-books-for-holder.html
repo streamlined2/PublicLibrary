@@ -30,6 +30,10 @@
 		</table>
 		<p style="vertical-align:bottom">
 			<button style="text-align:center" type="submit" th:formaction="@{/}" formnovalidate>Back</button>
+			<button type="submit" th:formaction="@{/book/find-holder/{link}(link=${navigation.first})}">◀</button>
+			<button type="submit" th:formaction="@{/book/find-holder/{link}(link=${navigation.previous})}">⎗</button>
+			<button type="submit" th:formaction="@{/book/find-holder/{link}(link=${navigation.next})}">⎘</button>
+			<button type="submit" th:formaction="@{/book/find-holder/{link}(link=${navigation.last})}">▶</button>
 		</p>
 	</form>
 </body>

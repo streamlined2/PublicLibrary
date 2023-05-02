@@ -1,4 +1,5 @@
 currency: USD
+book.page.size: 5
 
 server:
   servlet:

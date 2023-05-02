@@ -1,10 +1,12 @@
 package com.streamlined.library.service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,9 +36,10 @@ public class BookService {
 	private final CountryMapper countryMapper;
 	private final LanguageMapper languageMapper;
 
-	public Stream<BookDto> getAllBooks() {
-		return Streamable.of(bookRepository.findAll(Sort.by(List.of(Order.asc("author"), Order.asc("title")))))
-				.map(bookMapper::toDto).stream();
+	private @Value("${book.page.size}") int bookPageSize;
+
+	public Page<BookDto> getAllBooks(Optional<Integer> page) {
+		return bookRepository.findAll(PageRequest.of(page.orElse(0), bookPageSize)).map(bookMapper::toDto);
 	}
 
 	public Stream<BookDto> getAvailableBooks() {// TODO should be elaborated later to skip already requested books
