@@ -9,16 +9,47 @@
 					<h2>Select book to find who holds it at present time</h2>
 				</caption>
 				<th>Select</th>
-				<th>Author</th>
-				<th>ISBN</th>
-				<th style="min-width:100px">Published</th>
-				<th>Title</th>
-				<th>Country</th>
-				<th>Language</th>
+				<th style="min-width:140px">Author
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=author,order=asc)}">▲</a>
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=author,order=desc)}">▼</a>
+				</th>
+				<th>ISBN
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=isbn,order=asc)}">▲</a>
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=isbn,order=desc)}">▼</a>
+				</th>
+				<th style="min-width:130px">Published
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=publishDate,order=asc)}">▲</a>
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=publishDate,order=desc)}">▼</a>
+				</th>
+				<th>Title
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=title,order=asc)}">▲</a>
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=title,order=desc)}">▼</a>
+				</th>
+				<th style="min-width:140px">Country
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=country.name,order=asc)}">▲</a>
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=country.name,order=desc)}">▼</a>
+				</th>
+				<th style="min-width:140px">Language
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=language.name,order=asc)}">▲</a>
+					<a style="text-decoration:none"
+						th:href="@{/book/find-holder(page=${navigation.current},sort=language.name,order=desc)}">▼</a>
+				</th>
 			</thead>
 			<tbody>
 				<tr th:each="book: ${bookList}">
-					<td><button type="submit" th:formaction="@{/customer/display-holder/{id}(id=${book.getId()})}" >✔️</button></td>
+					<td><button type="submit"
+							th:formaction="@{/customer/display-holder/{id}(id=${book.getId()})}">✔️</button></td>
 					<td th:text="${book.getAuthor()}" />
 					<td th:text="${book.getIsbn()}" />
 					<td th:text="${book.getPublishDate()}" />
@@ -30,10 +61,14 @@
 		</table>
 		<p style="vertical-align:bottom">
 			<button style="text-align:center" type="submit" th:formaction="@{/}" formnovalidate>Back</button>
-			<button type="submit" th:formaction="@{/book/find-holder/{link}(link=${navigation.first})}">◀</button>
-			<button type="submit" th:formaction="@{/book/find-holder/{link}(link=${navigation.previous})}">⎗</button>
-			<button type="submit" th:formaction="@{/book/find-holder/{link}(link=${navigation.next})}">⎘</button>
-			<button type="submit" th:formaction="@{/book/find-holder/{link}(link=${navigation.last})}">▶</button>
+			<a style="text-decoration:none"
+				th:href="@{/book/find-holder(page=${navigation.first},sort=${navigation.sort},order=${navigation.order})}">⏮</a>
+			<a style="text-decoration:none"
+				th:href="@{/book/find-holder(page=${navigation.previous},sort=${navigation.sort},order=${navigation.order})}">⏪</a>
+			<a style="text-decoration:none"
+				th:href="@{/book/find-holder(page=${navigation.next},sort=${navigation.sort},order=${navigation.order})}">⏩</a>
+			<a style="text-decoration:none"
+				th:href="@{/book/find-holder(page=${navigation.last},sort=${navigation.sort},order=${navigation.order})}">⏭</a>
 		</p>
 	</form>
 </body>

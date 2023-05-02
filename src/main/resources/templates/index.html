@@ -11,19 +11,19 @@
 			<label for="customer">Customer</label>
 			<ul id="customer">
 				<li><a th:href="@{/book/select}">browse available books to order</a></li>
-				<li><a th:href="@{/review/view/0}">find book and view reviews</a></li>
+				<li><a th:href="@{/review/view}">find book and view reviews</a></li>
 				<li><a th:href="@{/review/submit}">fill in and submit book review</a></li>
 				<li><a th:href="@{/customer/edit-data}">fill in personal data</a></li>
 			</ul>
 			<label for="librarian">Librarian</label>
 			<ul id="librarian">
-				<li><a th:href="@{/book/browse/0}">edit existing books</a></li>
+				<li><a th:href="@{/book/browse}">edit existing books</a></li>
 				<li><a th:href="@{/request/browse}">check active requests</a></li>
 				<li><a th:href="@{/approval/browse}">transfer ordered books</a></li>
 				<li><a th:href="@{/return/select-customer}">accept books returned by customer and submit damage claims</a></li>
 				<li><a th:href="@{/librarian/edit-data}">fill in personal data</a></li>
 				<li><a th:href="@{/customer/register-new}">register new customer</a></li>
-				<li><a th:href="@{/book/find-holder/0}">find holder of the book</a></li>
+				<li><a th:href="@{/book/find-holder}">find holder of the book</a></li>
 				<li><a th:href="@{/customer/get-book-list}">fetch list of books taken by customer</a></li>
 				<li><a th:href="@{/request/most-popular-books}">most popular book categories by requests</a></li>
 				<li><a th:href="@{/transfer/most-popular-books}">most popular book categories by time</a></li>

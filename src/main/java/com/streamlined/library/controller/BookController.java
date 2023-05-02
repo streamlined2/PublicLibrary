@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.streamlined.library.model.dto.BookDto;
 import com.streamlined.library.model.dto.CountryDto;
@@ -62,10 +63,12 @@ public class BookController {
 		return "select-books";
 	}
 
-	@GetMapping("/browse/{page}")
-	public String browseBooks(@PathVariable(required = false) Optional<Integer> page, Model model) {
-		var books = bookService.getAllBooks(page);
-		model.addAttribute("navigation", new PageNavigationDto(books, page));
+	@GetMapping("/browse")
+	public String browseBooks(@RequestParam(name = "page", required = false) Optional<Integer> page,
+			@RequestParam(name = "sort", required = false, defaultValue = "author") String sortColumn,
+			@RequestParam(name = "order", required = false, defaultValue = "asc") String sortOrder, Model model) {
+		var books = bookService.getAllBooks(page, sortColumn, sortOrder);
+		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page, sortColumn, sortOrder));
 		model.addAttribute("bookList", books.toList());
 		return "browse-books";
 	}
@@ -108,10 +111,12 @@ public class BookController {
 		return "redirect:/book/browse";
 	}
 
-	@GetMapping("/find-holder/{page}")
-	public String findBookHolder(@PathVariable(required = false) Optional<Integer> page, Model model) {
-		var books = bookService.getAllBooks(page);
-		model.addAttribute("navigation", new PageNavigationDto(books, page));
+	@GetMapping("/find-holder")
+	public String findBookHolder(@RequestParam(name = "page", required = false) Optional<Integer> page,
+			@RequestParam(name = "sort", required = false, defaultValue = "author") String sortColumn,
+			@RequestParam(name = "order", required = false, defaultValue = "asc") String sortOrder, Model model) {
+		var books = bookService.getAllBooks(page, sortColumn, sortOrder);
+		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page, sortColumn, sortOrder));
 		model.addAttribute("bookList", books.toList());
 		return "browse-books-for-holder";
 	}

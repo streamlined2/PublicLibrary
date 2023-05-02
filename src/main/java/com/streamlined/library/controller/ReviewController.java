@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.streamlined.library.model.dto.PageNavigationDto;
 import com.streamlined.library.model.dto.ReviewDto;
@@ -31,10 +32,12 @@ public class ReviewController {
 		return reviewService.getRatingList().toList();
 	}
 
-	@GetMapping("/view/{page}")
-	public String selectBookToViewReview(@PathVariable Optional<Integer> page, Model model) {
-		var books = bookService.getAllBooks(page);
-		model.addAttribute("navigation", new PageNavigationDto(books, page));
+	@GetMapping("/view")
+	public String selectBookToViewReview(@RequestParam(name = "page", required = false) Optional<Integer> page,
+			@RequestParam(name = "sort", required = false, defaultValue = "author") String sortColumn,
+			@RequestParam(name = "order", required = false, defaultValue = "asc") String sortOrder, Model model) {
+		var books = bookService.getAllBooks(page, sortColumn, sortOrder);
+		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page, sortColumn, sortOrder));
 		model.addAttribute("bookList", books.toList());
 		return "browse-books-for-review";
 	}

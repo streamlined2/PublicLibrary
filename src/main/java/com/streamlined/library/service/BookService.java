@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.util.Streamable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.streamlined.library.ParseException;
 import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.CountryRepository;
 import com.streamlined.library.dao.LanguageRepository;
@@ -38,8 +40,18 @@ public class BookService {
 
 	private @Value("${book.page.size}") int bookPageSize;
 
-	public Page<BookDto> getAllBooks(Optional<Integer> page) {
-		return bookRepository.findAll(PageRequest.of(page.orElse(0), bookPageSize)).map(bookMapper::toDto);
+	public Page<BookDto> getAllBooks(Optional<Integer> page, String sortByColumn, String sortOrder) {
+		Sort sort = Sort.by(getOrderByParameter(sortByColumn, sortOrder));
+		var pageable = PageRequest.of(page.orElse(0), bookPageSize).withSort(sort);
+		return bookRepository.findAll(pageable).map(bookMapper::toDto);
+	}
+
+	private static Sort.Order getOrderByParameter(String property, String order) {
+		return switch (order.toLowerCase()) {
+		case "asc" -> Sort.Order.asc(property);
+		case "desc" -> Sort.Order.desc(property);
+		default -> throw new ParseException("incorrect sort order passed %s".formatted(order));
+		};
 	}
 
 	public Stream<BookDto> getAvailableBooks() {// TODO should be elaborated later to skip already requested books
