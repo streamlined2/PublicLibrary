@@ -27,7 +27,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -58,32 +57,32 @@ public class Book {
 
 	@NotBlank(message = "empty author is not valid")
 	@Column(name = "author", nullable = false, unique = false)
-	private @NonNull String author;
+	private String author;
 
 	@NotBlank(message = "empty title is not valid")
 	@Column(name = "title", nullable = false, unique = false)
-	private @NonNull String title;
+	private String title;
 
 	@ISBN
 	@Column(name = "isbn", nullable = false, unique = true)
-	private @NonNull String isbn;
+	private String isbn;
 
 	@Past
 	@Temporal(TemporalType.DATE)
 	@Column(name = "publish_date", nullable = false, unique = false)
-	private @NonNull LocalDate publishDate;
+	private LocalDate publishDate;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "genre", nullable = false, unique = false)
-	private @NonNull Genre genre;
+	private Genre genre;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "country", nullable = false, unique = false)
-	private @NonNull Country country;
+	private Country country;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "language", nullable = false, unique = false)
-	private @NonNull Language language;
+	private Language language;
 
 	@Positive
 	@Column(name = "page_count", nullable = false, unique = false)

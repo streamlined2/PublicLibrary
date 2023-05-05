@@ -66,6 +66,8 @@
 			<button type="submit" th:formaction="@{/book/add}">Add book</button>
 			<button type="submit" th:formaction="@{/}" formnovalidate>Back</button>
 			<a style="text-decoration:none"
+				th:href="@{/book/filter}">&#x1F50D;</a>
+			<a style="text-decoration:none"
 				th:href="@{/book/browse(page=${navigation.first},sort=${navigation.sort},order=${navigation.order})}">⏮</a>
 			<a style="text-decoration:none"
 				th:href="@{/book/browse(page=${navigation.previous},sort=${navigation.sort},order=${navigation.order})}">⏪</a>

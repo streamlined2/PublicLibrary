@@ -12,7 +12,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -33,6 +32,6 @@ public class Country {
 	private Long id;
 
 	@Column(name = "name", nullable = false, unique = true)
-	private @NonNull String name;
+	private String name;
 
 }

@@ -1,6 +1,7 @@
 package com.streamlined.library.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -36,7 +37,7 @@ public class ReviewController {
 	public String selectBookToViewReview(@RequestParam(name = "page", required = false) Optional<Integer> page,
 			@RequestParam(name = "sort", required = false, defaultValue = "author") String sortColumn,
 			@RequestParam(name = "order", required = false, defaultValue = "asc") String sortOrder, Model model) {
-		var books = bookService.getAllBooks(page, sortColumn, sortOrder);
+		var books = bookService.getAllBooks(page, sortColumn, sortOrder, Map.of());// TODO add filter parameters map
 		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page, sortColumn, sortOrder));
 		model.addAttribute("bookList", books.toList());
 		return "browse-books-for-review";
