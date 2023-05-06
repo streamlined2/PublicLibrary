@@ -8,6 +8,7 @@
 	<h3>
 		<fieldset>
 			<legend>Please start by selecting action according to your role</legend>
+			<br>
 			<label for="customer">Customer</label>
 			<ul id="customer">
 				<li><a th:href="@{/book/select}">browse available books to order</a></li>
@@ -20,7 +21,8 @@
 				<li><a th:href="@{/book/browse}">edit existing books</a></li>
 				<li><a th:href="@{/request/browse}">check active requests</a></li>
 				<li><a th:href="@{/approval/browse}">transfer ordered books</a></li>
-				<li><a th:href="@{/return/select-customer}">accept books returned by customer and submit damage claims</a></li>
+				<li><a th:href="@{/return/select-customer}">accept books returned by customer and submit damage
+						claims</a></li>
 				<li><a th:href="@{/librarian/edit-data}">fill in personal data</a></li>
 				<li><a th:href="@{/customer/register-new}">register new customer</a></li>
 				<li><a th:href="@{/book/find-holder}">find holder of the book</a></li>
@@ -35,6 +37,9 @@
 				<li><a th:href="@{/librarian/register-new}">register new librarian</a></li>
 				<li><a th:href="@{/claim/review}">validate claims</a></li>
 			</ul>
+			<br>
+			<hr>
+			<a th:href="@{/book/logout}" >Close session</a> 
 		</fieldset>
 	</h3>
 </body>

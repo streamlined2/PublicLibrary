@@ -2,13 +2,13 @@ package com.streamlined.library.model.dto;
 
 import java.util.Optional;
 
-public record PageNavigationDto(int current, int first, int last, int next, int previous, String sort, String order) {
+public record PageNavigationDto(int current, int first, int last, int next, int previous) {
 
 	private static final int FIRST_PAGE = 0;
 
-	public PageNavigationDto(int totalPages, Optional<Integer> page, String sort, String order) {
+	public PageNavigationDto(int totalPages, Optional<Integer> page) {
 		this(currentPageNumber(page), FIRST_PAGE, lastPageNumber(totalPages), nextPageNumber(totalPages, page),
-				previousPageNumber(page), sort, order);
+				previousPageNumber(page));
 	}
 
 	private static int currentPageNumber(Optional<Integer> page) {

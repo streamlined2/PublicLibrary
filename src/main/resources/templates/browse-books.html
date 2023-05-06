@@ -34,25 +34,27 @@
 					<a style="text-decoration:none"
 						th:href="@{/book/browse(page=${navigation.current},sort=title,order=asc)}">▲</a>
 					<a style="text-decoration:none"
-						th:href="@{/book/browse(page=${navigation.current},sort=title,order=desc)}">▼</a>					
+						th:href="@{/book/browse(page=${navigation.current},sort=title,order=desc)}">▼</a>
 				</th>
 				<th style="min-width:140px">Country
 					<a style="text-decoration:none"
 						th:href="@{/book/browse(page=${navigation.current},sort=country.name,order=asc)}">▲</a>
 					<a style="text-decoration:none"
-						th:href="@{/book/browse(page=${navigation.current},sort=country.name,order=desc)}">▼</a>					
+						th:href="@{/book/browse(page=${navigation.current},sort=country.name,order=desc)}">▼</a>
 				</th>
 				<th style="min-width:140px">Language
 					<a style="text-decoration:none"
 						th:href="@{/book/browse(page=${navigation.current},sort=language.name,order=asc)}">▲</a>
 					<a style="text-decoration:none"
-						th:href="@{/book/browse(page=${navigation.current},sort=language.name,order=desc)}">▼</a>					
+						th:href="@{/book/browse(page=${navigation.current},sort=language.name,order=desc)}">▼</a>
 				</th>
 			</thead>
 			<tbody>
 				<tr th:each="book: ${bookList}">
-					<td style="text-align:center"><button type="submit" th:formaction="@{/book/edit/{id}(id=${book.getId()})}">✔️</button></td>
-					<td style="text-align:center"><button type="submit" th:formaction="@{/book/delete/{id}(id=${book.getId()})}">❌</button></td>
+					<td style="text-align:center"><button type="submit"
+							th:formaction="@{/book/edit/{id}(id=${book.getId()})}">✔️</button></td>
+					<td style="text-align:center"><button type="submit"
+							th:formaction="@{/book/delete/{id}(id=${book.getId()})}">❌</button></td>
 					<td th:text="${book.getAuthor()}" />
 					<td th:text="${book.getIsbn()}" />
 					<td th:text="${book.getPublishDate()}" />
@@ -65,16 +67,11 @@
 		<p style="vertical-align:bottom">
 			<button type="submit" th:formaction="@{/book/add}">Add book</button>
 			<button type="submit" th:formaction="@{/}" formnovalidate>Back</button>
-			<a style="text-decoration:none"
-				th:href="@{/book/filter}">&#x1F50D;</a>
-			<a style="text-decoration:none"
-				th:href="@{/book/browse(page=${navigation.first},sort=${navigation.sort},order=${navigation.order})}">⏮</a>
-			<a style="text-decoration:none"
-				th:href="@{/book/browse(page=${navigation.previous},sort=${navigation.sort},order=${navigation.order})}">⏪</a>
-			<a style="text-decoration:none"
-				th:href="@{/book/browse(page=${navigation.next},sort=${navigation.sort},order=${navigation.order})}">⏩</a>
-			<a style="text-decoration:none"
-				th:href="@{/book/browse(page=${navigation.last},sort=${navigation.sort},order=${navigation.order})}">⏭</a>
+			<a style="text-decoration:none" th:href="@{/book/filter}">&#x1F50D;</a>
+			<a style="text-decoration:none" th:href="@{/book/browse(page=${navigation.first})}">⏮</a>
+			<a style="text-decoration:none" th:href="@{/book/browse(page=${navigation.previous})}">⏪</a>
+			<a style="text-decoration:none" th:href="@{/book/browse(page=${navigation.next})}">⏩</a>
+			<a style="text-decoration:none" th:href="@{/book/browse(page=${navigation.last})}">⏭</a>
 		</p>
 	</form>
 </body>

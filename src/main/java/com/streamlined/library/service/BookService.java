@@ -33,6 +33,7 @@ import com.streamlined.library.model.Cover;
 import com.streamlined.library.model.dto.BookDto;
 import com.streamlined.library.model.dto.CountryDto;
 import com.streamlined.library.model.dto.LanguageDto;
+import com.streamlined.library.model.dto.SortOrderDto;
 import com.streamlined.library.model.dto.converter.StringToCountryDtoConverter;
 import com.streamlined.library.model.dto.converter.StringToLanguageDtoConverter;
 import com.streamlined.library.model.mapper.BookMapper;
@@ -61,10 +62,10 @@ public class BookService {
 
 	private @Value("${book.page.size}") int bookPageSize;
 
-	public Page<BookDto> getAllBooks(Optional<Integer> page, String sortByColumn, String sortOrder,
+	public Page<BookDto> getAllBooks(Optional<Integer> page, Optional<SortOrderDto> sortOrder,
 			Map<String, String> parameters) {
 
-		Sort sort = Sort.by(getOrderByParameter(sortByColumn, sortOrder));
+		Sort sort = Sort.by(getOrderByParameter(sortOrder));
 		Pageable pageable = PageRequest.of(page.orElse(0), bookPageSize).withSort(sort);
 		if (shouldApplyFilter(parameters)) {
 			Book book = createBook(parameters);

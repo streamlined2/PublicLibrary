@@ -11,24 +11,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
 
 import com.streamlined.library.model.dto.BookDto;
 import com.streamlined.library.model.dto.CountryDto;
 import com.streamlined.library.model.dto.LanguageDto;
 import com.streamlined.library.model.dto.PageNavigationDto;
+import com.streamlined.library.model.dto.SortOrderDto;
 import com.streamlined.library.service.BookService;
 import static com.streamlined.library.Utilities.getSourceForm;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/book")
+@SessionAttributes({ "sortOrder" })
 @RequiredArgsConstructor
 public class BookController {
-	
-	private static final String ORIGINAL_FORM_URI_PARAMETER = "originalFormURI";
 
 	private final BookService bookService;
+
+	@ModelAttribute(name = "sortOrder")
+	public SortOrderDto sortOrder() {
+		return new SortOrderDto("author", "asc");
+	}
 
 	@ModelAttribute(name = "genreList")
 	public List<String> genreList() {
@@ -68,12 +75,11 @@ public class BookController {
 
 	@GetMapping("/browse")
 	public String browseBooks(@RequestParam(name = "page", required = false) Optional<Integer> page,
-			@RequestParam(name = "sort", required = false, defaultValue = "author") String sortColumn,
-			@RequestParam(name = "order", required = false, defaultValue = "asc") String sortOrder,
-			@RequestParam Map<String, String> parameters, Model model) {
+			@ModelAttribute("sortOrder") Optional<SortOrderDto> sortOrder, @RequestParam Map<String, String> parameters,
+			Model model) {
 
-		var books = bookService.getAllBooks(page, sortColumn, sortOrder, parameters);
-		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page, sortColumn, sortOrder));
+		var books = bookService.getAllBooks(page, sortOrder, parameters);
+		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page));
 		model.addAttribute("bookList", books.toList());
 		return "browse-books";
 	}
@@ -118,10 +124,10 @@ public class BookController {
 
 	@GetMapping("/find-holder")
 	public String findBookHolder(@RequestParam(name = "page", required = false) Optional<Integer> page,
-			@RequestParam(name = "sort", required = false, defaultValue = "author") String sortColumn,
-			@RequestParam(name = "order", required = false, defaultValue = "asc") String sortOrder, Model model) {
-		var books = bookService.getAllBooks(page, sortColumn, sortOrder, Map.of());//TODO add filter parameters map
-		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page, sortColumn, sortOrder));
+			@ModelAttribute("sortOrder") Optional<SortOrderDto> sortOrder, @RequestParam Map<String, String> parameters,
+			Model model) {
+		var books = bookService.getAllBooks(page, sortOrder, parameters);
+		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page));
 		model.addAttribute("bookList", books.toList());
 		return "browse-books-for-holder";
 	}
@@ -137,6 +143,12 @@ public class BookController {
 		model.addAttribute("book", bookService.create());
 		model.addAttribute("returnLink", getSourceForm(request));
 		return "filter-book";
+	}
+
+	@GetMapping("/logout")
+	public String closeSession(SessionStatus sessioStatus) {
+		sessioStatus.setComplete();
+		return "redirect:/";
 	}
 
 }

@@ -9,12 +9,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.context.request.WebRequest;
+
+import com.streamlined.library.model.dto.SortOrderDto;
 
 import lombok.experimental.UtilityClass;
 
@@ -85,11 +88,15 @@ public class Utilities {
 		return bookIds.values().stream().map(Long::valueOf).toList();
 	}
 
-	public Sort.Order getOrderByParameter(String property, String order) {
-		return switch (order.toLowerCase()) {
-		case "asc" -> Sort.Order.asc(property);
-		case "desc" -> Sort.Order.desc(property);
-		default -> throw new ParseException("incorrect sort order passed %s".formatted(order));
+	public Sort.Order getOrderByParameter(Optional<SortOrderDto> order) {
+		return order.map(Utilities::mapToSortOrder).orElse(Sort.Order.asc("author"));
+	}
+
+	private Sort.Order mapToSortOrder(SortOrderDto value) {
+		return switch (value.getOrder().toLowerCase()) {
+		case "asc" -> Sort.Order.asc(value.getSort());
+		case "desc" -> Sort.Order.desc(value.getSort());
+		default -> throw new ParseException("incorrect sort order passed %s".formatted(value.getOrder()));
 		};
 	}
 

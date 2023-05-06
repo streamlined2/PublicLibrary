@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.streamlined.library.model.dto.PageNavigationDto;
 import com.streamlined.library.model.dto.ReviewDto;
+import com.streamlined.library.model.dto.SortOrderDto;
 import com.streamlined.library.service.BookService;
 import com.streamlined.library.service.ReviewService;
 
@@ -35,10 +36,10 @@ public class ReviewController {
 
 	@GetMapping("/view")
 	public String selectBookToViewReview(@RequestParam(name = "page", required = false) Optional<Integer> page,
-			@RequestParam(name = "sort", required = false, defaultValue = "author") String sortColumn,
-			@RequestParam(name = "order", required = false, defaultValue = "asc") String sortOrder, Model model) {
-		var books = bookService.getAllBooks(page, sortColumn, sortOrder, Map.of());// TODO add filter parameters map
-		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page, sortColumn, sortOrder));
+			@ModelAttribute("sortOrder") Optional<SortOrderDto> sortOrder, @RequestParam Map<String, String> parameters,
+			Model model) {
+		var books = bookService.getAllBooks(page, sortOrder, parameters);
+		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page));
 		model.addAttribute("bookList", books.toList());
 		return "browse-books-for-review";
 	}
