@@ -61,14 +61,11 @@
 		</table>
 		<p style="vertical-align:bottom">
 			<button style="text-align:center" type="submit" th:formaction="@{/}" formnovalidate>Back</button>
-			<a style="text-decoration:none"
-				th:href="@{/book/find-holder(page=${navigation.first},sort=${navigation.sort},order=${navigation.order})}">⏮</a>
-			<a style="text-decoration:none"
-				th:href="@{/book/find-holder(page=${navigation.previous},sort=${navigation.sort},order=${navigation.order})}">⏪</a>
-			<a style="text-decoration:none"
-				th:href="@{/book/find-holder(page=${navigation.next},sort=${navigation.sort},order=${navigation.order})}">⏩</a>
-			<a style="text-decoration:none"
-				th:href="@{/book/find-holder(page=${navigation.last},sort=${navigation.sort},order=${navigation.order})}">⏭</a>
+			<a style="text-decoration:none" th:href="@{/book/filter}">&#x1F50D;</a>
+			<a style="text-decoration:none" th:href="@{/book/find-holder(page=${navigation.first})}">⏮</a>
+			<a style="text-decoration:none" th:href="@{/book/find-holder(page=${navigation.previous})}">⏪</a>
+			<a style="text-decoration:none" th:href="@{/book/find-holder(page=${navigation.next})}">⏩</a>
+			<a style="text-decoration:none" th:href="@{/book/find-holder(page=${navigation.last})}">⏭</a>
 		</p>
 	</form>
 </body>

@@ -1,11 +1,7 @@
 package com.streamlined.library.service;
 
-import static com.streamlined.library.Utilities.getFilterKeyValues;
-import static com.streamlined.library.Utilities.getIgnorePaths;
-import static com.streamlined.library.Utilities.getOrderByParameter;
-
 import java.time.LocalDate;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -32,6 +28,7 @@ import com.streamlined.library.model.Book.Size;
 import com.streamlined.library.model.Cover;
 import com.streamlined.library.model.dto.BookDto;
 import com.streamlined.library.model.dto.CountryDto;
+import com.streamlined.library.model.dto.FilterKeyValueDto;
 import com.streamlined.library.model.dto.LanguageDto;
 import com.streamlined.library.model.dto.SortOrderDto;
 import com.streamlined.library.model.dto.converter.StringToCountryDtoConverter;
@@ -48,8 +45,6 @@ import lombok.RequiredArgsConstructor;
 public class BookService {
 
 	private static final Set<String> EXCLUDE_PATHS = Set.of("pageCount", "type", "surface");
-	private static final String FILTER_ACTION_NAME = "action";
-	private static final String FILTER_ACTION_VALUE = "filter";
 
 	private final BookRepository bookRepository;
 	private final CountryRepository countryRepository;
@@ -63,34 +58,32 @@ public class BookService {
 	private @Value("${book.page.size}") int bookPageSize;
 
 	public Page<BookDto> getAllBooks(Optional<Integer> page, Optional<SortOrderDto> sortOrder,
-			Map<String, String> parameters) {
+			FilterKeyValueDto filterKeyValue) {
 
-		Sort sort = Sort.by(getOrderByParameter(sortOrder));
+		Sort sort = Sort.by(SortOrderDto.getOrderByParameter(sortOrder));
 		Pageable pageable = PageRequest.of(page.orElse(0), bookPageSize).withSort(sort);
-		if (shouldApplyFilter(parameters)) {
-			Book book = createBook(parameters);
-			Example<Book> example = Example.of(book, getMatcher(parameters));
-			return bookRepository.findAll(example, pageable).map(bookMapper::toDto);
-		} else {
-			return bookRepository.findAll(pageable).map(bookMapper::toDto);
-		}
+		Book book = createBook(filterKeyValue);
+		Example<Book> example = Example.of(book, getMatcher(filterKeyValue));
+		return bookRepository.findAll(example, pageable).map(bookMapper::toDto);
 	}
 
-	private boolean shouldApplyFilter(Map<String, String> parameters) {
-		return parameters.containsKey(FILTER_ACTION_NAME)
-				&& FILTER_ACTION_VALUE.equals(parameters.get(FILTER_ACTION_NAME));
+	public Page<BookDto> getAllBooks(Optional<Integer> page, Optional<SortOrderDto> sortOrder) {
+		Sort sort = Sort.by(SortOrderDto.getOrderByParameter(sortOrder));
+		Pageable pageable = PageRequest.of(page.orElse(0), bookPageSize).withSort(sort);
+		return bookRepository.findAll(pageable).map(bookMapper::toDto);
 	}
 
-	private ExampleMatcher getMatcher(Map<String, String> parameters) {
-		Set<String> ignorePaths = getIgnorePaths(parameters);
+	private ExampleMatcher getMatcher(FilterKeyValueDto filterKeyValue) {
+		Set<String> ignorePaths = new HashSet<>();
+		ignorePaths.addAll(filterKeyValue.getIgnorePaths());
 		ignorePaths.addAll(EXCLUDE_PATHS);
 		return ExampleMatcher.matchingAll().withIgnorePaths(ignorePaths.toArray(new String[0])).withIgnoreNullValues()
 				.withIgnoreCase().withStringMatcher(StringMatcher.CONTAINING);
 	}
 
-	private Book createBook(Map<String, String> parameters) {
+	private Book createBook(FilterKeyValueDto filterKeyValue) {
 		var builder = Book.builder();
-		for (var entry : getFilterKeyValues(parameters).entrySet()) {
+		for (var entry : filterKeyValue) {
 			switch (entry.getKey()) {
 			case "author" -> builder.author(entry.getValue());
 			case "title" -> builder.title(entry.getValue());

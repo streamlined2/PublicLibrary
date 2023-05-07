@@ -1,7 +1,6 @@
 package com.streamlined.library.controller;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.streamlined.library.model.dto.FilterKeyValueDto;
 import com.streamlined.library.model.dto.PageNavigationDto;
 import com.streamlined.library.model.dto.ReviewDto;
 import com.streamlined.library.model.dto.SortOrderDto;
@@ -23,11 +24,22 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+@SessionAttributes({ "sortOrder", "filterKeyValues" })
 @RequestMapping("/review")
 public class ReviewController {
 
 	private final BookService bookService;
 	private final ReviewService reviewService;
+
+	@ModelAttribute(name = "sortOrder")
+	public SortOrderDto sortOrder() {
+		return SortOrderDto.create();
+	}
+
+	@ModelAttribute(name = "filterKeyValues")
+	public FilterKeyValueDto filterKeyValues() {
+		return new FilterKeyValueDto();
+	}
 
 	@ModelAttribute(name = "ratingList")
 	public List<String> ratingList() {
@@ -36,9 +48,9 @@ public class ReviewController {
 
 	@GetMapping("/view")
 	public String selectBookToViewReview(@RequestParam(name = "page", required = false) Optional<Integer> page,
-			@ModelAttribute("sortOrder") Optional<SortOrderDto> sortOrder, @RequestParam Map<String, String> parameters,
-			Model model) {
-		var books = bookService.getAllBooks(page, sortOrder, parameters);
+			@ModelAttribute("sortOrder") Optional<SortOrderDto> sortOrder,
+			@ModelAttribute("filterKeyValues") FilterKeyValueDto filterKeyValue, Model model) {
+		var books = bookService.getAllBooks(page, sortOrder, filterKeyValue);
 		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page));
 		model.addAttribute("bookList", books.toList());
 		return "browse-books-for-review";

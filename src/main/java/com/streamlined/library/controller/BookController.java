@@ -17,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import com.streamlined.library.model.dto.BookDto;
 import com.streamlined.library.model.dto.CountryDto;
+import com.streamlined.library.model.dto.FilterKeyValueDto;
 import com.streamlined.library.model.dto.LanguageDto;
 import com.streamlined.library.model.dto.PageNavigationDto;
 import com.streamlined.library.model.dto.SortOrderDto;
@@ -26,15 +27,22 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/book")
-@SessionAttributes({ "sortOrder" })
+@SessionAttributes({ "sortOrder", "filterKeyValues" })
 @RequiredArgsConstructor
 public class BookController {
+
+	private static final String ORIGINAL_FORM_URI = "originalFormURI";
 
 	private final BookService bookService;
 
 	@ModelAttribute(name = "sortOrder")
 	public SortOrderDto sortOrder() {
-		return new SortOrderDto("author", "asc");
+		return SortOrderDto.create();
+	}
+
+	@ModelAttribute(name = "filterKeyValues")
+	public FilterKeyValueDto filterKeyValues() {
+		return new FilterKeyValueDto();
 	}
 
 	@ModelAttribute(name = "genreList")
@@ -75,13 +83,27 @@ public class BookController {
 
 	@GetMapping("/browse")
 	public String browseBooks(@RequestParam(name = "page", required = false) Optional<Integer> page,
-			@ModelAttribute("sortOrder") Optional<SortOrderDto> sortOrder, @RequestParam Map<String, String> parameters,
-			Model model) {
+			@ModelAttribute("sortOrder") Optional<SortOrderDto> sortOrder,
+			@ModelAttribute("filterKeyValues") FilterKeyValueDto filterKeyValue, Model model) {
 
-		var books = bookService.getAllBooks(page, sortOrder, parameters);
+		var books = bookService.getAllBooks(page, sortOrder, filterKeyValue);
 		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page));
 		model.addAttribute("bookList", books.toList());
 		return "browse-books";
+	}
+
+	@GetMapping("/apply-filter")
+	public String applyFilter(@ModelAttribute("filterKeyValues") FilterKeyValueDto filterKeyValue,
+			@RequestParam(ORIGINAL_FORM_URI) String originalFormURI, @RequestParam Map<String, String> parameters) {
+		filterKeyValue.updateKeyValues(parameters);
+		return "redirect:" + originalFormURI;
+	}
+
+	@GetMapping("/discard-filter")
+	public String discardFilter(@ModelAttribute("filterKeyValues") FilterKeyValueDto filterKeyValue,
+			@RequestParam(ORIGINAL_FORM_URI) String originalFormURI) {
+		filterKeyValue.clear();
+		return "redirect:" + originalFormURI;
 	}
 
 	@GetMapping("/add")
@@ -124,9 +146,9 @@ public class BookController {
 
 	@GetMapping("/find-holder")
 	public String findBookHolder(@RequestParam(name = "page", required = false) Optional<Integer> page,
-			@ModelAttribute("sortOrder") Optional<SortOrderDto> sortOrder, @RequestParam Map<String, String> parameters,
-			Model model) {
-		var books = bookService.getAllBooks(page, sortOrder, parameters);
+			@ModelAttribute("sortOrder") Optional<SortOrderDto> sortOrder,
+			@ModelAttribute("filterKeyValues") FilterKeyValueDto filterKeyValue, Model model) {
+		var books = bookService.getAllBooks(page, sortOrder, filterKeyValue);
 		model.addAttribute("navigation", new PageNavigationDto(books.getTotalPages(), page));
 		model.addAttribute("bookList", books.toList());
 		return "browse-books-for-holder";

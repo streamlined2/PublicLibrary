@@ -5,27 +5,15 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.context.request.WebRequest;
-
-import com.streamlined.library.model.dto.SortOrderDto;
 
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Utilities {
-
-	private static final String FLAG_SUFFIX = "-flag";
-	private static final String FLAG_VALUE_SELECTED = "on";
 
 	public String convertNanosecondsToDaysHoursString(BigDecimal durationNanoseconds) {
 		var duration = Duration.of(durationNanoseconds.longValue(), ChronoUnit.NANOS);
@@ -86,46 +74,6 @@ public class Utilities {
 
 	public List<Long> getBookIdList(Map<String, String> bookIds) {
 		return bookIds.values().stream().map(Long::valueOf).toList();
-	}
-
-	public Sort.Order getOrderByParameter(Optional<SortOrderDto> order) {
-		return order.map(Utilities::mapToSortOrder).orElse(Sort.Order.asc("author"));
-	}
-
-	private Sort.Order mapToSortOrder(SortOrderDto value) {
-		return switch (value.getOrder().toLowerCase()) {
-		case "asc" -> Sort.Order.asc(value.getSort());
-		case "desc" -> Sort.Order.desc(value.getSort());
-		default -> throw new ParseException("incorrect sort order passed %s".formatted(value.getOrder()));
-		};
-	}
-
-	public Map<String, String> getFilterKeyValues(Map<String, String> parameters) {
-		var keyValues = new HashMap<String, String>();
-		for (var key : getSelectedKeys(parameters)) {
-			keyValues.put(key, parameters.get(key));
-		}
-		return keyValues;
-	}
-
-	private Set<String> getSelectedKeys(Map<String, String> parameters) {
-		return parameters.entrySet().stream().filter(Utilities::isKeySelected).map(Utilities::getKeyName)
-				.collect(Collectors.toSet());
-	}
-
-	private boolean isKeySelected(Entry<String, String> entry) {
-		return entry.getKey().endsWith(FLAG_SUFFIX) && FLAG_VALUE_SELECTED.equals(entry.getValue());
-	}
-
-	private String getKeyName(Entry<String, String> entry) {
-		String keyFlagName = entry.getKey();
-		return keyFlagName.substring(0, keyFlagName.indexOf(FLAG_SUFFIX));
-	}
-
-	public Set<String> getIgnorePaths(Map<String, String> parameters) {
-		var ignorePaths = new HashSet<String>(parameters.keySet());
-		ignorePaths.removeAll(getSelectedKeys(parameters));
-		return ignorePaths;
 	}
 
 }
