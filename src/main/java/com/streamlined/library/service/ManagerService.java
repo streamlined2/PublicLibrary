@@ -3,41 +3,16 @@ package com.streamlined.library.service;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.springframework.data.util.Streamable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.streamlined.library.dao.ManagerRepository;
 import com.streamlined.library.model.dto.ManagerDto;
-import com.streamlined.library.model.mapper.ManagerMapper;
 
-import lombok.RequiredArgsConstructor;
+public interface ManagerService {
 
-@Service
-@RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class ManagerService extends UserService {
+	Stream<ManagerDto> getAllManagers();
 
-	private final ManagerRepository managerRepository;
-	private final ManagerMapper managerMapper;
+	Optional<ManagerDto> getManagerById(Long id);
 
-	public Stream<ManagerDto> getAllManagers() {
-		return Streamable.of(managerRepository.findAll()).map(managerMapper::toDto).stream();
-	}
+	void save(Long id, ManagerDto managerDto);
 
-	public Optional<ManagerDto> getManagerById(Long id) {
-		return managerRepository.findById(id).map(managerMapper::toDto);
-	}
-
-	@Transactional
-	public void save(Long id, ManagerDto managerDto) {
-		var entity = managerMapper.toEntity(managerDto);
-		entity.setId(id);
-		managerRepository.save(entity);
-	}
-
-	public ManagerDto createNewManager() {
-		return new ManagerDto();
-	}
+	ManagerDto createNewManager();
 
 }

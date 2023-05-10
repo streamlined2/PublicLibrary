@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.streamlined.library.model.dto.CategoryDto;
 import com.streamlined.library.service.TransferService;
-
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -31,7 +30,7 @@ public class TransferController {
 	public List<CategoryDto> categoryList() {
 		return transferService.getCategories().toList();
 	}
-	
+
 	@PostMapping("/save/{approvalId}")
 	public String createTransfer(@PathVariable Long approvalId, @RequestParam Map<String, String> bookIds) {
 		transferService.saveTransfer(approvalId, getBookIdList(bookIds));
