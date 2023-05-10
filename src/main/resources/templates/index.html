@@ -3,8 +3,14 @@
 
 <body>
 	<p>
-	<h1>Welcome to our library!</h1>
+	<h1>
+		<span th:if="${!#strings.isEmpty(userName)}">
+		Hello, <span th:text="${userName}"/>!
+		</span>
+		<br>
+		Welcome to our library!</h1>
 	</p>
+	<h2>Please <a th:href="@{/user/checkin}">login</a> or <a th:href="@{/user/checkout}">logout</a></h2>
 	<h3>
 		<fieldset>
 			<legend>Please start by selecting action according to your role</legend>

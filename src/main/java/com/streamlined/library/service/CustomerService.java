@@ -1,5 +1,6 @@
 package com.streamlined.library.service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -10,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.CustomerRepository;
-import com.streamlined.library.model.Person;
 import com.streamlined.library.model.dto.CustomerRequestDataDto;
 import com.streamlined.library.model.dto.CustomerReviewDataDto;
 import com.streamlined.library.model.dto.CustomerDto;
@@ -23,15 +23,12 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class CustomerService extends BaseService {
+public class CustomerService extends UserService {
 
+	private final DateBoundaryService dateBoundaryService;
 	private final CustomerRepository customerRepository;
 	private final CustomerMapper customerMapper;
 	private final BookRepository bookRepository;
-
-	public Stream<String> getAllSexes() {
-		return Person.Sex.getAllSexes();
-	}
 
 	public Stream<CustomerDto> getAllCustomers() {
 		return Streamable.of(customerRepository.findAll()).map(customerMapper::toDto).stream();
@@ -59,7 +56,7 @@ public class CustomerService extends BaseService {
 	}
 
 	public Stream<CustomerSummaryDataDto> getSummaryCustomerData() {
-		var boundary = getDateBoundary();
+		var boundary = dateBoundaryService.getDateBoundary();
 		return customerRepository
 				.getSummaryCustomerData(boundary.get(0), boundary.get(1), boundary.get(2), boundary.get(3)).stream();
 	}
@@ -74,6 +71,10 @@ public class CustomerService extends BaseService {
 
 	public Stream<CustomerReviewDataDto> getCustomerReviewData(Long customerId) {
 		return customerRepository.getCustomerReviewData(customerId).stream();
+	}
+
+	public List<String> getDateBoundaryRepresentation() {
+		return dateBoundaryService.getDateBoundaryRepresentation();
 	}
 
 }

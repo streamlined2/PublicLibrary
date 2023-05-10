@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.streamlined.library.dao.LibrarianRepository;
-import com.streamlined.library.model.Person;
 import com.streamlined.library.model.dto.LibrarianDto;
 import com.streamlined.library.model.mapper.LibrarianMapper;
 
@@ -17,14 +16,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class LibrarianService {
+public class LibrarianService extends UserService {
 
 	private final LibrarianRepository librarianRepository;
 	private final LibrarianMapper librarianMapper;
-
-	public Stream<String> getAllSexes() {
-		return Person.Sex.getAllSexes();
-	}
 
 	public Stream<LibrarianDto> getAllLibrarians() {
 		return Streamable.of(librarianRepository.findAll()).map(librarianMapper::toDto).stream();

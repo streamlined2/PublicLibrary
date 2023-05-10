@@ -20,20 +20,17 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(of = "id")
 public abstract class PersonDto {
 
-	private static final int MAX_PASSWORD_LENGTH = 25;
-
 	private Long id;
-	private String login;
+	private CredentialsDto credentials;
 	private String firstName;
 	private String lastName;
 	private @DateTimeFormat(iso = ISO.DATE) LocalDate birthDate;
 	private String sex;
 	private List<String> contacts = new ArrayList<>();
-	private char[] password = new char[MAX_PASSWORD_LENGTH];
 
 	@Override
 	public String toString() {
-		return "%s %s (%s %s) %s".formatted(firstName, lastName, login,
+		return "%s %s (%s %s) %s".formatted(firstName, lastName, credentials.getLogin(),
 				DateTimeFormatter.ISO_LOCAL_DATE.format(birthDate),
 				contacts.stream().collect(Collectors.joining(",", "[", "]")));
 	}
