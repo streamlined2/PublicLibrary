@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <body>
 	<p>
 	<h1>
-		<span th:if="${!#strings.isEmpty(userName)}">
-		Hello, <span th:text="${userName}"/>!
+		<span sec:authorize="isAuthenticated()">
+			Hello, <span sec:authentication="principal.username" />!
 		</span>
 		<br>
-		Welcome to our library!</h1>
+		Welcome to our library!
+	</h1>
 	</p>
-	<h2>Please <a th:href="@{/user/checkin}">login</a> or <a th:href="@{/user/checkout}">logout</a></h2>
+	<h2>
+		<div sec:authorize="!isAuthenticated()">Please click <a th:href="@{/user/checkin}">here</a> to login</div>
+		<div sec:authorize="isAuthenticated()">You may logout <a th:href="@{/user/checkout}">here</a></div>
+	</h2>
 	<h3>
 		<fieldset>
 			<legend>Please start by selecting action according to your role</legend>
@@ -45,7 +49,7 @@
 			</ul>
 			<br>
 			<hr>
-			<a th:href="@{/book/logout}" >Close session</a> 
+			<a th:href="@{/book/logout}">Close session</a>
 		</fieldset>
 	</h3>
 </body>

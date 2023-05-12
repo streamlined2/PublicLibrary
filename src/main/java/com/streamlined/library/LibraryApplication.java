@@ -3,10 +3,6 @@ package com.streamlined.library;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
 
 import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.CustomerRepository;
@@ -22,27 +18,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LibraryApplication {
 
-	private final CustomerRepository customerRepository;
-	private final LibrarianRepository librarianRepository;
-	private final ManagerRepository managerRepository;
-
 	private static final Long CUSTOMER_PRIMARY_KEY = 100L;
 	private static final Long LIBRARIAN_PRIMARY_KEY = 2L;
 	private static final Long MANAGER_PRIMARY_KEY = 3L;
 
+	private final CustomerRepository customerRepository;
+	private final LibrarianRepository librarianRepository;
+	private final ManagerRepository managerRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryApplication.class, args);
-	}
-
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.authorizeHttpRequests(auth -> auth.anyRequest().permitAll()).csrf().disable();
-		return httpSecurity.build();
-	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
 	}
 
 	@Bean

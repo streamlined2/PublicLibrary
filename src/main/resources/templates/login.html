@@ -5,16 +5,19 @@
 </head>
 
 <body>
-	<form th:object="${credentials}">
+	<span th:if="${error=='true'}">
+		Incorrect login or password, you may try enter credentials again
+	</span>
+	<form th:object="${credentials}" method="post" th:action="@{/user/do-login}">
 		<fieldset>
 			<legend>Please enter your credentials</legend>
 			<table>
 				<tr>
 					<td><label for="login">Login</label></td>
 					<td>
-						<input id="login" name="login" type="text" th:field="*{login}" size="80" minlength="8" maxlength="255"
-							pattern="^[a-zA-Z_-@\.]{8,255}$" placeholder="Please enter user login" required
-							autocomplete="off" />
+						<input id="login" name="login" type="text" th:field="*{login}" size="80" minlength="8"
+							maxlength="255" pattern="^[a-zA-Z_-@\.]{8,255}$" placeholder="Please enter user login"
+							required autocomplete="off" />
 					</td>
 				</tr>
 				<tr>
@@ -22,15 +25,15 @@
 						<label for="password">Password</label>
 					</td>
 					<td>
-						<input id="password" name="password" type="password" th:field="*{password}" size="80" minlength="8"
-							maxlength="255" pattern="^[a-zA-Z_-]{8,255}$" placeholder="Please enter password" required
-							autocomplete="off" />
+						<input id="password" name="password" type="password" th:field="*{password}" size="80"
+							minlength="8" maxlength="255" pattern="^[a-zA-Z_-]{8,255}$"
+							placeholder="Please enter password" required autocomplete="off" />
 					</td>
 				</tr>
 			</table>
 		</fieldset>
 		<br>
-		<button type="submit" formmethod="post" th:formaction="@{/user/login}">Login</button>
+		<button type="submit">Submit</button>
 		<button type="submit" formmethod="get" th:formaction="@{/}" formnovalidate>Back</button>
 	</form>
 </body>
