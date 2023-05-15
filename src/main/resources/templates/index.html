@@ -5,7 +5,7 @@
 	<p>
 	<h1>
 		<span sec:authorize="isAuthenticated()">
-			Hello, <span sec:authentication="principal.username" />!
+			Hello, <span sec:authentication="principal.username" /> <span sec:authentication="principal.authorities" />!
 		</span>
 		<br>
 		Welcome to our library!
@@ -14,6 +14,7 @@
 	<h2>
 		<div sec:authorize="!isAuthenticated()">Please click <a th:href="@{/user/checkin}">here</a> to login</div>
 		<div sec:authorize="isAuthenticated()">You may logout <a th:href="@{/user/checkout}">here</a></div>
+		<a th:href="@{/book/logout}">Close session</a>
 	</h2>
 	<h3>
 		<fieldset>
@@ -48,8 +49,6 @@
 				<li><a th:href="@{/claim/review}">validate claims</a></li>
 			</ul>
 			<br>
-			<hr>
-			<a th:href="@{/book/logout}">Close session</a>
 		</fieldset>
 	</h3>
 </body>
