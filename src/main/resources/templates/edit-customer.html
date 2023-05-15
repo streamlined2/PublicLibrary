@@ -11,7 +11,7 @@
 						<label for="login">Login</label>
 					</td>
 					<td>
-						<input id="login" type="text" th:field="*{login}" size="80" minlength="8" maxlength="255"
+						<input id="login" type="text" th:field="*{credentials.login}" size="80" minlength="8" maxlength="255"
 							pattern="^[a-zA-Z_-@\.]{8,255}$" placeholder="Please enter user login" required autofocus
 							autocomplete="off" />
 					</td>
@@ -21,7 +21,7 @@
 						<label for="password">Password</label>
 					</td>
 					<td>
-						<input id="password" type="password" th:field="*{password}" size="80" minlength="8"
+						<input id="password" type="password" th:field="*{credentials.password}" size="80" minlength="8"
 							maxlength="255" pattern="^[a-zA-Z_-]{8,255}$" placeholder="Please enter password" required
 							autocomplete="off" />
 					</td>
