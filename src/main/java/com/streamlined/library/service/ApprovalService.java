@@ -12,6 +12,6 @@ public interface ApprovalService {
 
 	Optional<ApprovalDto> getApprovalById(Long id);
 
-	void saveApproval(Long requestId, List<Long> bookIds);
+	void saveApproval(Long requestId, List<Long> bookIds, String librarianLogin);
 
 }

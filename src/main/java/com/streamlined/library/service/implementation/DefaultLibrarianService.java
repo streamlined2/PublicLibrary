@@ -22,21 +22,30 @@ public class DefaultLibrarianService extends UserService implements LibrarianSer
 	private final LibrarianRepository librarianRepository;
 	private final LibrarianMapper librarianMapper;
 
+	@Override
+	public Optional<LibrarianDto> getLibrarianByLogin(String userLogin) {
+		return librarianRepository.findByLogin(userLogin).map(librarianMapper::toDto);
+	}
+
+	@Override
 	public Stream<LibrarianDto> getAllLibrarians() {
 		return Streamable.of(librarianRepository.findAll()).map(librarianMapper::toDto).stream();
 	}
 
+	@Override
 	public Optional<LibrarianDto> getLibrarianById(Long id) {
 		return librarianRepository.findById(id).map(librarianMapper::toDto);
 	}
 
 	@Transactional
+	@Override
 	public void save(Long id, LibrarianDto librarianDto) {
 		var entity = librarianMapper.toEntity(librarianDto);
 		entity.setId(id);
 		librarianRepository.save(entity);
 	}
 
+	@Override
 	public LibrarianDto createNewLibrarian() {
 		return new LibrarianDto();
 	}

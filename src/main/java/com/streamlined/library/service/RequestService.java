@@ -14,7 +14,7 @@ public interface RequestService {
 
 	Optional<RequestDto> getRequestById(Long id);
 
-	void saveRequest(List<Long> bookIdList);
+	void saveRequest(List<Long> bookIdList, String customerLogin);
 
 	Stream<CategoryRequestDataDto> getCategoryData(Optional<String> category);
 

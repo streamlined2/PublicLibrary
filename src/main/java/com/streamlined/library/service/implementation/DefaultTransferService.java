@@ -11,8 +11,8 @@ import com.streamlined.library.WrongRequestParameterException;
 import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.ApprovalRepository;
 import com.streamlined.library.dao.BookRepository;
+import com.streamlined.library.dao.LibrarianRepository;
 import com.streamlined.library.dao.TransferRepository;
-import com.streamlined.library.model.Librarian;
 import com.streamlined.library.model.Transfer;
 import com.streamlined.library.model.dto.CategoryTimeDataDto;
 import com.streamlined.library.service.TransferService;
@@ -24,20 +24,24 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class DefaultTransferService extends BaseService implements TransferService {
 
+	private final LibrarianRepository librarianRepository;
 	private final BookRepository bookRepository;
 	private final ApprovalRepository approvalRepository;
 	private final TransferRepository transferRepository;
-	private final Librarian librarian;// TODO should be replaced with authenticated user from security context
 
 	@Transactional
-	public void saveTransfer(Long approvalId, List<Long> bookIds) {
-		var approvalEntity = approvalRepository.findById(approvalId)
+	@Override
+	public void saveTransfer(Long approvalId, List<Long> bookIds, String librarianLogin) {
+		var librarian = librarianRepository.findByLogin(librarianLogin).orElseThrow(
+				() -> new NoEntityFoundException("no librarian found with login %s".formatted(librarianLogin)));
+		var approval = approvalRepository.findById(approvalId)
 				.orElseThrow(() -> new NoEntityFoundException("no approval found with id %d".formatted(approvalId)));
-		var transferEntity = Transfer.builder().approval(approvalEntity).librarian(librarian).build();
-		bookRepository.findAllById(bookIds).forEach(transferEntity.getBooks()::add);
-		transferRepository.save(transferEntity);
+		var transfer = Transfer.builder().approval(approval).librarian(librarian).build();
+		bookRepository.findAllById(bookIds).forEach(transfer.getBooks()::add);
+		transferRepository.save(transfer);
 	}
 
+	@Override
 	public Stream<CategoryTimeDataDto> getCategoryData(Optional<String> category) {
 		if (category.isEmpty() || category.stream().allMatch(String::isBlank)) {
 			return Stream.empty();

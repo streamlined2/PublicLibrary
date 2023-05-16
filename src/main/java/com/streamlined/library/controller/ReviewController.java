@@ -1,5 +1,6 @@
 package com.streamlined.library.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,21 +71,22 @@ public class ReviewController {
 	}
 
 	@GetMapping("/submit")
-	public String selectBookToSubmitReview(Model model) {
-		model.addAttribute("receivedBooks", reviewService.getReceivedBooks());
+	public String selectBookToSubmitReview(Model model, Principal principal) {
+		model.addAttribute("receivedBooks", reviewService.getReceivedBooks(principal.getName()));
 		return "browse-received-books";
 	}
 
 	@GetMapping("/addedit/{bookId}")
-	public String submitBookReview(@PathVariable Long bookId, Model model) {
-		var review = reviewService.getBookReview(bookId).orElse(reviewService.getBlankReview(bookId));
+	public String submitBookReview(@PathVariable Long bookId, Model model, Principal principal) {
+		var review = reviewService.getBookReview(bookId, principal.getName())
+				.orElse(reviewService.getBlankReview(bookId, principal.getName()));
 		model.addAttribute("review", review);
 		return "add-edit-review";
 	}
 
 	@PostMapping("/addedit/{bookId}")
-	public String saveBookReview(@PathVariable Long bookId, ReviewDto reviewDto) {
-		reviewService.saveReview(bookId, reviewDto);
+	public String saveBookReview(@PathVariable Long bookId, ReviewDto reviewDto, Principal principal) {
+		reviewService.saveReview(bookId, reviewDto, principal.getName());
 		return "redirect:/review/submit";
 	}
 

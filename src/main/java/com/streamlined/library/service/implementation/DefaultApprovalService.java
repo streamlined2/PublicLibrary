@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.ApprovalRepository;
 import com.streamlined.library.dao.BookRepository;
+import com.streamlined.library.dao.LibrarianRepository;
 import com.streamlined.library.dao.RequestRepository;
 import com.streamlined.library.model.Approval;
-import com.streamlined.library.model.Librarian;
 import com.streamlined.library.model.dto.ApprovalDto;
 import com.streamlined.library.model.mapper.ApprovalMapper;
 import com.streamlined.library.service.ApprovalService;
@@ -26,20 +26,25 @@ public class DefaultApprovalService implements ApprovalService {
 
 	private final BookRepository bookRepository;
 	private final RequestRepository requestRepository;
+	private final LibrarianRepository librarianRepository;
 	private final ApprovalRepository approvalRepository;
 	private final ApprovalMapper approvalMapper;
-	private final Librarian librarian;// TODO replace with current authenticated user from security context
 
+	@Override
 	public Stream<ApprovalDto> getApprovedRequests() {
 		return approvalRepository.getApprovedRequests().map(approvalMapper::toDto).stream();
 	}
 
+	@Override
 	public Optional<ApprovalDto> getApprovalById(Long id) {
 		return approvalRepository.findById(id).map(approvalMapper::toDto);
 	}
 
 	@Transactional
-	public void saveApproval(Long requestId, List<Long> bookIds) {
+	@Override
+	public void saveApproval(Long requestId, List<Long> bookIds, String librarianLogin) {
+		var librarian = librarianRepository.findByLogin(librarianLogin).orElseThrow(
+				() -> new NoEntityFoundException("no librarian found with login %s".formatted(librarianLogin)));
 		var request = requestRepository.findById(requestId)
 				.orElseThrow(() -> new NoEntityFoundException("no request with id %d found".formatted(requestId)));
 		var approval = Approval.builder().request(request).librarian(librarian).build();

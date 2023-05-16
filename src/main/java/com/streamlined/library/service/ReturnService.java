@@ -17,6 +17,6 @@ public interface ReturnService {
 
 	Optional<ReturnDto> getBookReturn(Long returnId);
 
-	void saveReturn(Long customerId, List<Long> bookIds);
+	void saveReturn(Long customerId, List<Long> bookIds, String librarianLogin);
 
 }

@@ -20,18 +20,22 @@ public class DefaultMonetaryService implements MonetaryService {
 		this.currencyCode = currencyCode;
 	}
 
+	@Override
 	public CurrencyUnit getCurrencyUnit() {
 		return Monetary.getCurrency(currencyCode);
 	}
 
+	@Override
 	public Money getValue(Number value) {
 		return Money.of(value, getCurrencyUnit());
 	}
 	
+	@Override
 	public MonetaryAmount parseValue(String value) {
 		return ToStringMonetaryAmountFormat.of(ToStringMonetaryAmountFormatStyle.MONEY).parse(value);
 	}
 
+	@Override
 	public String toString(MonetaryAmount amount) {
 		return ToStringMonetaryAmountFormat.of(ToStringMonetaryAmountFormatStyle.MONEY).format(amount);
 	}

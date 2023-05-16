@@ -13,7 +13,11 @@ import com.streamlined.library.model.dto.CategoryTimeDataDto;
 @Repository
 public interface TransferRepository extends CrudRepository<Transfer, Long> {
 
-	@Query("select distinct b from Transfer t join t.books b where t.approval.request.customer.id = :customerId")
+	@Query("""
+			select distinct b 
+			from Transfer t join t.books b 
+			where t.approval.request.customer.id = :customerId
+			""")
 	Streamable<Book> getCustomerBooks(@Param("customerId") Long customerId);// TODO exclude books returned by customer
 
 	@Query("""

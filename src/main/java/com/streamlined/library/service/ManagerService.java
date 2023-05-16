@@ -11,8 +11,12 @@ public interface ManagerService {
 
 	Optional<ManagerDto> getManagerById(Long id);
 
+	Optional<ManagerDto> getManagerByLogin(String login);
+
 	void save(Long id, ManagerDto managerDto);
 
 	ManagerDto createNewManager();
+
+	Stream<String> getAllSexes();
 
 }

@@ -1,6 +1,7 @@
 package com.streamlined.library.dao;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -17,6 +18,8 @@ import com.streamlined.library.model.dto.CustomerTimeDataDto;
 
 @Repository
 public interface CustomerRepository extends CrudRepository<Customer, Long> {
+
+	Optional<Customer> findByLogin(String login);
 
 	@Query("""
 			select r.customer
@@ -82,11 +85,11 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
 				n.name,
 				l.name,
 				avg((case
-					when r.rating = 'POOR' then 1 
-					when r.rating = 'FAIR' then 2 
-					when r.rating = 'FINE' then 3 
-					when r.rating = 'GOOD' then 4 
-					when r.rating = 'EXCELLENT' then 5 
+					when r.rating = 'POOR' then 1
+					when r.rating = 'FAIR' then 2
+					when r.rating = 'FINE' then 3
+					when r.rating = 'GOOD' then 4
+					when r.rating = 'EXCELLENT' then 5
 					else 0
 				end)) as average
 			)

@@ -1,6 +1,5 @@
 package com.streamlined.library.service.implementation;
 
-import java.nio.CharBuffer;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +19,6 @@ public abstract class UserService {
 
 	public CredentialsDto createNewCredentials() {
 		return new CredentialsDto();
-	}
-
-	public boolean isValidUser(CredentialsDto credentials, String encodedPassword) {
-		return passwordEncoder.matches(CharBuffer.wrap(credentials.getPassword()), encodedPassword);
 	}
 
 }

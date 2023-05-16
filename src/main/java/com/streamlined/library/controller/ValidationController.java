@@ -1,5 +1,7 @@
 package com.streamlined.library.controller;
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +21,14 @@ public class ValidationController {
 	private final ValidationService validationService;
 
 	@GetMapping("/add-edit/{claimId}")
-	public String showClaimDetails(@PathVariable Long claimId, Model model) {
-		model.addAttribute("validation", validationService.getValidationByClaim(claimId));
+	public String showClaimDetails(@PathVariable Long claimId, Model model, Principal principal) {
+		model.addAttribute("validation", validationService.getValidationByClaim(claimId, principal.getName()));
 		return "add-edit-check";
 	}
 
 	@PostMapping("/add-edit/{claimId}")
-	public String saveCheck(@PathVariable Long claimId, ValidationDto checkDto) {
-		validationService.saveValidation(claimId, checkDto);
+	public String saveCheck(@PathVariable Long claimId, ValidationDto checkDto, Principal principal) {
+		validationService.saveValidation(claimId, checkDto, principal.getName());
 		return "redirect:/";
 	}
 

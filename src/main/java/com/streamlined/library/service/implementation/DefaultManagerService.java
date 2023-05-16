@@ -22,21 +22,30 @@ public class DefaultManagerService extends UserService implements ManagerService
 	private final ManagerRepository managerRepository;
 	private final ManagerMapper managerMapper;
 
+	@Override
 	public Stream<ManagerDto> getAllManagers() {
 		return Streamable.of(managerRepository.findAll()).map(managerMapper::toDto).stream();
 	}
 
+	@Override
 	public Optional<ManagerDto> getManagerById(Long id) {
 		return managerRepository.findById(id).map(managerMapper::toDto);
 	}
 
+	@Override
+	public Optional<ManagerDto> getManagerByLogin(String login) {
+		return managerRepository.findByLogin(login).map(managerMapper::toDto);
+	}
+
 	@Transactional
+	@Override
 	public void save(Long id, ManagerDto managerDto) {
 		var entity = managerMapper.toEntity(managerDto);
 		entity.setId(id);
 		managerRepository.save(entity);
 	}
 
+	@Override
 	public ManagerDto createNewManager() {
 		return new ManagerDto();
 	}

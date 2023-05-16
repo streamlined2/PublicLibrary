@@ -12,6 +12,8 @@ import com.streamlined.library.model.dto.CustomerSummaryDataDto;
 import com.streamlined.library.model.dto.CustomerTimeDataDto;
 
 public interface CustomerService {
+	
+	Optional<CustomerDto> getCustomerByLogin(String login);
 
 	Stream<CustomerDto> getAllCustomers();
 

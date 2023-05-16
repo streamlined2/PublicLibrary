@@ -2,6 +2,7 @@ package com.streamlined.library.controller;
 
 import static com.streamlined.library.Utilities.getBookIdList;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,8 +46,8 @@ public class RequestController {
 	}
 
 	@PostMapping("/add")
-	public String addRequest(@RequestParam Map<String, String> bookIds) {
-		requestService.saveRequest(getBookIdList(bookIds));
+	public String addRequest(@RequestParam Map<String, String> bookIds, Principal principal) {
+		requestService.saveRequest(getBookIdList(bookIds), principal.getName());
 		return "redirect:/";
 	}
 

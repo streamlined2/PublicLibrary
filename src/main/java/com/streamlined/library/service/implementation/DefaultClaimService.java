@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.ClaimRepository;
+import com.streamlined.library.dao.LibrarianRepository;
 import com.streamlined.library.dao.ReturnRepository;
 import com.streamlined.library.model.Claim;
-import com.streamlined.library.model.Librarian;
 import com.streamlined.library.model.dto.ClaimDto;
 import com.streamlined.library.model.mapper.BookMapper;
 import com.streamlined.library.model.mapper.ClaimMapper;
@@ -25,22 +25,25 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class DefaultClaimService implements ClaimService {
 
+	private final LibrarianRepository librarianRepository;
 	private final BookRepository bookRepository;
 	private final BookMapper bookMapper;
 	private final ReturnRepository returnRepository;
 	private final ReturnMapper returnMapper;
 	private final ClaimRepository claimRepository;
 	private final ClaimMapper claimMapper;
-	private final Librarian librarian;// TODO replace with authenticated user from security context
 
+	@Override
 	public Optional<ClaimDto> getClaim(Long returnId, Long bookId) {
 		return claimRepository.getClaim(returnId, bookId).map(claimMapper::toDto);
 	}
 
+	@Override
 	public Optional<ClaimDto> getClaim(Long claimId) {
 		return claimRepository.findById(claimId).map(claimMapper::toDto);
 	}
 
+	@Override
 	public ClaimDto getExistingOrBlankClaim(Long returnId, Long bookId) {
 		return getClaim(returnId, bookId).orElse(getBlankClaim(returnId, bookId));
 	}
@@ -55,7 +58,10 @@ public class DefaultClaimService implements ClaimService {
 	}
 
 	@Transactional
-	public void saveClaim(Long returnId, Long bookId, ClaimDto dto) {
+	@Override
+	public void saveClaim(Long returnId, Long bookId, ClaimDto dto, String librarianLogin) {
+		var librarian = librarianRepository.findByLogin(librarianLogin).orElseThrow(
+				() -> new NoEntityFoundException("no librarian found with login %s".formatted(librarianLogin)));
 		var bookReturn = returnRepository.findById(returnId)
 				.orElseThrow(() -> new NoEntityFoundException("no return found with id %d".formatted(returnId)));
 		var book = bookRepository.findById(bookId)
@@ -65,6 +71,7 @@ public class DefaultClaimService implements ClaimService {
 		claimRepository.save(claim);
 	}
 
+	@Override
 	public Stream<ClaimDto> getAllClaims() {
 		return claimRepository.getAllClaims().map(claimMapper::toDto).stream();
 	}

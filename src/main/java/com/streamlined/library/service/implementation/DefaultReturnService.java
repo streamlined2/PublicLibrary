@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.CustomerRepository;
+import com.streamlined.library.dao.LibrarianRepository;
 import com.streamlined.library.dao.ReturnRepository;
 import com.streamlined.library.dao.TransferRepository;
-import com.streamlined.library.model.Librarian;
 import com.streamlined.library.model.Return;
 import com.streamlined.library.model.dto.BookDto;
 import com.streamlined.library.model.dto.ReturnDto;
@@ -28,32 +28,39 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class DefaultReturnService implements ReturnService {
 
+	private final LibrarianRepository librarianRepository;
 	private final BookRepository bookRepository;
 	private final TransferRepository transferRepository;
 	private final ReturnRepository returnRepository;
 	private final CustomerRepository customerRepository;
 	private final BookMapper bookMapper;
 	private final ReturnMapper returnMapper;
-	private final Librarian librarian;// TODO should be replaced with authenticated user from security context
 
+	@Override
 	public Stream<BookDto> getCustomerBooks(Long customerId) {
 		return transferRepository.getCustomerBooks(customerId).map(bookMapper::toDto).stream();
 	}
 
+	@Override
 	public Stream<ReturnDto> getReturns() {
 		return Streamable.of(returnRepository.findAll()).map(returnMapper::toDto).stream();
 	}
 
+	@Override
 	public Stream<ReturnDto> getBookReturns(Long customerId) {
 		return returnRepository.getReturns(customerId).map(returnMapper::toDto).stream();
 	}
 
+	@Override
 	public Optional<ReturnDto> getBookReturn(Long returnId) {
 		return returnRepository.findById(returnId).map(returnMapper::toDto);
 	}
 
 	@Transactional
-	public void saveReturn(Long customerId, List<Long> bookIds) {
+	@Override
+	public void saveReturn(Long customerId, List<Long> bookIds, String librarianLogin) {
+		var librarian = librarianRepository.findByLogin(librarianLogin).orElseThrow(
+				() -> new NoEntityFoundException("no librarian found with login %s".formatted(librarianLogin)));
 		var customer = customerRepository.findById(customerId)
 				.orElseThrow(() -> new NoEntityFoundException("no customer found with id %d".formatted(customerId)));
 		var returnEntity = Return.builder().customer(customer).librarian(librarian).build();

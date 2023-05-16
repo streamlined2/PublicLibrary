@@ -13,7 +13,11 @@ import com.streamlined.library.model.Claim;
 @Repository
 public interface ClaimRepository extends CrudRepository<Claim, Long> {
 
-	@Query("select c from Claim c join c.bookReturn r where r.id = :returnId and c.book.id = :bookId")
+	@Query("""
+			select c from Claim c 
+			join c.bookReturn r 
+			where r.id = :returnId and c.book.id = :bookId
+			""")
 	Optional<Claim> getClaim(@Param("returnId") Long returnId, @Param("bookId") Long bookId);
 	
 	@Query("""

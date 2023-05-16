@@ -9,7 +9,7 @@ import com.streamlined.library.model.dto.CategoryTimeDataDto;
 
 public interface TransferService {
 	
-	void saveTransfer(Long approvalId, List<Long> bookIds);
+	void saveTransfer(Long approvalId, List<Long> bookIds, String librarianLogin);
 	
 	Stream<CategoryTimeDataDto> getCategoryData(Optional<String> category);
 	

@@ -32,49 +32,64 @@ public class DefaultCustomerService extends UserService implements CustomerServi
 	private final CustomerMapper customerMapper;
 	private final BookRepository bookRepository;
 
+	@Override
+	public Optional<CustomerDto> getCustomerByLogin(String login) {
+		return customerRepository.findByLogin(login).map(customerMapper::toDto);
+	}
+
+	@Override
 	public Stream<CustomerDto> getAllCustomers() {
 		return Streamable.of(customerRepository.findAll()).map(customerMapper::toDto).stream();
 	}
 
+	@Override
 	public Optional<CustomerDto> getCustomerById(Long id) {
 		return customerRepository.findById(id).map(customerMapper::toDto);
 	}
 
 	@Transactional
+	@Override
 	public void save(Long id, CustomerDto customerDto) {
 		var entity = customerMapper.toEntity(customerDto);
 		entity.setId(id);
 		customerRepository.save(entity);
 	}
 
+	@Override
 	public CustomerDto createNewCustomer() {
 		return new CustomerDto();
 	}
 
+	@Override
 	public Optional<CustomerDto> getBookHolder(Long bookId) {
 		var book = bookRepository.findById(bookId)
 				.orElseThrow(() -> new NoEntityFoundException("no book found with id %d".formatted(bookId)));
 		return customerRepository.getBookHolders(book).stream().findFirst().map(customerMapper::toDto);
 	}
 
+	@Override
 	public Stream<CustomerSummaryDataDto> getSummaryCustomerData() {
 		var boundary = dateBoundaryService.getDateBoundary();
 		return customerRepository
 				.getSummaryCustomerData(boundary.get(0), boundary.get(1), boundary.get(2), boundary.get(3)).stream();
 	}
 
+	@Override
 	public Stream<CustomerRequestDataDto> getCustomerRequestData(Long customerId) {
 		return customerRepository.getCustomerRequestData(customerId).stream();
 	}
 
+	@Override
 	public Stream<CustomerTimeDataDto> getCustomerTimeData(Long customerId) {
 		return customerRepository.getCustomerTimeData(customerId).stream();
 	}
 
+	@Override
 	public Stream<CustomerReviewDataDto> getCustomerReviewData(Long customerId) {
 		return customerRepository.getCustomerReviewData(customerId).stream();
 	}
 
+	@Override
 	public List<String> getDateBoundaryRepresentation() {
 		return dateBoundaryService.getDateBoundaryRepresentation();
 	}

@@ -1,5 +1,6 @@
 package com.streamlined.library.controller;
 
+import java.security.Principal;
 import java.util.Map;
 import static com.streamlined.library.Utilities.getBookIdList;
 
@@ -22,8 +23,9 @@ public class ApprovalController {
 	private final ApprovalService approvalService;
 
 	@PostMapping("/save/{requestId}")
-	public String approveRequest(@PathVariable Long requestId, @RequestParam Map<String, String> bookIds) {
-		approvalService.saveApproval(requestId, getBookIdList(bookIds));
+	public String approveRequest(@PathVariable Long requestId, @RequestParam Map<String, String> bookIds,
+			Principal principal) {
+		approvalService.saveApproval(requestId, getBookIdList(bookIds), principal.getName());
 		return "redirect:/request/browse";
 	}
 

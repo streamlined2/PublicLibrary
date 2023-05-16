@@ -58,6 +58,7 @@ public class DefaultBookService implements BookService {
 
 	private @Value("${book.page.size}") int bookPageSize;
 
+	@Override
 	public Page<BookDto> getAllBooks(Optional<Integer> page, Optional<SortOrderDto> sortOrder,
 			FilterKeyValueDto filterKeyValue) {
 
@@ -68,6 +69,7 @@ public class DefaultBookService implements BookService {
 		return bookRepository.findAll(example, pageable).map(bookMapper::toDto);
 	}
 
+	@Override
 	public Page<BookDto> getAllBooks(Optional<Integer> page, Optional<SortOrderDto> sortOrder) {
 		Sort sort = Sort.by(SortOrderDto.getOrderByParameter(sortOrder));
 		Pageable pageable = PageRequest.of(page.orElse(0), bookPageSize).withSort(sort);
@@ -107,52 +109,64 @@ public class DefaultBookService implements BookService {
 		return builder.build();
 	}
 
+	@Override
 	public Stream<BookDto> getAvailableBooks() {// TODO should be elaborated later to skip already requested books
 		return Streamable.of(bookRepository.findAll(Sort.unsorted())).map(bookMapper::toDto).stream();
 	}
 
+	@Override
 	public Optional<BookDto> findById(Long id) {
 		return bookRepository.findById(id).map(bookMapper::toDto);
 	}
 
+	@Override
 	public BookDto create() {
 		return new BookDto();
 	}
 
 	@Transactional
+	@Override
 	public void removeById(Long id) {
 		bookRepository.deleteById(id);
 	}
 
 	@Transactional
+	@Override
 	public void save(BookDto book) {
 		bookRepository.save(bookMapper.toEntity(book));
 	}
 
+	@Override
 	public Stream<CountryDto> getAllCountries() {
 		return Streamable.of(countryRepository.findAll()).map(countryMapper::toDto).stream();
 	}
 
+	@Override
 	public Stream<LanguageDto> getAllLanguages() {
 		return Streamable.of(languageRepository.findAll()).map(languageMapper::toDto).stream();
 	}
 
+	@Override
 	public Stream<String> getAllGenres() {
 		return Stream.of(Book.Genre.values()).map(Book.Genre::name);
 	}
 
+	@Override
 	public Stream<String> getAllSizes() {
 		return Stream.of(Book.Size.values()).map(Book.Size::name);
 	}
 
+	@Override
 	public Stream<String> getAllCoverTypes() {
 		return Stream.of(Cover.Type.values()).map(Cover.Type::name);
 	}
 
+	@Override
 	public Stream<String> getAllCoverSurfaces() {
 		return Stream.of(Cover.Surface.values()).map(Cover.Surface::name);
 	}
 
+	@Override
 	public Stream<BookDto> getCustomerBooks(Long customerId) {
 		var firstCustomerTransferIterator = bookRepository.getCustomerTransfers(customerId).iterator();
 		if (firstCustomerTransferIterator.hasNext()) {

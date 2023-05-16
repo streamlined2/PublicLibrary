@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.streamlined.library.WrongRequestParameterException;
+import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.BookRepository;
+import com.streamlined.library.dao.CustomerRepository;
 import com.streamlined.library.dao.RequestRepository;
-import com.streamlined.library.model.Customer;
 import com.streamlined.library.model.Request;
 import com.streamlined.library.model.dto.CategoryRequestDataDto;
 import com.streamlined.library.model.dto.RequestDto;
@@ -24,26 +25,32 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class DefaultRequestService extends BaseService implements RequestService {
 
+	private final CustomerRepository customerRepository;
 	private final BookRepository bookRepository;
 	private final RequestRepository requestRepository;
 	private final RequestMapper requestMapper;
-	private final Customer customer;// TODO must be replaced with authenticated user from security context
 
+	@Override
 	public Stream<RequestDto> getActiveRequests() {
 		return requestRepository.findActiveRequests().map(requestMapper::toDto).stream();
 	}
 
+	@Override
 	public Optional<RequestDto> getRequestById(Long id) {
 		return requestRepository.findById(id).map(requestMapper::toDto);
 	}
 
 	@Transactional
-	public void saveRequest(List<Long> bookIdList) {
+	@Override
+	public void saveRequest(List<Long> bookIdList, String customerLogin) {
+		var customer = customerRepository.findByLogin(customerLogin).orElseThrow(
+				() -> new NoEntityFoundException("no customer found with login %s".formatted(customerLogin)));
 		Request request = Request.builder().customer(customer).build();
 		bookRepository.findAllById(bookIdList).forEach(request.getBooks()::add);
 		requestRepository.save(request);
 	}
 
+	@Override
 	public Stream<CategoryRequestDataDto> getCategoryData(Optional<String> category) {
 		if (category.isEmpty() || category.stream().allMatch(String::isBlank)) {
 			return Stream.empty();
