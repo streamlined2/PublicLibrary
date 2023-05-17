@@ -29,9 +29,9 @@ public class SecurityConfiguration {
 	private static final String USERS_BY_USERNAME_QUERY = """
 			select u.login, u.password_hash, 1 from (
 			 select c.login, c.password_hash from customer c
-			 union all 
+			 union all
 			 select l.login, l.password_hash from librarian l
-			 union all 
+			 union all
 			 select m.login, m.password_hash from manager m
 			) as u
 			where u.login = ?
@@ -39,9 +39,9 @@ public class SecurityConfiguration {
 	private static final String AUTHORITIES_BY_USERNAME_QUERY = """
 			select u.login, u.role from (
 			 select c.login, 'ROLE_CUSTOMER' as role from customer c
-			 union all 
+			 union all
 			 select l.login, 'ROLE_LIBRARIAN' as role from librarian l
-			 union all 
+			 union all
 			 select m.login, 'ROLE_MANAGER' as role from manager m
 			) as u
 			where u.login = ?
@@ -59,8 +59,8 @@ public class SecurityConfiguration {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.authorizeHttpRequests(
-				auth -> auth.requestMatchers("/", "/user/checkin").permitAll().anyRequest().authenticated());
+		httpSecurity.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/index.html", "/user/checkin").permitAll()
+				.anyRequest().authenticated());
 		httpSecurity.csrf().disable();
 		httpSecurity.formLogin(formLogin -> formLogin.loginPage("/user/checkin").loginProcessingUrl("/user/do-login")
 				.usernameParameter("login").passwordParameter("password").defaultSuccessUrl("/")

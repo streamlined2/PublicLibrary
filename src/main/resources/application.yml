@@ -33,7 +33,14 @@ spring:
     encoding: UTF-8
     servlet:
       content-type: text/html; charset=utf-8
+  messages:
+    encoding: UTF-8
+    basename: language/messages
 
-logging.level.org.springframework.security: TRACE
-logging.level.org.springframework.security.web.FilterChainProxy: TRACE
- 
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+        web:
+          FilterChainProxy: TRACE

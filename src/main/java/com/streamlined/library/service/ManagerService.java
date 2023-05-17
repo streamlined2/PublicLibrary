@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 
 import com.streamlined.library.model.dto.ManagerDto;
 
-public interface ManagerService {
+public interface ManagerService extends UserService {
 
 	Stream<ManagerDto> getAllManagers();
 
@@ -16,7 +16,5 @@ public interface ManagerService {
 	void save(Long id, ManagerDto managerDto);
 
 	ManagerDto createNewManager();
-
-	Stream<String> getAllSexes();
 
 }

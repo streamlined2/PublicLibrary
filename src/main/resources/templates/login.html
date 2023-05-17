@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<h2>Login page</h2>
+	<h2><span th:text="#{login.title}" /></h2>
 </head>
 
 <body>
@@ -10,31 +10,32 @@
 	</span>
 	<form th:object="${credentials}" method="post" th:action="@{/user/do-login}">
 		<fieldset>
-			<legend>Please enter your credentials</legend>
+			<legend><span th:text="#{login.enter-credentials-prompt}" /></legend>
 			<table>
 				<tr>
-					<td><label for="login">Login</label></td>
+					<td><label for="login"><span th:text="#{login.login-prompt}" /></label></td>
 					<td>
 						<input id="login" name="login" type="text" th:field="*{login}" size="80" minlength="8"
-							maxlength="255" pattern="^[a-zA-Z_-@\.]{8,255}$" placeholder="Please enter user login"
-							required autocomplete="off" />
+							maxlength="255" pattern="^[a-zA-Z_-@\.]{8,255}$"
+							th:placeholder="#{login.enter-login-prompt}" required autocomplete="off" />
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<label for="password">Password</label>
+						<label for="password"><span th:text="#{login.password-prompt}" /></label>
 					</td>
 					<td>
 						<input id="password" name="password" type="password" th:field="*{password}" size="80"
 							minlength="8" maxlength="255" pattern="^[a-zA-Z_-]{8,255}$"
-							placeholder="Please enter password" required autocomplete="off" />
+							th:placeholder="#{login.enter-password-prompt}" required autocomplete="off" />
 					</td>
 				</tr>
 			</table>
 		</fieldset>
 		<br>
-		<button type="submit">Submit</button>
-		<button type="submit" formmethod="get" th:formaction="@{/}" formnovalidate>Back</button>
+		<button type="submit"><span th:text="#{login.submit-credentials}" /></button>
+		<button type="submit" formmethod="get" th:formaction="@{/}" formnovalidate><span
+				th:text="#{login.return-back}" /></button>
 	</form>
 </body>
 

@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class DefaultCustomerService extends UserService implements CustomerService {
+public class DefaultCustomerService extends DefaultUserService implements CustomerService {
 
 	private final DateBoundaryService dateBoundaryService;
 	private final CustomerRepository customerRepository;

@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.streamlined.library.model.Person;
 import com.streamlined.library.model.dto.CredentialsDto;
 
-public abstract class UserService {
+public abstract class DefaultUserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;

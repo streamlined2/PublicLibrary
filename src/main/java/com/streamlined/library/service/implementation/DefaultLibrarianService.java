@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class DefaultLibrarianService extends UserService implements LibrarianService {
+public class DefaultLibrarianService extends DefaultUserService implements LibrarianService {
 
 	private final LibrarianRepository librarianRepository;
 	private final LibrarianMapper librarianMapper;

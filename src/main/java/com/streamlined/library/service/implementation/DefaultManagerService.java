@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class DefaultManagerService extends UserService implements ManagerService {
+public class DefaultManagerService extends DefaultUserService implements ManagerService {
 
 	private final ManagerRepository managerRepository;
 	private final ManagerMapper managerMapper;

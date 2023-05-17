@@ -4,15 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import com.streamlined.library.model.dto.CredentialsDto;
 import com.streamlined.library.model.dto.CustomerDto;
 import com.streamlined.library.model.dto.CustomerRequestDataDto;
 import com.streamlined.library.model.dto.CustomerReviewDataDto;
 import com.streamlined.library.model.dto.CustomerSummaryDataDto;
 import com.streamlined.library.model.dto.CustomerTimeDataDto;
 
-public interface CustomerService {
-	
+public interface CustomerService extends UserService {
+
 	Optional<CustomerDto> getCustomerByLogin(String login);
 
 	Stream<CustomerDto> getAllCustomers();
@@ -30,13 +29,9 @@ public interface CustomerService {
 	Stream<CustomerRequestDataDto> getCustomerRequestData(Long customerId);
 
 	Stream<CustomerTimeDataDto> getCustomerTimeData(Long customerId);
-	
+
 	Stream<CustomerReviewDataDto> getCustomerReviewData(Long customerId);
 
 	List<String> getDateBoundaryRepresentation();
-
-	Stream<String> getAllSexes();
-	
-	CredentialsDto createNewCredentials();
 
 }

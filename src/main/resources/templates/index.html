@@ -3,61 +3,76 @@
 
 <body>
 	<p>
+	<form method="get" th:action="@{/}">
+		<select id="language" name="language" value="${selectedLanguage}" onchange="this.form.submit()">
+			<span th:each="language: ${languages}">
+				<option th:if="${language.code==selectedLanguage}" th:value="${language.code}"
+					th:text="${language.title}" selected />
+				<option th:unless="${language.code==selectedLanguage}" th:value="${language.code}"
+					th:text="${language.title}" />
+			</span>
+		</select>
+	</form>
+	<p>
 	<h2>
 		<span sec:authorize="isAuthenticated()">
-			Hello, <span sec:authentication="principal.username" />!
+			<span th:text="#{index.greeting-0}"/> <span sec:authentication="principal.username" />!
 		</span>
 		<br>
-		Welcome to our library!
+
+		<span th:text="#{index.greeting}" />
+		<hr>
+
 	</h2>
 	</p>
 	<h3>
-		<div sec:authorize="!isAuthenticated()">Please click <a th:href="@{/user/checkin}">here</a> to login</div>
-		<div sec:authorize="isAuthenticated()">You may <a th:href="@{/user/checkout}">logout</a></div>
-		<div sec:authorize="isAuthenticated()">or <a th:href="@{/book/logout}">close</a> session</div>
+		<div sec:authorize="!isAuthenticated()"><span th:text="#{index.login-message-1}" /><a
+				th:href="@{/user/checkin}"><span th:text="#{index.login-message-2}" /></a> <span
+				th:text="#{index.login-message-3}" /></div>
+		<div sec:authorize="isAuthenticated()"><span th:text="#{index.logout-message-1}" /> <a
+				th:href="@{/user/checkout}"><span th:text="#{index.logout-message-2}" /></a>
+			<span th:text="#{index.close-session-message-1}" /> <a th:href="@{/book/logout}"> <span
+					th:text="#{index.close-session-message-2}" /></a> <span
+					th:text="#{index.close-session-message-3}" />
+		</div>
 	</h3>
 	<h3>
 		<fieldset>
-			<legend>Please select next action</legend>
+			<legend><span th:text="#{index.next-action-prompt}" /></legend>
 			<br>
 
 			<div sec:authorize="hasRole('CUSTOMER')">
-				<label for="customer">Customer</label>
 				<ul id="customer">
-					<li><a th:href="@{/book/select}">browse available books to order</a></li>
-					<li><a th:href="@{/review/view}">find book and view reviews</a></li>
-					<li><a th:href="@{/review/submit}">fill in and submit book review</a></li>
-					<li><a th:href="@{/customer/edit-data}">fill in personal data</a></li>
+					<li><a th:href="@{/book/select}" th:text="#{index.customer-action-1}"/></li>
+					<li><a th:href="@{/review/view}" th:text="#{index.customer-action-2}"/></li>
+					<li><a th:href="@{/review/submit}" th:text="#{index.customer-action-3}"/></li>
+					<li><a th:href="@{/customer/edit-data}" th:text="#{index.customer-action-4}"/></li>
 				</ul>
 			</div>
 
 			<div sec:authorize="hasRole('LIBRARIAN')">
-				<label for="librarian">Librarian</label>
 				<ul id="librarian">
-					<li><a th:href="@{/book/browse}">edit existing books</a></li>
-					<li><a th:href="@{/request/browse}">check active requests</a></li>
-					<li><a th:href="@{/approval/browse}">transfer ordered books</a></li>
-					<li><a th:href="@{/return/select-customer}">accept books returned by customer and submit damage
-							claims</a></li>
-					<li><a th:href="@{/librarian/edit-data}">fill in personal data</a></li>
-					<li><a th:href="@{/customer/register-new}">register new customer</a></li>
-					<li><a th:href="@{/book/find-holder}">find holder of the book</a></li>
-					<li><a th:href="@{/customer/get-book-list}">fetch list of books taken by customer</a></li>
-					<li><a th:href="@{/request/most-popular-books}">most popular book categories by requests</a></li>
-					<li><a th:href="@{/transfer/most-popular-books}">most popular book categories by time</a></li>
-					<li><a th:href="@{/customer/display-data}">display statistical data about customers</a></li>
-					<li><a th:href="@{/customer/view-customer-data}">view statistical data for selected customer</a>
-					</li>
+					<li><a th:href="@{/book/browse}" th:text="#{index.librarian-action-1}"/></li>
+					<li><a th:href="@{/request/browse}" th:text="#{index.librarian-action-2}"/></li>
+					<li><a th:href="@{/approval/browse}" th:text="#{index.librarian-action-3}"/></li>
+					<li><a th:href="@{/return/select-customer}" th:text="#{index.librarian-action-4}"/></li>
+					<li><a th:href="@{/librarian/edit-data}" th:text="#{index.librarian-action-5}"/></li>
+					<li><a th:href="@{/customer/register-new}" th:text="#{index.librarian-action-6}"/></li>
+					<li><a th:href="@{/book/find-holder}" th:text="#{index.librarian-action-7}"/></li>
+					<li><a th:href="@{/customer/get-book-list}" th:text="#{index.librarian-action-8}"/></li>
+					<li><a th:href="@{/request/most-popular-books}" th:text="#{index.librarian-action-9}"/></li>
+					<li><a th:href="@{/transfer/most-popular-books}" th:text="#{index.librarian-action-10}"/></li>
+					<li><a th:href="@{/customer/display-data}" th:text="#{index.librarian-action-11}"/></li>
+					<li><a th:href="@{/customer/view-customer-data}" th:text="#{index.librarian-action-12}"/></li>
 				</ul>
 			</div>
 
 			<div sec:authorize="hasRole('MANAGER')">
-				<label for="manager">Manager</label>
 				<ul id="manager">
-					<li><a th:href="@{/librarian/register-new}">register new librarian</a></li>
-					<li><a th:href="@{/manager/register-new}">register new manager</a></li>
-					<li><a th:href="@{/manager/edit-data}">fill in personal data</a></li>
-					<li><a th:href="@{/claim/review}">validate claims</a></li>
+					<li><a th:href="@{/librarian/register-new}" th:text="#{index.manager-action-1}"/></li>
+					<li><a th:href="@{/manager/register-new}" th:text="#{index.manager-action-2}"/></li>
+					<li><a th:href="@{/manager/edit-data}" th:text="#{index.manager-action-3}"/></li>
+					<li><a th:href="@{/claim/review}" th:text="#{index.manager-action-4}"/></li>
 				</ul>
 			</div>
 			<br>

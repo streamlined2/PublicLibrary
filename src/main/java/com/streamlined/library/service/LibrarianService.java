@@ -5,7 +5,7 @@ import java.util.stream.Stream;
 
 import com.streamlined.library.model.dto.LibrarianDto;
 
-public interface LibrarianService {
+public interface LibrarianService extends UserService {
 
 	Optional<LibrarianDto> getLibrarianByLogin(String userLogin);
 
@@ -16,7 +16,5 @@ public interface LibrarianService {
 	void save(Long id, LibrarianDto librarianDto);
 
 	LibrarianDto createNewLibrarian();
-
-	Stream<String> getAllSexes();
 
 }
