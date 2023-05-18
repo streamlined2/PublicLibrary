@@ -5,9 +5,13 @@ import java.util.stream.Stream;
 
 import com.streamlined.library.model.dto.BookDto;
 import com.streamlined.library.model.dto.ReviewDto;
+import com.streamlined.library.security.IsCustomer;
+import com.streamlined.library.security.IsCustomerOrLibrarian;
 
+@IsCustomerOrLibrarian
 public interface ReviewService {
 
+	@IsCustomer
 	Stream<BookDto> getReceivedBooks(String customerLogin);
 
 	Stream<ReviewDto> getBookReviews(Long bookId);
@@ -20,6 +24,7 @@ public interface ReviewService {
 
 	Stream<String> getRatingList();
 
+	@IsCustomer
 	void saveReview(Long bookId, ReviewDto reviewDto, String customerLogin);
 
 }

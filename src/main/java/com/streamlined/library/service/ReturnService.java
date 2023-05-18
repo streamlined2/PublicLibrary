@@ -6,7 +6,9 @@ import java.util.stream.Stream;
 
 import com.streamlined.library.model.dto.BookDto;
 import com.streamlined.library.model.dto.ReturnDto;
+import com.streamlined.library.security.IsLibrarian;
 
+@IsLibrarian
 public interface ReturnService {
 
 	Stream<BookDto> getCustomerBooks(Long customerId);

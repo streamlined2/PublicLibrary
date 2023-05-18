@@ -15,8 +15,10 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @SpringBootApplication
 public class LibraryApplication implements WebMvcConfigurer {
-	
+
+	public static final String LOCALE_CHANGE_INTERCEPTOR_LANGUAGE_PARAMETER = "_selectedLanguage";
 	public static final String DEFAULT_LANGUAGE = "en";
+	private static final Locale DEFAULT_LOCALE = Locale.of(DEFAULT_LANGUAGE);
 
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryApplication.class, args);
@@ -25,14 +27,14 @@ public class LibraryApplication implements WebMvcConfigurer {
 	@Bean
 	public LocaleResolver localeResolver() {
 		var resolver = new SessionLocaleResolver();
-		resolver.setDefaultLocale(Locale.US);
+		resolver.setDefaultLocale(DEFAULT_LOCALE);
 		return resolver;
 	}
 
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		var localeChangeInterceptor = new LocaleChangeInterceptor();
-		localeChangeInterceptor.setParamName("language");
+		localeChangeInterceptor.setParamName(LOCALE_CHANGE_INTERCEPTOR_LANGUAGE_PARAMETER);
 		return localeChangeInterceptor;
 	}
 

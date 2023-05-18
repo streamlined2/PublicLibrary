@@ -4,7 +4,9 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import com.streamlined.library.model.dto.ClaimDto;
+import com.streamlined.library.security.IsLibrarianOrManager;
 
+@IsLibrarianOrManager
 public interface ClaimService {
 
 	Optional<ClaimDto> getClaim(Long returnId, Long bookId);

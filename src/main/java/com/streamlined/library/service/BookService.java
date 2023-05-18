@@ -10,7 +10,11 @@ import com.streamlined.library.model.dto.CountryDto;
 import com.streamlined.library.model.dto.FilterKeyValueDto;
 import com.streamlined.library.model.dto.LanguageDto;
 import com.streamlined.library.model.dto.SortOrderDto;
+import com.streamlined.library.security.IsCustomer;
+import com.streamlined.library.security.IsCustomerOrLibrarian;
+import com.streamlined.library.security.IsLibrarian;
 
+@IsCustomerOrLibrarian
 public interface BookService {
 
 	Page<BookDto> getAllBooks(Optional<Integer> page, Optional<SortOrderDto> sortOrder,
@@ -18,15 +22,21 @@ public interface BookService {
 	
 	Page<BookDto> getAllBooks(Optional<Integer> page, Optional<SortOrderDto> sortOrder);
 
+	@IsCustomer
 	Stream<BookDto> getAvailableBooks();
 
 	Optional<BookDto> findById(Long id);
 
 	BookDto create();
 
+	@IsLibrarian
 	void removeById(Long id);
 
+	@IsLibrarian
 	void save(BookDto book);
+
+	@IsLibrarian
+	Stream<BookDto> getCustomerBooks(Long customerId);
 
 	Stream<CountryDto> getAllCountries();
 
@@ -39,7 +49,5 @@ public interface BookService {
 	Stream<String> getAllCoverTypes();
 
 	Stream<String> getAllCoverSurfaces();
-
-	Stream<BookDto> getCustomerBooks(Long customerId);
 
 }

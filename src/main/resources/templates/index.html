@@ -4,7 +4,7 @@
 <body>
 	<p>
 	<form method="get" th:action="@{/}">
-		<select id="language" name="language" value="${selectedLanguage}" onchange="this.form.submit()">
+		<select name="_selectedLanguage" value="${selectedLanguage}" onchange="this.form.submit()">
 			<span th:each="language: ${languages}">
 				<option th:if="${language.code==selectedLanguage}" th:value="${language.code}"
 					th:text="${language.title}" selected />
