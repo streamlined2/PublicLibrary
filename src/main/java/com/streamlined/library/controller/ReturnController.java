@@ -1,6 +1,5 @@
 package com.streamlined.library.controller;
 
-import java.security.Principal;
 import java.util.Map;
 import static com.streamlined.library.Utilities.getBookIdList;
 
@@ -38,9 +37,9 @@ public class ReturnController {
 	}
 
 	@PostMapping("/customer-books/{customerId}")
-	public String saveBookReturn(@PathVariable Long customerId, @RequestParam Map<String, String> bookIds, Model model,
-			Principal principal) {
-		returnService.saveReturn(customerId, getBookIdList(bookIds), principal.getName());
+	public String saveBookReturn(@PathVariable Long customerId, @RequestParam Map<String, String> bookIds,
+			Model model) {
+		returnService.saveReturn(customerId, getBookIdList(bookIds));
 		return "redirect:/return/select-customer";
 	}
 

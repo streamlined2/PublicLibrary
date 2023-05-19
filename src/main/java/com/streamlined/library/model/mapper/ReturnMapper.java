@@ -27,7 +27,7 @@ public class ReturnMapper implements Mapper<ReturnDto, Return> {
 	public ReturnDto toDto(Return entity) {
 		var dto = ReturnDto.builder().id(entity.getId()).customer(customerMapper.toDto(entity.getCustomer()))
 				.librarian(librarianMapper.toDto(entity.getLibrarian())).createdTime(entity.getCreatedTime()).build();
-		entity.getBooks().stream().map(bookMapper::toDto).forEach(dto.books()::add);
+		entity.getBooks().stream().map(bookMapper::toDto).forEach(dto::addBook);
 		return dto;
 	}
 

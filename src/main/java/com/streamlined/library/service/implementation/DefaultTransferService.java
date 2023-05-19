@@ -11,7 +11,6 @@ import com.streamlined.library.WrongRequestParameterException;
 import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.ApprovalRepository;
 import com.streamlined.library.dao.BookRepository;
-import com.streamlined.library.dao.LibrarianRepository;
 import com.streamlined.library.dao.TransferRepository;
 import com.streamlined.library.model.Transfer;
 import com.streamlined.library.model.dto.CategoryTimeDataDto;
@@ -24,19 +23,16 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class DefaultTransferService extends BaseService implements TransferService {
 
-	private final LibrarianRepository librarianRepository;
 	private final BookRepository bookRepository;
 	private final ApprovalRepository approvalRepository;
 	private final TransferRepository transferRepository;
 
 	@Transactional
 	@Override
-	public void saveTransfer(Long approvalId, List<Long> bookIds, String librarianLogin) {
-		var librarian = librarianRepository.findByLogin(librarianLogin).orElseThrow(
-				() -> new NoEntityFoundException("no librarian found with login %s".formatted(librarianLogin)));
+	public void saveTransfer(Long approvalId, List<Long> bookIds) {
 		var approval = approvalRepository.findById(approvalId)
 				.orElseThrow(() -> new NoEntityFoundException("no approval found with id %d".formatted(approvalId)));
-		var transfer = Transfer.builder().approval(approval).librarian(librarian).build();
+		var transfer = Transfer.builder().approval(approval).build();
 		bookRepository.findAllById(bookIds).forEach(transfer.getBooks()::add);
 		transferRepository.save(transfer);
 	}

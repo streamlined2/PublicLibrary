@@ -2,7 +2,6 @@ package com.streamlined.library.controller;
 
 import static com.streamlined.library.Utilities.getBookIdList;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,14 +39,14 @@ public class RequestController {
 
 	@GetMapping("/details/{id}")
 	public String browseRequestDetails(@PathVariable Long id, Model model) {
-		model.addAttribute("request", requestService.getRequestById(id).orElseThrow(
-				() -> new NoEntityFoundException("entity for request with id %d not found".formatted(id))));
+		model.addAttribute("request", requestService.getRequestById(id)
+				.orElseThrow(() -> new NoEntityFoundException("entity for request with id %d not found".formatted(id))));
 		return "browse-request-details";
 	}
 
 	@PostMapping("/add")
-	public String addRequest(@RequestParam Map<String, String> bookIds, Principal principal) {
-		requestService.saveRequest(getBookIdList(bookIds), principal.getName());
+	public String addRequest(@RequestParam Map<String, String> bookIds) {
+		requestService.saveRequest(getBookIdList(bookIds));
 		return "redirect:/";
 	}
 

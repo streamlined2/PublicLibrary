@@ -30,13 +30,13 @@ public class UserController {
 	public String checkin(@RequestParam Optional<String> error, Model model) {
 		model.addAttribute("credentials", userService.createNewCredentials());
 		model.addAttribute("error", error.orElse("false"));
-		log.info("redirecting to login form...");
+		log.debug("redirecting to login form...");
 		return "login";
 	}
 
 	@PostMapping("/do-login")
 	public String login(CredentialsDto credentials) {
-		log.info("logged in as {}", credentials.getLogin());
+		log.debug("logged in as {}", credentials.getLogin());
 		return "redirect:/";
 	}
 

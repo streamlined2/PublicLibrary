@@ -20,7 +20,7 @@ public interface RequestService {
 	Optional<RequestDto> getRequestById(Long id);
 
 	@IsCustomer
-	void saveRequest(List<Long> bookIdList, String customerLogin);
+	void saveRequest(List<Long> bookIdList);
 
 	@IsLibrarian
 	Stream<CategoryRequestDataDto> getCategoryData(Optional<String> category);

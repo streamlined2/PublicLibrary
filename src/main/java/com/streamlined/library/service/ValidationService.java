@@ -8,6 +8,6 @@ public interface ValidationService {
 
 	ValidationDto getValidationByClaim(Long claimId, String managerLogin);
 
-	void saveValidation(Long claimId, ValidationDto checkDto, String managerLogin);
+	void saveValidation(Long claimId, ValidationDto checkDto);
 
 }

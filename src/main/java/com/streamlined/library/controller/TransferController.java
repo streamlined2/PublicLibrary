@@ -2,7 +2,6 @@ package com.streamlined.library.controller;
 
 import static com.streamlined.library.Utilities.getBookIdList;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,9 +32,8 @@ public class TransferController {
 	}
 
 	@PostMapping("/save/{approvalId}")
-	public String createTransfer(@PathVariable Long approvalId, @RequestParam Map<String, String> bookIds,
-			Principal principal) {
-		transferService.saveTransfer(approvalId, getBookIdList(bookIds), principal.getName());
+	public String createTransfer(@PathVariable Long approvalId, @RequestParam Map<String, String> bookIds) {
+		transferService.saveTransfer(approvalId, getBookIdList(bookIds));
 		return "redirect:/approval/browse";
 	}
 

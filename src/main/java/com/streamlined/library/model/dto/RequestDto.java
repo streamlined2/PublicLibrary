@@ -13,5 +13,9 @@ public record RequestDto(Long id, @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm:ss
 	public RequestDto {
 		books = new HashSet<>();
 	}
+	
+	public void addBook(BookDto book) {
+		books.add(book);
+	}
 
 }

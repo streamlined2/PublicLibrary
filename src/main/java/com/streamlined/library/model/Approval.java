@@ -5,9 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,6 +41,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 @ToString
+@EntityListeners(AuditingEntityListener.class)
 public class Approval {
 
 	@Id
@@ -50,8 +54,9 @@ public class Approval {
 	private @NonNull Request request;
 
 	@ManyToOne
-	@JoinColumn(name = "librarian", unique = false, nullable = false)
-	private @NonNull Librarian librarian;
+	@JoinColumn(name = "librarian", updatable = false, unique = false, nullable = false)
+	@CreatedBy
+	private Librarian librarian;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp

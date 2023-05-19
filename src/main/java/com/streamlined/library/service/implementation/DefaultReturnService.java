@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.CustomerRepository;
-import com.streamlined.library.dao.LibrarianRepository;
 import com.streamlined.library.dao.ReturnRepository;
 import com.streamlined.library.dao.TransferRepository;
 import com.streamlined.library.model.Return;
@@ -28,7 +27,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class DefaultReturnService implements ReturnService {
 
-	private final LibrarianRepository librarianRepository;
 	private final BookRepository bookRepository;
 	private final TransferRepository transferRepository;
 	private final ReturnRepository returnRepository;
@@ -58,12 +56,10 @@ public class DefaultReturnService implements ReturnService {
 
 	@Transactional
 	@Override
-	public void saveReturn(Long customerId, List<Long> bookIds, String librarianLogin) {
-		var librarian = librarianRepository.findByLogin(librarianLogin).orElseThrow(
-				() -> new NoEntityFoundException("no librarian found with login %s".formatted(librarianLogin)));
+	public void saveReturn(Long customerId, List<Long> bookIds) {
 		var customer = customerRepository.findById(customerId)
 				.orElseThrow(() -> new NoEntityFoundException("no customer found with id %d".formatted(customerId)));
-		var returnEntity = Return.builder().customer(customer).librarian(librarian).build();
+		var returnEntity = Return.builder().customer(customer).build();
 		bookRepository.findAllById(bookIds).forEach(returnEntity.getBooks()::add);
 		returnRepository.save(returnEntity);
 	}

@@ -15,4 +15,8 @@ public record ApprovalDto(Long id, RequestDto request, LibrarianDto librarian,
 		books = new HashSet<>();
 	}
 
+	public void addBook(BookDto book) {
+		books.add(book);
+	}
+
 }

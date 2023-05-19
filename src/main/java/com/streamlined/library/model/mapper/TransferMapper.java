@@ -1,7 +1,5 @@
 package com.streamlined.library.model.mapper;
 
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 
 import com.streamlined.library.model.Transfer;
@@ -27,9 +25,10 @@ public class TransferMapper implements Mapper<TransferDto, Transfer> {
 
 	@Override
 	public TransferDto toDto(Transfer entity) {
-		return TransferDto.builder().id(entity.getId()).approval(approvalMapper.toDto(entity.getApproval()))
-				.librarian(librarianMapper.toDto(entity.getLibrarian())).createdTime(entity.getCreatedTime())
-				.books(entity.getBooks().stream().map(bookMapper::toDto).collect(Collectors.toSet())).build();
+		var transfer = TransferDto.builder().id(entity.getId()).approval(approvalMapper.toDto(entity.getApproval()))
+				.librarian(librarianMapper.toDto(entity.getLibrarian())).createdTime(entity.getCreatedTime()).build();
+		entity.getBooks().stream().map(bookMapper::toDto).forEach(transfer::addBook);
+		return transfer;
 	}
 
 }

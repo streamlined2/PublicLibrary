@@ -45,13 +45,11 @@ public class DefaultValidationService implements ValidationService {
 
 	@Transactional
 	@Override
-	public void saveValidation(Long claimId, ValidationDto checkDto, String managerLogin) {
-		var manager = managerRepository.findByLogin(managerLogin).orElseThrow(
-				() -> new NoEntityFoundException("no manager found with login %s".formatted(managerLogin)));
+	public void saveValidation(Long claimId, ValidationDto checkDto) {
 		var claim = claimRepository.findById(claimId)
 				.orElseThrow(() -> new NoEntityFoundException("no claim found with id %d".formatted(claimId)));
-		var validation = Validation.builder().id(checkDto.id()).claim(claim).manager(manager)
-				.compensation(checkDto.compensation()).build();
+		var validation = Validation.builder().id(checkDto.id()).claim(claim).compensation(checkDto.compensation())
+				.build();
 		validationRepository.save(validation);
 	}
 

@@ -11,7 +11,7 @@ import com.streamlined.library.security.IsLibrarian;
 @IsLibrarian
 public interface TransferService {
 	
-	void saveTransfer(Long approvalId, List<Long> bookIds, String librarianLogin);
+	void saveTransfer(Long approvalId, List<Long> bookIds);
 	
 	Stream<CategoryTimeDataDto> getCategoryData(Optional<String> category);
 	

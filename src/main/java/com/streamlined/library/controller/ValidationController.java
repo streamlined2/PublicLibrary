@@ -27,8 +27,8 @@ public class ValidationController {
 	}
 
 	@PostMapping("/add-edit/{claimId}")
-	public String saveCheck(@PathVariable Long claimId, ValidationDto checkDto, Principal principal) {
-		validationService.saveValidation(claimId, checkDto, principal.getName());
+	public String saveCheck(@PathVariable Long claimId, ValidationDto checkDto) {
+		validationService.saveValidation(claimId, checkDto);
 		return "redirect:/";
 	}
 

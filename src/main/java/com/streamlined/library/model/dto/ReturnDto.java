@@ -19,4 +19,8 @@ public record ReturnDto(Long id, CustomerDto customer, LibrarianDto librarian, L
 		return books.stream().map(BookDto::getTitle).collect(Collectors.joining(", "));
 	}
 
+	public void addBook(BookDto book) {
+		books.add(book);
+	}
+
 }

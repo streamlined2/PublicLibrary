@@ -1,7 +1,5 @@
 package com.streamlined.library.model.mapper;
 
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 
 import com.streamlined.library.model.Request;
@@ -17,9 +15,10 @@ public class RequestMapper implements Mapper<RequestDto, Request> {
 	private final BookMapper bookMapper;
 
 	public RequestDto toDto(Request entity) {
-		return RequestDto.builder().id(entity.getId()).createdTime(entity.getCreatedTime())
-				.customer(customerMapper.toDto(entity.getCustomer()))
-				.books(entity.getBooks().stream().map(bookMapper::toDto).collect(Collectors.toSet())).build();
+		var request = RequestDto.builder().id(entity.getId()).createdTime(entity.getCreatedTime())
+				.customer(customerMapper.toDto(entity.getCustomer())).build();
+		entity.getBooks().stream().map(bookMapper::toDto).forEach(request::addBook);
+		return request;
 	}
 
 	public Request toEntity(RequestDto dto) {

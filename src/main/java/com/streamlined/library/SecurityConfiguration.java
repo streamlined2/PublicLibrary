@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfiguration {
 
 	private static final String USERS_BY_USERNAME_QUERY = """
-			select u.login, u.password_hash, 1 from (
+			select u.login, u.password_hash, 'true' from (
 			 select c.login, c.password_hash from customer c
 			 union all
 			 select l.login, l.password_hash from librarian l

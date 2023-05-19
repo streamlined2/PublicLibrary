@@ -5,9 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,7 +28,6 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -38,6 +40,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Request {
 
 	@Id
@@ -51,8 +54,9 @@ public class Request {
 	private LocalDateTime createdTime;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "customer")
-	private @NonNull Customer customer;
+	@JoinColumn(name = "customer", updatable = false, nullable = false)
+	@CreatedBy
+	private Customer customer;
 
 	@OneToMany
 	@JoinTable(name = "request_book", joinColumns = { @JoinColumn(name = "request") }, inverseJoinColumns = {

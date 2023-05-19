@@ -7,11 +7,14 @@ import javax.money.MonetaryAmount;
 import org.hibernate.annotations.CompositeType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Currency;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import io.hypersistence.utils.hibernate.type.money.MonetaryAmountType;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,6 +44,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode(of = "id")
+@EntityListeners(AuditingEntityListener.class)
 public class Validation {
 
 	@Id
@@ -53,8 +57,9 @@ public class Validation {
 	private @NonNull Claim claim;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "manager", nullable = false, unique = false)
-	private @NonNull Manager manager;
+	@JoinColumn(name = "manager", updatable = false, nullable = false, unique = false)
+	@CreatedBy
+	private Manager manager;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp

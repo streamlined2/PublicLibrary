@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.streamlined.library.model.dto.UserInterfaceLanguageDto;
 
-import static com.streamlined.library.LibraryApplication.DEFAULT_LANGUAGE;
+import static com.streamlined.library.LibraryApplication.DEFAULT_LOCALE;
 import static com.streamlined.library.LibraryApplication.LOCALE_CHANGE_INTERCEPTOR_LANGUAGE_PARAMETER;
 
 @Controller
@@ -27,7 +27,7 @@ public class InitialController {
 	@GetMapping("/")
 	public String changeLanguage(@RequestParam(LOCALE_CHANGE_INTERCEPTOR_LANGUAGE_PARAMETER) Optional<String> language,
 			Model model) {
-		model.addAttribute("selectedLanguage", language.orElse(DEFAULT_LANGUAGE));
+		model.addAttribute("selectedLanguage", language.orElse(DEFAULT_LOCALE.getLanguage()));
 		return "index";
 	}
 

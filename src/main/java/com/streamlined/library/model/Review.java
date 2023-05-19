@@ -4,9 +4,12 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +42,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(of = "id")
+@EntityListeners(AuditingEntityListener.class)
 public class Review {
 
 	public enum Rating {
@@ -65,8 +69,9 @@ public class Review {
 	private @NotNull Book book;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "customer", nullable = false, unique = false)
-	private @NotNull Customer customer;
+	@JoinColumn(name = "customer", updatable = false, nullable = false, unique = false)
+	@CreatedBy
+	private Customer customer;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "created_time", nullable = false, unique = false, updatable = false)

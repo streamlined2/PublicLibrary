@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.streamlined.library.WrongRequestParameterException;
-import com.streamlined.library.controller.NoEntityFoundException;
 import com.streamlined.library.dao.BookRepository;
-import com.streamlined.library.dao.CustomerRepository;
 import com.streamlined.library.dao.RequestRepository;
 import com.streamlined.library.model.Request;
 import com.streamlined.library.model.dto.CategoryRequestDataDto;
@@ -25,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class DefaultRequestService extends BaseService implements RequestService {
 
-	private final CustomerRepository customerRepository;
 	private final BookRepository bookRepository;
 	private final RequestRepository requestRepository;
 	private final RequestMapper requestMapper;
@@ -37,15 +34,13 @@ public class DefaultRequestService extends BaseService implements RequestService
 
 	@Override
 	public Optional<RequestDto> getRequestById(Long id) {
-		return requestRepository.findById(id).map(requestMapper::toDto);
+		return requestRepository.getRequestById(id).map(requestMapper::toDto);
 	}
 
 	@Transactional
 	@Override
-	public void saveRequest(List<Long> bookIdList, String customerLogin) {
-		var customer = customerRepository.findByLogin(customerLogin).orElseThrow(
-				() -> new NoEntityFoundException("no customer found with login %s".formatted(customerLogin)));
-		Request request = Request.builder().customer(customer).build();
+	public void saveRequest(List<Long> bookIdList) {
+		Request request = Request.builder().build();
 		bookRepository.findAllById(bookIdList).forEach(request.getBooks()::add);
 		requestRepository.save(request);
 	}

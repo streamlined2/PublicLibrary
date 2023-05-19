@@ -4,9 +4,12 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -36,6 +39,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode(of = "id")
+@EntityListeners(AuditingEntityListener.class)
 public class Claim {
 
 	@Id
@@ -52,8 +56,9 @@ public class Claim {
 	private @NonNull Book book;
 
 	@ManyToOne
-	@JoinColumn(name = "librarian", unique = false, nullable = false)
-	private @NonNull Librarian librarian;
+	@JoinColumn(name = "librarian", updatable = false, unique = false, nullable = false)
+	@CreatedBy
+	private Librarian librarian;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp

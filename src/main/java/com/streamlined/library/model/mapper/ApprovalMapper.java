@@ -1,7 +1,5 @@
 package com.streamlined.library.model.mapper;
 
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 
 import com.streamlined.library.model.Approval;
@@ -17,9 +15,10 @@ public class ApprovalMapper implements Mapper<ApprovalDto, Approval> {
 	private final LibrarianMapper librarianMapper;
 
 	public ApprovalDto toDto(Approval entity) {
-		return ApprovalDto.builder().id(entity.getId()).request(requestMapper.toDto(entity.getRequest()))
-				.librarian(librarianMapper.toDto(entity.getLibrarian())).createdTime(entity.getCreatedTime())
-				.books(entity.getBooks().stream().map(bookMapper::toDto).collect(Collectors.toSet())).build();
+		var approval = ApprovalDto.builder().id(entity.getId()).request(requestMapper.toDto(entity.getRequest()))
+				.librarian(librarianMapper.toDto(entity.getLibrarian())).createdTime(entity.getCreatedTime()).build();
+		entity.getBooks().stream().map(bookMapper::toDto).forEach(approval::addBook);
+		return approval;
 	}
 
 	public Approval toEntity(ApprovalDto dto) {

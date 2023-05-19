@@ -17,6 +17,6 @@ public interface ClaimService {
 
 	Stream<ClaimDto> getAllClaims();
 
-	void saveClaim(Long returnId, Long bookId, ClaimDto dto, String librarianLogin);
+	void saveClaim(Long returnId, Long bookId, ClaimDto dto);
 
 }

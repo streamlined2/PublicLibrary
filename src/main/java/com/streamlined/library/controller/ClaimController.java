@@ -1,7 +1,5 @@
 package com.streamlined.library.controller;
 
-import java.security.Principal;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +25,8 @@ public class ClaimController {
 	}
 
 	@PostMapping("/return/{returnId}/book/{bookId}")
-	public String saveClaim(@PathVariable Long returnId, @PathVariable Long bookId, ClaimDto claimDto, Model model,
-			Principal principal) {
-		claimService.saveClaim(returnId, bookId, claimDto, principal.getName());
+	public String saveClaim(@PathVariable Long returnId, @PathVariable Long bookId, ClaimDto claimDto, Model model) {
+		claimService.saveClaim(returnId, bookId, claimDto);
 		return "redirect:/return/submit-claim/" + returnId;
 	}
 

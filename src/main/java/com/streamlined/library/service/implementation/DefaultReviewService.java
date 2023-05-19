@@ -72,18 +72,16 @@ public class DefaultReviewService implements ReviewService {
 	@Transactional
 	@Override
 	public void saveReview(Long bookId, ReviewDto reviewDto, String customerLogin) {
-		var review = reviewRepository.getBookReview(bookId, customerLogin).orElse(blankReview(bookId, customerLogin));
+		var review = reviewRepository.getBookReview(bookId, customerLogin).orElse(blankReview(bookId));
 		review.setRating(reviewDto.rating());
 		review.setText(reviewDto.text());
 		reviewRepository.save(review);
 	}
 
-	private Review blankReview(Long bookId, String customerLogin) {
-		var customer = customerRepository.findByLogin(customerLogin).orElseThrow(
-				() -> new NoEntityFoundException("no customer found with login %s".formatted(customerLogin)));
+	private Review blankReview(Long bookId) {
 		var book = bookRepository.findById(bookId)
 				.orElseThrow(() -> new NoEntityFoundException("no book entity with id %d".formatted(bookId)));
-		return Review.builder().book(book).customer(customer).build();
+		return Review.builder().book(book).build();
 	}
 
 }
