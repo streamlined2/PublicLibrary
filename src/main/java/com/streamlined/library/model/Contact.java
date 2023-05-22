@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
 import com.streamlined.library.ParseException;
 
 @Entity
@@ -21,7 +22,7 @@ import com.streamlined.library.ParseException;
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.INTEGER)
-public abstract class Contact {
+public abstract class Contact implements Comparable<Contact> {
 
 	@Id
 	@Column(name = "contact", nullable = false, unique = true)
@@ -39,6 +40,14 @@ public abstract class Contact {
 			return Email.builder().contactInfo(contactInfo).build();
 		}
 		throw new ParseException("'%s' cannot be recognized as valid contact info".formatted(contactInfo));
+	}
+
+	@Override
+	public int compareTo(Contact o) {
+		if (o == null) {
+			throw new IllegalArgumentException("contact should not be null");
+		}
+		return contactInfo.compareTo(o.contactInfo);
 	}
 
 }

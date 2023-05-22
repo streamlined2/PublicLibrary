@@ -4,9 +4,14 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.context.request.WebRequest;
 
@@ -74,6 +79,18 @@ public class Utilities {
 
 	public List<Long> getBookIdList(Map<String, String> bookIds) {
 		return bookIds.values().stream().map(Long::valueOf).toList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> Set<T> sortedSetOf(T... elements) {
+		Set<T> set = new TreeSet<>();
+		set.addAll(Arrays.asList(elements));
+		return set;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> List<T> listOf(T... elements) {
+		return new ArrayList<T>(sortedSetOf(elements));
 	}
 
 }

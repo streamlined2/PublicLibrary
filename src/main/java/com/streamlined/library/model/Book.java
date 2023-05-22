@@ -19,8 +19,10 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 import org.hibernate.validator.constraints.ISBN;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,7 +42,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(of = "id")
-public class Book {
+public class Book implements Comparable<Book> {
+
+	private static final Comparator<Book> BY_AUTHOR_TITLE_PUBLISH_DATE_COMPARATOR = Comparator
+			.comparing(Book::getAuthor).thenComparing(Book::getTitle).thenComparing(Book::getPublishDate);
 
 	public enum Genre {
 		SCIENTIFICAL, EDUCATIONAL, FICTIONAL, HISTORICAL, BIOGRAPHICAL, PHILOSOPHICAL
@@ -95,5 +100,13 @@ public class Book {
 	@AttributeOverride(name = "type", column = @Column(name = "cover_type", nullable = false, unique = false))
 	@AttributeOverride(name = "surface", column = @Column(name = "cover_surface", nullable = false, unique = false))
 	private Cover cover;
+
+	@Override
+	public int compareTo(Book o) {
+		if (o == null) {
+			throw new IllegalArgumentException("book to compare with should not be null");
+		}
+		return BY_AUTHOR_TITLE_PUBLISH_DATE_COMPARATOR.compare(this, o);
+	}
 
 }

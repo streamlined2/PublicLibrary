@@ -3,12 +3,14 @@ package com.streamlined.library.model;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Embeddable
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Cover {
 
 	public enum Type {
