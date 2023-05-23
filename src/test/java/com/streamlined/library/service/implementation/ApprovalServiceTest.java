@@ -1,7 +1,9 @@
 package com.streamlined.library.service.implementation;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -190,17 +192,55 @@ class ApprovalServiceTest {
 	@DisplayName("should save approval with given request id and book list")
 	void givenRequestIdAndBookList_whenSaveApprovalAndRequestFoundAndBookListValid_thenSaveApproval() {
 
-		Customer customer = Customer.builder().id(1L).login("john_smith").passwordHash("pass").firstName("John")
-				.lastName("Smith").birthDate(LocalDate.of(1990, 1, 1)).sex(Sex.MALE).build();
-		customer.getContacts()
-				.addAll(sortedSetOf(Contact.create("john_smith@gmail.com"), Contact.create("+1(555)555-55-55")));
-
+		final Long expectedApprovalId = 1L;
 		final Long requestId = 1L;
 		final List<Long> bookIdList = List.of(1L, 2L, 3L);
 
-		Request suppliedRequest = Request.builder().id(requestId).createdTime(LocalDateTime.of(2020, 1, 1, 12, 0))
-				.customer(customer).build();
+		Request suppliedRequest = prepareRequestForSaveApproval(requestId);
 
+		var bookList = prepareBookListForSaveApproval();
+
+		Approval expectedApproval = prepareApprovalForSaveApproval(suppliedRequest, bookList);
+
+		when(requestRepository.findById(anyLong())).thenReturn(Optional.of(suppliedRequest));
+		when(bookRepository.findAllById(Mockito.<Long>anyIterable())).thenReturn(List.of(bookList));
+
+		doAnswer(invocation -> {
+			Approval entity = invocation.getArgument(0);
+			entity.setId(expectedApprovalId);
+			return null;
+		}).when(approvalRepository).save(any());
+
+		approvalService.saveApproval(suppliedRequest.getId(), bookIdList);
+
+		verify(requestRepository).findById(idCaptor.capture());
+		verify(bookRepository).findAllById(bookIdListCaptor.capture());
+		verify(approvalRepository).save(approvalCaptor.capture());
+
+		assertEquals(expectedApprovalId, approvalCaptor.getValue().getId());
+		assertEquals(requestId, idCaptor.getValue());
+		assertEquals(bookIdList, bookIdListCaptor.getValue());
+		expectedApproval.setId(expectedApprovalId);
+		assertEquals(expectedApproval, approvalCaptor.getValue());
+
+		verifyNoMoreInteractions(bookRepository);
+		verifyNoMoreInteractions(requestRepository);
+		verifyNoMoreInteractions(approvalRepository);
+
+	}
+
+	private Approval prepareApprovalForSaveApproval(Request suppliedRequest, Book[] bookList) {
+		Librarian librarian = Librarian.builder().id(1L).login("vera_cruise").passwordHash("pass").firstName("Vera")
+				.lastName("Cruise").birthDate(LocalDate.of(1995, 11, 11)).sex(Sex.FEMALE).build();
+		librarian.getContacts()
+				.addAll(sortedSetOf(Contact.create("vera_cruise@gmail.com"), Contact.create("+1(555)555-05-55")));
+
+		Approval expectedApproval = new Approval(null, suppliedRequest, librarian, LocalDateTime.of(2020, 4, 4, 6, 20));
+		expectedApproval.getBooks().addAll(sortedSetOf(bookList));
+		return expectedApproval;
+	}
+
+	private Book[] prepareBookListForSaveApproval() {
 		Country england = new Country(1L, "England");
 		Country us = new Country(2L, "US");
 
@@ -214,32 +254,18 @@ class ApprovalServiceTest {
 		Book book3 = Book.builder().id(3L).author("Troy Richter").title("Night and dawn").isbn("123456780")
 				.publishDate(LocalDate.of(2013, 3, 3)).genre(Genre.HISTORICAL).country(us).language(english)
 				.pageCount(300).size(Size.DUODECIMO).cover(new Cover(Cover.Type.SOFT, Cover.Surface.SILK)).build();
+		return new Book[] { book1, book2, book3 };
+	}
 
-		Librarian librarian = Librarian.builder().id(1L).login("vera_cruise").passwordHash("pass").firstName("Vera")
-				.lastName("Cruise").birthDate(LocalDate.of(1995, 11, 11)).sex(Sex.FEMALE).build();
-		librarian.getContacts()
-				.addAll(sortedSetOf(Contact.create("vera_cruise@gmail.com"), Contact.create("+1(555)555-05-55")));
+	private Request prepareRequestForSaveApproval(final Long requestId) {
+		Customer customer = Customer.builder().id(1L).login("john_smith").passwordHash("pass").firstName("John")
+				.lastName("Smith").birthDate(LocalDate.of(1990, 1, 1)).sex(Sex.MALE).build();
+		customer.getContacts()
+				.addAll(sortedSetOf(Contact.create("john_smith@gmail.com"), Contact.create("+1(555)555-55-55")));
 
-		Approval expectedApproval = new Approval(null, suppliedRequest, librarian, LocalDateTime.of(2020, 4, 4, 6, 20));
-		expectedApproval.getBooks().addAll(sortedSetOf(book1, book2, book3));
-
-		when(requestRepository.findById(anyLong())).thenReturn(Optional.of(suppliedRequest));
-		when(bookRepository.findAllById(Mockito.<Long>anyIterable())).thenReturn(List.of(book1, book2, book3));
-
-		approvalService.saveApproval(suppliedRequest.getId(), bookIdList);
-
-		verify(requestRepository).findById(idCaptor.capture());
-		verify(bookRepository).findAllById(bookIdListCaptor.capture());
-		verify(approvalRepository).save(approvalCaptor.capture());
-
-		assertEquals(requestId, idCaptor.getValue());
-		assertEquals(bookIdList, bookIdListCaptor.getValue());
-		assertEquals(expectedApproval, approvalCaptor.getValue());
-
-		verifyNoMoreInteractions(bookRepository);
-		verifyNoMoreInteractions(requestRepository);
-		verifyNoMoreInteractions(approvalRepository);
-
+		Request suppliedRequest = Request.builder().id(requestId).createdTime(LocalDateTime.of(2020, 1, 1, 12, 0))
+				.customer(customer).build();
+		return suppliedRequest;
 	}
 
 	private Optional<ApprovalDto> prepareApprovalDTO(Long id) {
