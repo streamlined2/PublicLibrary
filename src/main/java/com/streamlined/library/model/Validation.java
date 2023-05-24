@@ -49,7 +49,6 @@ public class Validation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Setter(AccessLevel.PRIVATE)
 	private Long id;
 
 	@OneToOne(optional = false)

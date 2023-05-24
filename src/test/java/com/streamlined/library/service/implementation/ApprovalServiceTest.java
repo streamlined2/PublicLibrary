@@ -119,9 +119,7 @@ class ApprovalServiceTest {
 		var actualApprovalDTOs = approvalService.getApprovedRequests();
 
 		verify(approvalRepository).getApprovedRequests();
-		verifyNoMoreInteractions(bookRepository);
-		verifyNoMoreInteractions(requestRepository);
-		verifyNoMoreInteractions(approvalRepository);
+		verifyNoMoreInteractions(bookRepository, requestRepository, approvalRepository);
 
 		assertEquals(expectedApprovalDTOs.collect(Collectors.toList()),
 				actualApprovalDTOs.collect(Collectors.toList()));
@@ -141,9 +139,7 @@ class ApprovalServiceTest {
 		var actualApprovalDTO = approvalService.getApprovalById(approvalId);
 
 		verify(approvalRepository).findById(idCaptor.capture());
-		verifyNoMoreInteractions(bookRepository);
-		verifyNoMoreInteractions(requestRepository);
-		verifyNoMoreInteractions(approvalRepository);
+		verifyNoMoreInteractions(bookRepository, requestRepository, approvalRepository);
 
 		assertEquals(expectedApprovalDTO, actualApprovalDTO);
 		assertEquals(approvalId, idCaptor.getValue());
@@ -151,7 +147,7 @@ class ApprovalServiceTest {
 	}
 
 	@Test
-	@DisplayName("should throw on attempt to save approval when request not found")
+	@DisplayName("should throw exception on attempt to save approval when request not found")
 	void givenRequestIdAndBookList_whenSaveApprovalAndRequestNotFound_thenThrowException() {
 		
 		when(requestRepository.findById(anyLong())).thenReturn(Optional.empty());
@@ -161,9 +157,7 @@ class ApprovalServiceTest {
 		
 		verify(requestRepository).findById(anyLong());
 		
-		verifyNoMoreInteractions(bookRepository);
-		verifyNoMoreInteractions(requestRepository);
-		verifyNoMoreInteractions(approvalRepository);
+		verifyNoMoreInteractions(bookRepository, requestRepository, approvalRepository);
 		
 	}
 
@@ -182,9 +176,7 @@ class ApprovalServiceTest {
 		verify(requestRepository).findById(anyLong());
 		verify(bookRepository).findAllById(Mockito.<Long>anyIterable());
 
-		verifyNoMoreInteractions(bookRepository);
-		verifyNoMoreInteractions(requestRepository);
-		verifyNoMoreInteractions(approvalRepository);
+		verifyNoMoreInteractions(bookRepository, requestRepository, approvalRepository);
 
 	}
 
@@ -223,9 +215,7 @@ class ApprovalServiceTest {
 		expectedApproval.setId(expectedApprovalId);
 		assertEquals(expectedApproval, approvalCaptor.getValue());
 
-		verifyNoMoreInteractions(bookRepository);
-		verifyNoMoreInteractions(requestRepository);
-		verifyNoMoreInteractions(approvalRepository);
+		verifyNoMoreInteractions(bookRepository, requestRepository, approvalRepository);
 
 	}
 
