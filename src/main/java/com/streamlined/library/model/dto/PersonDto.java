@@ -30,8 +30,8 @@ public abstract class PersonDto {
 
 	@Override
 	public String toString() {
-		return "%s %s (%s %s) %s".formatted(firstName, lastName, credentials.getLogin(),
-				DateTimeFormatter.ISO_LOCAL_DATE.format(birthDate),
+		return "%s %s (%s %s) %s".formatted(firstName, lastName, credentials == null ? "" : credentials.getLogin(),
+				birthDate == null ? "" : DateTimeFormatter.ISO_LOCAL_DATE.format(birthDate),
 				contacts.stream().collect(Collectors.joining(",", "[", "]")));
 	}
 

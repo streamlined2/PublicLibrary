@@ -87,7 +87,7 @@ class ValidationControllerTest {
 		when(validationService.getValidationByClaim(anyLong(), anyString())).thenReturn(validationDto);
 		when(principal.getName()).thenReturn(userName);
 
-		var result = mvc.perform(get("/validation/add-edit/" + claimId).principal(principal))
+		var result = mvc.perform(get("/validation/add-edit/{claimId}", claimId).principal(principal))
 				.andExpectAll(status().isOk(), view().name("add-edit-check"),
 						model().attribute("validation", validationDto), handler().methodName("showClaimDetails"),
 						model().hasNoErrors(), request().attribute("claimId", claimId))
@@ -102,8 +102,7 @@ class ValidationControllerTest {
 	void shouldSaveValidationForClaimIdAndDTO() throws Exception {
 		final var claimId = 1L;
 
-		var result = mvc
-				.perform(post("/validation/add-edit/" + claimId).principal(principal))
+		var result = mvc.perform(post("/validation/add-edit/{claimId}", claimId).principal(principal))
 				.andExpectAll(status().is3xxRedirection(), handler().methodName("saveCheck"), model().hasNoErrors(),
 						redirectedUrl("/"))
 				.andReturn();
