@@ -45,14 +45,14 @@ class InitialControllerTest {
 	void ifLanguageParameterSpecified_switchLanguage() throws Exception {
 		final var selectedLanguage = "uk";
 
-		var result = mvc.perform(get("/?" + LOCALE_CHANGE_INTERCEPTOR_LANGUAGE_PARAMETER + "=" + selectedLanguage))
+		var result = mvc.perform(get("/").param(LOCALE_CHANGE_INTERCEPTOR_LANGUAGE_PARAMETER, selectedLanguage))
 				.andExpect(status().isOk())
 				.andExpectAll(view().name("index"), model().attributeExists("languages"),
 						model().attribute("selectedLanguage", selectedLanguage), handler().methodName("changeLanguage"),
 						model().hasNoErrors())
 				.andReturn();
 
-		assertEquals(result.getRequest().getParameter(LOCALE_CHANGE_INTERCEPTOR_LANGUAGE_PARAMETER), selectedLanguage);
+		assertEquals(selectedLanguage, result.getRequest().getParameter(LOCALE_CHANGE_INTERCEPTOR_LANGUAGE_PARAMETER));
 
 	}
 
