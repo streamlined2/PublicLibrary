@@ -110,7 +110,7 @@ public class DefaultBookService implements BookService {
 	}
 
 	@Override
-	public Stream<BookDto> getAvailableBooks() {// TODO should be elaborated later to skip already requested books
+	public Stream<BookDto> getAvailableBooks() {
 		return Streamable.of(bookRepository.findAll(Sort.unsorted())).map(bookMapper::toDto).stream();
 	}
 

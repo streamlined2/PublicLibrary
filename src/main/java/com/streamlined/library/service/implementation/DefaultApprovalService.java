@@ -44,7 +44,13 @@ public class DefaultApprovalService implements ApprovalService {
 		var request = requestRepository.findById(requestId)
 				.orElseThrow(() -> new NoEntityFoundException("no request with id %d found".formatted(requestId)));
 		var approval = Approval.builder().request(request).build();
-		bookRepository.findAllById(bookIds).forEach(approval.getBooks()::add);
+		var requestedBooks = bookRepository.findAllById(bookIds);
+		var nonAvailableBooks = approvalRepository.getNonAvailableBooks().toSet();
+		for (var book : requestedBooks) {
+			if (!nonAvailableBooks.contains(book)) {
+				approval.getBooks().add(book);
+			}
+		}
 		approvalRepository.save(approval);
 	}
 

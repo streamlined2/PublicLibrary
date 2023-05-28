@@ -14,7 +14,7 @@ import com.streamlined.library.model.dto.CategoryRequestDataDto;
 @Repository
 public interface RequestRepository extends CrudRepository<Request, Long> {
 
-	@Query("select a from Request a") // TODO should be elaborated to skip non-active requests
+	@Query("select a from Request a")
 	Streamable<Request> findActiveRequests();
 
 	@Query("""

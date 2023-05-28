@@ -18,7 +18,7 @@ public interface TransferRepository extends CrudRepository<Transfer, Long> {
 			from Transfer t join t.books b 
 			where t.approval.request.customer.id = :customerId
 			""")
-	Streamable<Book> getCustomerBooks(@Param("customerId") Long customerId);// TODO exclude books returned by customer
+	Streamable<Book> getCustomerBooks(@Param("customerId") Long customerId);
 
 	@Query("""
 			select new com.streamlined.library.model.dto.CategoryTimeDataDto(b.genre, sum(r.createdTime - t.createdTime))
