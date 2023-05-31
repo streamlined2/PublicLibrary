@@ -37,6 +37,17 @@ spring:
     encoding: UTF-8
     basename: language/messages
 
+  mail:
+    properties:
+      mail:
+        debug: true
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 logging:
   level:
     org:

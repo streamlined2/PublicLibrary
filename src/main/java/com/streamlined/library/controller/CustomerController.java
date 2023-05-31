@@ -38,7 +38,10 @@ public class CustomerController {
 	}
 
 	@PostMapping("/edit-data")
-	public String savePersonalData(@RequestParam(required = false) Long id, CustomerDto customerDto) {
+	public String savePersonalData(@RequestParam(required = false) Long id, CustomerDto customerDto,
+			@RequestParam String phone, @RequestParam String email) {
+		customerDto.getContacts().add(phone);
+		customerDto.getContacts().add(email);
 		customerService.save(id, customerDto);
 		return "redirect:/";
 	}

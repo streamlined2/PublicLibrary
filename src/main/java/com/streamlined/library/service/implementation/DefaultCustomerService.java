@@ -19,6 +19,7 @@ import com.streamlined.library.model.dto.CustomerTimeDataDto;
 import com.streamlined.library.model.mapper.CustomerMapper;
 import com.streamlined.library.service.CustomerService;
 import com.streamlined.library.service.DateBoundaryService;
+import com.streamlined.library.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +32,7 @@ public class DefaultCustomerService extends DefaultUserService implements Custom
 	private final CustomerRepository customerRepository;
 	private final CustomerMapper customerMapper;
 	private final BookRepository bookRepository;
+	private final NotificationService notificationService;
 
 	@Override
 	public Optional<CustomerDto> getCustomerByLogin(String login) {
@@ -50,9 +52,10 @@ public class DefaultCustomerService extends DefaultUserService implements Custom
 	@Transactional
 	@Override
 	public void save(Long id, CustomerDto customerDto) {
-		var entity = customerMapper.toEntity(customerDto);
-		entity.setId(id);
-		customerRepository.save(entity);
+		var customer = customerMapper.toEntity(customerDto);
+		customer.setId(id);
+		customerRepository.save(customer);
+		notificationService.notifyNewCustomerRegistered(customer);
 	}
 
 	@Override

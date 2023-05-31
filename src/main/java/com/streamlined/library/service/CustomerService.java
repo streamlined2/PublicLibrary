@@ -22,7 +22,7 @@ public interface CustomerService extends UserService {
 
 	Optional<CustomerDto> getCustomerById(Long id);
 
-	@PreAuthorize("hasAnyRole('CUSTOMER','LIBRARIAN') and (#customerDto.credentials.login == principal.username)")
+	@PreAuthorize("hasAnyRole('LIBRARIAN') or (hasAnyRole('CUSTOMER') and (#customerDto.credentials.login == principal.username))")
 	void save(Long id, CustomerDto customerDto);
 
 	CustomerDto createNewCustomer();
