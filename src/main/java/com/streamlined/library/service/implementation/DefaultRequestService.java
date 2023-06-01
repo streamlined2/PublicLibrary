@@ -14,6 +14,7 @@ import com.streamlined.library.model.Request;
 import com.streamlined.library.model.dto.CategoryRequestDataDto;
 import com.streamlined.library.model.dto.RequestDto;
 import com.streamlined.library.model.mapper.RequestMapper;
+import com.streamlined.library.service.NotificationService;
 import com.streamlined.library.service.RequestService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class DefaultRequestService extends BaseService implements RequestService
 	private final BookRepository bookRepository;
 	private final RequestRepository requestRepository;
 	private final RequestMapper requestMapper;
+	private final NotificationService notificationService;
 
 	@Override
 	public Stream<RequestDto> getActiveRequests() {
@@ -42,7 +44,8 @@ public class DefaultRequestService extends BaseService implements RequestService
 	public void saveRequest(List<Long> bookIdList) {
 		Request request = Request.builder().build();
 		bookRepository.findAllById(bookIdList).forEach(request.getBooks()::add);
-		requestRepository.save(request);
+		Request savedRequest = requestRepository.save(request);
+		notificationService.notifyRequestReceived(savedRequest);
 	}
 
 	@Override

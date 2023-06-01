@@ -20,7 +20,7 @@
 <ul>
 <li>user changes interface locale</li>
 <li>user logs in and gets authorized</li>
-<li>librarian registers new customer</li>
+<li>librarian registers new customer, customer receives notification by email</li>
 <li>customer browses and reads book reviews</li>
 <li>customer selects books to order
 		<ul>
@@ -29,7 +29,7 @@
 		<li>book list divided in pages, first, last, next, previous page may be retrieved</li>
 		</ul>
 </li>
-<li>customer marks selected books and forms request</li>
+<li>customer marks selected books and forms request, notification sent by email</li>
 <li>librarian reviews request, checks if books available, approves or rejects requested books</li>
 <li>librarian transfers approved books to customer</li>
 <li>librarian fetches list of customer's books</li>

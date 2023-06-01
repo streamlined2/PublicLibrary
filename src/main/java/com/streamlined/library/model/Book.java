@@ -109,4 +109,8 @@ public class Book implements Comparable<Book> {
 		return BY_AUTHOR_TITLE_PUBLISH_DATE_COMPARATOR.compare(this, o);
 	}
 
+	public String getAuthorTitlePublishYear() {
+		return "%s, %s (%tY)".formatted(author, title, publishDate);
+	}
+
 }

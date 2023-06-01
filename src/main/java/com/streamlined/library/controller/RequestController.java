@@ -39,8 +39,8 @@ public class RequestController {
 
 	@GetMapping("/details/{id}")
 	public String browseRequestDetails(@PathVariable Long id, Model model) {
-		model.addAttribute("request", requestService.getRequestById(id)
-				.orElseThrow(() -> new NoEntityFoundException("entity for request with id %d not found".formatted(id))));
+		model.addAttribute("request", requestService.getRequestById(id).orElseThrow(
+				() -> new NoEntityFoundException("entity for request with id %d not found".formatted(id))));
 		return "browse-request-details";
 	}
 
