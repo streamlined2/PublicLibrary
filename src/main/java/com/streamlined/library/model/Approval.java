@@ -67,4 +67,8 @@ public class Approval {
 			@JoinColumn(name = "book") })
 	private final Set<Book> books = new HashSet<>();
 
+	public Customer getCustomer() {
+		return request.getCustomer();
+	}
+
 }

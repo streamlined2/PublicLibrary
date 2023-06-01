@@ -18,6 +18,7 @@ import com.streamlined.library.model.dto.BookDto;
 import com.streamlined.library.model.dto.ReturnDto;
 import com.streamlined.library.model.mapper.BookMapper;
 import com.streamlined.library.model.mapper.ReturnMapper;
+import com.streamlined.library.service.NotificationService;
 import com.streamlined.library.service.ReturnService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class DefaultReturnService implements ReturnService {
 	private final CustomerRepository customerRepository;
 	private final BookMapper bookMapper;
 	private final ReturnMapper returnMapper;
+	private final NotificationService notificationService;
 
 	@Override
 	public Stream<BookDto> getCustomerBooks(Long customerId) {
@@ -61,7 +63,8 @@ public class DefaultReturnService implements ReturnService {
 				.orElseThrow(() -> new NoEntityFoundException("no customer found with id %d".formatted(customerId)));
 		var returnEntity = Return.builder().customer(customer).build();
 		bookRepository.findAllById(bookIds).forEach(returnEntity.getBooks()::add);
-		returnRepository.save(returnEntity);
+		Return savedReturn = returnRepository.save(returnEntity);
+		notificationService.notifyReturnAccomplished(savedReturn);
 	}
 
 }

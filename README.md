@@ -30,11 +30,11 @@
 		</ul>
 </li>
 <li>customer marks selected books and forms request, notification sent by email</li>
-<li>librarian reviews request, checks if books available, approves or rejects requested books</li>
-<li>librarian transfers approved books to customer</li>
+<li>librarian reviews request, checks if books available, approves or rejects requested books, notification sent</li>
+<li>librarian transfers approved books to customer, notification sent</li>
 <li>librarian fetches list of customer's books</li>
 <li>librarian finds holder of the book</li>
-<li>customer returns books, librarian checks for damage and writes out compensation claim</li>
+<li>customer returns books, librarian checks for damage and writes out compensation claim, notification sent</li>
 <li>customer composes and publishes book review</li>
 <li>librarian adds and edits book descriptions</li>
 <li>librarian retrieves data on most popular book categories by time, request rate</li>

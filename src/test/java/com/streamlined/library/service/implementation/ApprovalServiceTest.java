@@ -59,6 +59,7 @@ import com.streamlined.library.model.mapper.CustomerMapper;
 import com.streamlined.library.model.mapper.LanguageMapper;
 import com.streamlined.library.model.mapper.LibrarianMapper;
 import com.streamlined.library.model.mapper.RequestMapper;
+import com.streamlined.library.service.NotificationService;
 
 import static com.streamlined.library.Utilities.listOf;
 import static com.streamlined.library.Utilities.sortedSetOf;
@@ -73,6 +74,8 @@ class ApprovalServiceTest {
 	private BookRepository bookRepository;
 	@Mock
 	private RequestRepository requestRepository;
+	@Mock
+	private NotificationService notificationService;
 
 	private DefaultApprovalService approvalService;
 
@@ -105,7 +108,7 @@ class ApprovalServiceTest {
 		approvalMapper = new ApprovalMapper(bookMapper, requestMapper, librarianMapper);
 
 		approvalService = new DefaultApprovalService(bookRepository, requestRepository, approvalRepository,
-				approvalMapper);
+				approvalMapper, notificationService);
 	}
 
 	@Test
@@ -181,12 +184,13 @@ class ApprovalServiceTest {
 	}
 
 	@Test
-	@DisplayName("should save approval with given request id and book list")
-	void givenRequestIdAndBookList_whenSaveApprovalAndRequestFoundAndBookListValid_thenSaveApproval() {
+	@DisplayName("should save approval with given request id and book list when all books available")
+	void givenRequestIdAndBookList_whenSaveApprovalAndRequestFoundAndBookListValidAndAllBooksAvailable_thenSaveApproval() {
 
 		final Long expectedApprovalId = 1L;
 		final Long requestId = 1L;
 		final List<Long> bookIdList = List.of(1L, 2L, 3L);
+		final Streamable<Book> nonAvailableBooks = Streamable.empty();
 
 		Request suppliedRequest = prepareRequestForSaveApproval(requestId);
 
@@ -197,10 +201,11 @@ class ApprovalServiceTest {
 		when(requestRepository.findById(anyLong())).thenReturn(Optional.of(suppliedRequest));
 		when(bookRepository.findAllById(Mockito.<Long>anyIterable())).thenReturn(List.of(bookList));
 
+		when(approvalRepository.getNonAvailableBooks()).thenReturn(nonAvailableBooks);
 		doAnswer(invocation -> {
 			Approval entity = invocation.getArgument(0);
 			entity.setId(expectedApprovalId);
-			return null;
+			return entity;
 		}).when(approvalRepository).save(any());
 
 		approvalService.saveApproval(suppliedRequest.getId(), bookIdList);
@@ -214,6 +219,51 @@ class ApprovalServiceTest {
 		assertEquals(bookIdList, bookIdListCaptor.getValue());
 		expectedApproval.setId(expectedApprovalId);
 		assertEquals(expectedApproval, approvalCaptor.getValue());
+		assertEquals(bookIdList, approvalCaptor.getValue().getBooks().stream().map(Book::getId).toList());
+
+		verifyNoMoreInteractions(bookRepository, requestRepository, approvalRepository);
+
+	}
+
+	@Test
+	@DisplayName("should save approval with given request id and book list when some books unavailable")
+	void givenRequestIdAndBookList_whenSaveApprovalAndRequestFoundAndBookListValidWhenSomeBooksUnavailable_thenSaveApproval() {
+
+		final Long expectedApprovalId = 1L;
+		final Long requestId = 1L;
+		final List<Long> bookIdList = List.of(1L, 2L, 3L);
+		final Book nonAvailableBook = Book.builder().id(1L).build();
+		final Streamable<Book> nonAvailableBooks = Streamable.of(nonAvailableBook);
+		final List<Long> availableBookIdList = List.of(2L, 3L);
+
+		Request suppliedRequest = prepareRequestForSaveApproval(requestId);
+
+		var bookList = prepareBookListForSaveApproval();
+
+		Approval expectedApproval = prepareApprovalForSaveApproval(suppliedRequest, bookList);
+
+		when(requestRepository.findById(anyLong())).thenReturn(Optional.of(suppliedRequest));
+		when(bookRepository.findAllById(Mockito.<Long>anyIterable())).thenReturn(List.of(bookList));
+
+		when(approvalRepository.getNonAvailableBooks()).thenReturn(nonAvailableBooks);
+		doAnswer(invocation -> {
+			Approval entity = invocation.getArgument(0);
+			entity.setId(expectedApprovalId);
+			return entity;
+		}).when(approvalRepository).save(any());
+
+		approvalService.saveApproval(suppliedRequest.getId(), bookIdList);
+
+		verify(requestRepository).findById(idCaptor.capture());
+		verify(bookRepository).findAllById(bookIdListCaptor.capture());
+		verify(approvalRepository).save(approvalCaptor.capture());
+
+		assertEquals(expectedApprovalId, approvalCaptor.getValue().getId());
+		assertEquals(requestId, idCaptor.getValue());
+		assertEquals(bookIdList, bookIdListCaptor.getValue());
+		expectedApproval.setId(expectedApprovalId);
+		assertEquals(expectedApproval, approvalCaptor.getValue());
+		assertEquals(availableBookIdList, approvalCaptor.getValue().getBooks().stream().map(Book::getId).toList());
 
 		verifyNoMoreInteractions(bookRepository, requestRepository, approvalRepository);
 

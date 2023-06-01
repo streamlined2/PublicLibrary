@@ -15,6 +15,7 @@ import com.streamlined.library.model.Approval;
 import com.streamlined.library.model.dto.ApprovalDto;
 import com.streamlined.library.model.mapper.ApprovalMapper;
 import com.streamlined.library.service.ApprovalService;
+import com.streamlined.library.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +28,7 @@ public class DefaultApprovalService implements ApprovalService {
 	private final RequestRepository requestRepository;
 	private final ApprovalRepository approvalRepository;
 	private final ApprovalMapper approvalMapper;
+	private final NotificationService notificationService;
 
 	@Override
 	public Stream<ApprovalDto> getApprovedRequests() {
@@ -51,7 +53,8 @@ public class DefaultApprovalService implements ApprovalService {
 				approval.getBooks().add(book);
 			}
 		}
-		approvalRepository.save(approval);
+		Approval savedApproval = approvalRepository.save(approval);
+		notificationService.notifyApprovalReceived(savedApproval);
 	}
 
 }

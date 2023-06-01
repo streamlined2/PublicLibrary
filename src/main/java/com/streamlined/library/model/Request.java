@@ -63,4 +63,8 @@ public class Request {
 			@JoinColumn(name = "book") })
 	private final Set<Book> books = new HashSet<>();
 
+	public Customer getCustomer() {
+		return customer;
+	}
+
 }

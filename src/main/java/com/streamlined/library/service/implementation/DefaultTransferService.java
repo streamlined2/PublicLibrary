@@ -14,6 +14,7 @@ import com.streamlined.library.dao.BookRepository;
 import com.streamlined.library.dao.TransferRepository;
 import com.streamlined.library.model.Transfer;
 import com.streamlined.library.model.dto.CategoryTimeDataDto;
+import com.streamlined.library.service.NotificationService;
 import com.streamlined.library.service.TransferService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class DefaultTransferService extends BaseService implements TransferServi
 	private final BookRepository bookRepository;
 	private final ApprovalRepository approvalRepository;
 	private final TransferRepository transferRepository;
+	private final NotificationService notificationService;
 
 	@Transactional
 	@Override
@@ -34,7 +36,8 @@ public class DefaultTransferService extends BaseService implements TransferServi
 				.orElseThrow(() -> new NoEntityFoundException("no approval found with id %d".formatted(approvalId)));
 		var transfer = Transfer.builder().approval(approval).build();
 		bookRepository.findAllById(bookIds).forEach(transfer.getBooks()::add);
-		transferRepository.save(transfer);
+		Transfer savedTransfer = transferRepository.save(transfer);
+		notificationService.notifyTransferAccomplished(savedTransfer);
 	}
 
 	@Override
