@@ -5,11 +5,12 @@
 <h3>Applied technologies</h3>
 <ul>
 <li>Java 21</li>
-<li>Spring Boot 3.0.6</li>
+<li>Spring Boot 3.1.0</li>
 <li>Spring MVC, Thymeleaf 3.1.1</li>
 <li>Spring Security</li>
 <li>Spring Data, JPA, Hibernate 6.1.7</li>
 <li>Postgresql 15, Liquibase 4.17.2</li>
+<li>Spring Email, Kafka</li>
 <li>JUnit 5, Mockito, MockMVC</li>
 <li>Tomcat, Lombok, Log4j2, Maven, Git</li>
 <li>Spring Tools Suite 4.17.2</li>

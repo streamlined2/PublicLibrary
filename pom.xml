@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -18,14 +19,14 @@
 	</properties>
 	<dependencies>
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter</artifactId>
-		      <exclusions>
-		        <exclusion>
-		          <groupId>org.springframework.boot</groupId>
-		          <artifactId>spring-boot-starter-logging</artifactId>
-		        </exclusion>
-		      </exclusions>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -86,23 +87,27 @@
 			<artifactId>liquibase-core</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>javax.money</groupId>
-		    <artifactId>money-api</artifactId>
+			<groupId>javax.money</groupId>
+			<artifactId>money-api</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>org.javamoney</groupId>
-    		<artifactId>moneta</artifactId>
-		    <version>1.4.2</version>
-		    <type>pom</type>
+			<groupId>org.javamoney</groupId>
+			<artifactId>moneta</artifactId>
+			<version>1.4.2</version>
+			<type>pom</type>
 		</dependency>
 		<dependency>
-		    <groupId>io.hypersistence</groupId>
-		    <artifactId>hypersistence-utils-hibernate-60</artifactId>
-		    <version>3.3.2</version>
+			<groupId>io.hypersistence</groupId>
+			<artifactId>hypersistence-utils-hibernate-60</artifactId>
+			<version>3.3.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -112,6 +117,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<mainClass>com.streamlined.library.LibraryApplication</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -125,10 +131,10 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
 			<plugin>
-			    <groupId>org.liquibase</groupId>
-			    <artifactId>liquibase-maven-plugin</artifactId>
-			    <configuration>
-				    <changeLogFile>src/main/resources/db/changelog.xml</changeLogFile>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<configuration>
+					<changeLogFile>src/main/resources/db/changelog.xml</changeLogFile>
 					<url>jdbc:postgresql://localhost:5433/publiclibrary</url>
 					<username>user</username>
 					<password>secret</password>

@@ -12,6 +12,11 @@ server:
     include-message: never
 
 spring:
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    number-of-partitions: 1
+    replication-factor: 1
+    
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5433/publiclibrary
