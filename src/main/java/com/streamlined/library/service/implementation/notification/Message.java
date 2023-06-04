@@ -2,7 +2,7 @@ package com.streamlined.library.service.implementation.notification;
 
 import java.util.Arrays;
 import java.util.Objects;
-
+import java.util.Set;
 import com.streamlined.library.model.Customer;
 
 public record Message(Customer customer, MessageType messageType, Object... parameters) {
@@ -32,6 +32,10 @@ public record Message(Customer customer, MessageType messageType, Object... para
 
 	public String getFormattedText() {
 		return messageType.getFormattedText(parameters);
+	}
+
+	public Set<Long> getBookIds() {
+		return messageType.getBookIds(parameters);
 	}
 
 }

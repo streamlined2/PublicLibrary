@@ -16,6 +16,9 @@ import org.springframework.kafka.core.KafkaAdmin.NewTopics;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
+import com.streamlined.library.service.implementation.notification.Message;
+import com.streamlined.library.service.implementation.notification.MessageSerializer;
+
 @Configuration
 public class KafkaConfiguration {
 
@@ -44,14 +47,14 @@ public class KafkaConfiguration {
 	}
 
 	@Bean
-	public ProducerFactory<String, String> producerFactory() {
+	public ProducerFactory<String, Message> producerFactory() {
 		return new DefaultKafkaProducerFactory<>(Map.of(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers,
 				ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class,
-				ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class));
+				ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, MessageSerializer.class));
 	}
 
 	@Bean
-	public KafkaTemplate<String, String> kafkaTemplate() {
+	public KafkaTemplate<String, Message> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
 

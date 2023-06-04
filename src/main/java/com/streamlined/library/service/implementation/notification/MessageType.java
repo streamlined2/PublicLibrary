@@ -1,7 +1,7 @@
 package com.streamlined.library.service.implementation.notification;
 
+import java.util.Set;
 import java.util.stream.Collectors;
-
 import com.streamlined.library.model.Approval;
 import com.streamlined.library.model.Book;
 import com.streamlined.library.model.Customer;
@@ -10,7 +10,7 @@ import com.streamlined.library.model.Return;
 import com.streamlined.library.model.Transfer;
 
 public enum MessageType {
-	
+
 	NEW_CUSTOMER_CREATED("Successful registration", """
 			Congratulations, %s!
 			Your record was created successfully.
@@ -21,6 +21,11 @@ public enum MessageType {
 		public String getFormattedText(Object... parameters) {
 			Customer customer = (Customer) parameters[0];
 			return text.formatted(customer.getFirstName());
+		}
+
+		@Override
+		public Set<Long> getBookIds(Object... parameters) {
+			return Set.of();
 		}
 	},
 
@@ -37,6 +42,12 @@ public enum MessageType {
 			return text.formatted(request.getCustomer().getFirstName(), request.getBooks().stream()
 					.map(Book::getAuthorTitlePublishYear).collect(Collectors.joining("\n\t", "\t", "\n")));
 		}
+
+		@Override
+		public Set<Long> getBookIds(Object... parameters) {
+			Request request = (Request) parameters[0];
+			return request.getBooks().stream().map(Book::getId).collect(Collectors.toUnmodifiableSet());
+		}
 	},
 
 	APPROVAL_RECEIVED("Approval received", """
@@ -50,6 +61,12 @@ public enum MessageType {
 			Approval approval = (Approval) parameters[0];
 			return text.formatted(approval.getCustomer().getFirstName(), approval.getBooks().stream()
 					.map(Book::getAuthorTitlePublishYear).collect(Collectors.joining("\n\t", "\t", "\n")));
+		}
+
+		@Override
+		public Set<Long> getBookIds(Object... parameters) {
+			Approval approval = (Approval) parameters[0];
+			return approval.getBooks().stream().map(Book::getId).collect(Collectors.toUnmodifiableSet());
 		}
 	},
 
@@ -65,6 +82,12 @@ public enum MessageType {
 			return text.formatted(transfer.getCustomer().getFirstName(), transfer.getBooks().stream()
 					.map(Book::getAuthorTitlePublishYear).collect(Collectors.joining("\n\t", "\t", "\n")));
 		}
+
+		@Override
+		public Set<Long> getBookIds(Object... parameters) {
+			Transfer transfer = (Transfer) parameters[0];
+			return transfer.getBooks().stream().map(Book::getId).collect(Collectors.toUnmodifiableSet());
+		}
 	},
 
 	RETURN_ACCOMPLISHED("Return accomplished", """
@@ -79,6 +102,12 @@ public enum MessageType {
 			return text.formatted(returnValue.getCustomer().getFirstName(), returnValue.getBooks().stream()
 					.map(Book::getAuthorTitlePublishYear).collect(Collectors.joining("\n\t", "\t", "\n")));
 		}
+
+		@Override
+		public Set<Long> getBookIds(Object... parameters) {
+			Return returnValue = (Return) parameters[0];
+			return returnValue.getBooks().stream().map(Book::getId).collect(Collectors.toUnmodifiableSet());
+		}
 	};
 
 	protected String topic;
@@ -90,5 +119,7 @@ public enum MessageType {
 	}
 
 	public abstract String getFormattedText(Object... parameters);
+
+	public abstract Set<Long> getBookIds(Object... parameters);
 
 }
