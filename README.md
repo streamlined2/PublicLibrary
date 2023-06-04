@@ -4,7 +4,7 @@
 
 <h3>Applied technologies</h3>
 <ul>
-<li>Java 21</li>
+<li>Java 20</li>
 <li>Spring Boot 3.1.0</li>
 <li>Spring MVC, Thymeleaf 3.1.1</li>
 <li>Spring Security</li>

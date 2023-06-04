@@ -12,9 +12,13 @@ import com.streamlined.library.model.Request;
 import com.streamlined.library.model.Return;
 import com.streamlined.library.model.Transfer;
 import com.streamlined.library.service.NotificationService;
-import com.streamlined.library.service.implementation.notification.Message;
-import com.streamlined.library.service.implementation.notification.MessageType;
 import com.streamlined.library.service.implementation.notification.Sender;
+import com.streamlined.library.service.implementation.notification.event.ApprovalReceivedEvent;
+import com.streamlined.library.service.implementation.notification.event.Event;
+import com.streamlined.library.service.implementation.notification.event.NewCustomerCreatedEvent;
+import com.streamlined.library.service.implementation.notification.event.RequestReceivedEvent;
+import com.streamlined.library.service.implementation.notification.event.ReturnAccomplishedEvent;
+import com.streamlined.library.service.implementation.notification.event.TransferAccomplishedEvent;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,49 +28,47 @@ public class DefaultNotificationService implements NotificationService {
 
 	private static final long MESSAGE_DELIVERY_DELAY = 10_000L;
 
-	private final BlockingQueue<Message> messageQueue = new LinkedBlockingQueue<>();
+	private final BlockingQueue<Event> eventQueue = new LinkedBlockingQueue<>();
 
 	private final List<Sender> senderList;
 
 	@Override
 	public void notifyNewCustomerRegistered(Customer customer) {
-		addMessageToQueue(customer, MessageType.NEW_CUSTOMER_CREATED, customer);
+		eventQueue.add(new NewCustomerCreatedEvent(customer));
 	}
 
 	@Override
 	public void notifyRequestReceived(Request request) {
-		addMessageToQueue(request.getCustomer(), MessageType.REQUEST_RECEIVED, request);
+		eventQueue.add(new RequestReceivedEvent(request));
 	}
 
 	@Override
 	public void notifyApprovalReceived(Approval approval) {
-		addMessageToQueue(approval.getCustomer(), MessageType.APPROVAL_RECEIVED, approval);
+		eventQueue.add(new ApprovalReceivedEvent(approval));
 	}
 
 	@Override
 	public void notifyTransferAccomplished(Transfer transfer) {
-		addMessageToQueue(transfer.getCustomer(), MessageType.TRANSFER_ACCOMPLISHED, transfer);
+		eventQueue.add(new TransferAccomplishedEvent(transfer));
 	}
 
 	@Override
 	public void notifyReturnAccomplished(Return returnValue) {
-		addMessageToQueue(returnValue.getCustomer(), MessageType.RETURN_ACCOMPLISHED, returnValue);
-	}
-
-	private void addMessageToQueue(Customer customer, MessageType messageType, Object... parameters) {
-		messageQueue.add(new Message(customer, messageType, parameters));
+		eventQueue.add(new ReturnAccomplishedEvent(returnValue));
 	}
 
 	@Scheduled(fixedDelay = MESSAGE_DELIVERY_DELAY)
-	private void deliverMessages() {
-		for (Message message; (message = messageQueue.poll()) != null;) {
-			sendMessage(message);
+	private void deliver() {
+		for (Event event; (event = eventQueue.poll()) != null;) {
+			send(event);
 		}
 	}
 
-	private void sendMessage(Message message) {
+	private void send(Event event) {
 		for (var sender : senderList) {
-			sender.send(message);
+			if (sender.accepts(event.getClass())) {
+				sender.send(event);
+			}
 		}
 	}
 
