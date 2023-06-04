@@ -1,7 +1,6 @@
 package com.streamlined.library.service.implementation.notification;
 
 import java.util.List;
-
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaAdmin;
@@ -22,7 +21,13 @@ public class KafkaSender implements Sender {
 	public void send(Message message) {
 		final var topic = getTopic(message);
 		kafkaAdmin.createOrModifyTopics(topic);
-		kafkaTemplate.send(topic.name(), getData(message));
+		var result = kafkaTemplate.send(topic.name(), getData(message));
+		result.whenComplete((rst, exc) -> {
+			if (exc != null) {
+				throw new CantSendKafkaMessageException("impossible to send message %s to Kafka topic %s"
+						.formatted(rst.getProducerRecord().value(), rst.getProducerRecord().topic()), exc);
+			}
+		});
 	}
 
 	private NewTopic getTopic(Message message) {
