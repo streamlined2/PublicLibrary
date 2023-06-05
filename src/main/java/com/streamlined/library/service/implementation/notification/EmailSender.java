@@ -12,10 +12,7 @@ import com.streamlined.library.model.Email;
 import com.streamlined.library.service.implementation.notification.event.CustomerRelated;
 import com.streamlined.library.service.implementation.notification.event.Event;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Component
-@Slf4j
 public class EmailSender implements Sender {
 
 	private final MailSender mailSender;
@@ -28,15 +25,13 @@ public class EmailSender implements Sender {
 
 	@Override
 	public void send(Event event) {
-		if (event instanceof CustomerRelated customerRelatedEvent) {
-			getEmailsFor(customerRelatedEvent.getCustomer())
-					.forEach(email -> sendMessage(email.getEmailAddress(), event));
-			return;
-		}
-		log.error("email may be sent only for customer related events, event [{}] is unacceptable", event);
-		throw new UnacceptableOperationException(
-				"email may be sent only for customer related events, event [%s] is unacceptable"
-						.formatted(event.toString()));
+		getEmailsFor(((CustomerRelated) event).getCustomer())
+				.forEach(email -> sendMessage(email.getEmailAddress(), event));
+	}
+
+	@Override
+	public boolean accepts(Class<? extends Event> eventClass) {
+		return CustomerRelated.class.isAssignableFrom(eventClass);
 	}
 
 	private Stream<Email> getEmailsFor(Customer customer) {
@@ -51,11 +46,6 @@ public class EmailSender implements Sender {
 		mailMessage.setText(event.getFormattedText());
 		mailMessage.setTo(email);
 		mailSender.send(mailMessage);
-	}
-
-	@Override
-	public boolean accepts(Class<? extends Event> eventClass) {
-		return CustomerRelated.class.isAssignableFrom(eventClass);
 	}
 
 }
